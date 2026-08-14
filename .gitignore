@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Earth bake source GeoJSON (regenerate via npm run bake:earth)
+/scripts/earth-raw/
+
+# Vyuha logo GLB source (regenerate via npm run bake:vyuha)
+/scripts/vyuha-raw/

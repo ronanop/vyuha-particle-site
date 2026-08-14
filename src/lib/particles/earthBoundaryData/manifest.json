@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-08-13T05:31:31.624Z",
+  "tiers": {
+    "HIGH": {
+      "file": "high.json",
+      "tier": "HIGH",
+      "count": 7000,
+      "radius": 2.3999999552878903,
+      "indiaCount": 2576,
+      "sriLankaCount": 224,
+      "worldCount": 3640,
+      "shellCount": 560,
+      "lonOffsetDeg": 78.9,
+      "sources": {
+        "world": "Natural Earth 10m Admin-0 Countries (India POV)",
+        "india": "DataMeet india-composite (Survey of India–style official boundary)"
+      }
+    },
+    "MEDIUM": {
+      "file": "medium.json",
+      "tier": "MEDIUM",
+      "count": 4800,
+      "radius": 2.3999999395584166,
+      "indiaCount": 1766,
+      "sriLankaCount": 154,
+      "worldCount": 2496,
+      "shellCount": 384,
+      "lonOffsetDeg": 78.9,
+      "sources": {
+        "world": "Natural Earth 10m Admin-0 Countries (India POV)",
+        "india": "DataMeet india-composite (Survey of India–style official boundary)"
+      }
+    },
+    "LOW": {
+      "file": "low.json",
+      "tier": "LOW",
+      "count": 3600,
+      "radius": 2.4000000671927695,
+      "indiaCount": 1325,
+      "sriLankaCount": 115,
+      "worldCount": 1872,
+      "shellCount": 288,
+      "lonOffsetDeg": 78.9,
+      "sources": {
+        "world": "Natural Earth 10m Admin-0 Countries (India POV)",
+        "india": "DataMeet india-composite (Survey of India–style official boundary)"
+      }
+    }
+  }
+}
