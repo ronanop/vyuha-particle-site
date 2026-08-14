@@ -38,6 +38,8 @@ export type ParticleMaterialUniforms = {
   uBreakMode: { value: number };
   /** 1 = force cyan-only formed colors (Vyuha logo). */
   uCyanOnly: { value: number };
+  /** 3=HIGH, 2=MEDIUM, 1=LOW, 0=MINIMAL — coherent shader LOD. */
+  uLod: { value: number };
   uColorWhite: { value: THREE.Color };
   uColorCyan: { value: THREE.Color };
   uColorDarkBlue: { value: THREE.Color };
@@ -68,6 +70,7 @@ export function createParticleUniforms(
     uPulse: { value: 0 },
     uBreakMode: { value: 0 },
     uCyanOnly: { value: 0 },
+    uLod: { value: 3 },
     uColorWhite: { value: PARTICLE_PALETTE.white.clone() },
     uColorCyan: { value: PARTICLE_PALETTE.cyan.clone() },
     uColorDarkBlue: { value: PARTICLE_PALETTE.darkBlue.clone() },
@@ -87,7 +90,8 @@ export function createParticleMaterial(
     uniforms,
     transparent: true,
     depthWrite: false,
-    depthTest: true,
+    // Canvas has no depth buffer (ParticleScene gl.depth: false)
+    depthTest: false,
     blending: THREE.NormalBlending,
   });
 }

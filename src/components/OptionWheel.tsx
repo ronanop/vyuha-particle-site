@@ -38,6 +38,10 @@ export interface OptionWheelProps {
   inset?: number;
   loop?: boolean;
   draggable?: boolean;
+  /** When false, wheel events pass through so the page can drive selection. */
+  captureWheel?: boolean;
+  /** Controlled selected index. */
+  value?: number;
   soundUrl?: string;
   soundVolume?: number;
   className?: string;
@@ -56,6 +60,7 @@ type WheelCfg = {
   loop: boolean;
   smoothing: number;
   draggable: boolean;
+  captureWheel: boolean;
   soundUrl: string;
   soundVolume: number;
 };
@@ -78,6 +83,8 @@ export function OptionWheel({
   inset = 80,
   loop = false,
   draggable = true,
+  captureWheel = true,
+  value,
   soundUrl = "",
   soundVolume = 0.5,
   className = "",
@@ -119,6 +126,7 @@ export function OptionWheel({
     loop,
     smoothing,
     draggable,
+    captureWheel,
     soundUrl,
     soundVolume,
   };
@@ -199,9 +207,9 @@ export function OptionWheel({
   }, []);
 
   const applyTarget = useCallback(
-    (value: number, snap: boolean) => {
+    (nextValue: number, snap: boolean, emit = true) => {
       const cfg = cfgRef.current;
-      let v = value;
+      let v = nextValue;
       if (!cfg.loop) v = Math.min(Math.max(v, 0), Math.max(cfg.count - 1, 0));
       if (snap) v = Math.round(v);
       targetRef.current = v;
@@ -209,8 +217,10 @@ export function OptionWheel({
       if (idx !== selectedRef.current) {
         selectedRef.current = idx;
         setSelectedIndex(idx);
-        onChangeRef.current?.(idx, cfg.items[idx]);
-        playTick();
+        if (emit) {
+          onChangeRef.current?.(idx, cfg.items[idx]);
+          playTick();
+        }
       }
       startLoop();
     },
@@ -221,6 +231,7 @@ export function OptionWheel({
     const el = rootRef.current;
     if (!el) return;
     const onWheel = (e: WheelEvent) => {
+      if (!cfgRef.current.captureWheel) return;
       e.preventDefault();
       const cfg = cfgRef.current;
       const delta = e.deltaMode === 1 ? e.deltaY * 24 : e.deltaY;
@@ -301,7 +312,7 @@ export function OptionWheel({
   );
 
   useEffect(() => {
-    applyTarget(targetRef.current, false);
+    applyTarget(targetRef.current, false, false);
   }, [
     items,
     fontSize,
@@ -316,6 +327,11 @@ export function OptionWheel({
     smoothing,
     applyTarget,
   ]);
+
+  useEffect(() => {
+    if (value == null) return;
+    applyTarget(value, true, false);
+  }, [value, applyTarget]);
 
   useEffect(
     () => () => {
@@ -339,7 +355,7 @@ export function OptionWheel({
       role="listbox"
       tabIndex={0}
       aria-label="Option wheel"
-      className={`option-wheel${side === "right" ? " option-wheel--right" : ""}${isDragging ? " option-wheel--dragging" : ""}${className ? ` ${className}` : ""}`}
+      className={`option-wheel${side === "right" ? " option-wheel--right" : ""}${isDragging ? " option-wheel--dragging" : ""}${!captureWheel ? " option-wheel--page-scroll" : ""}${className ? ` ${className}` : ""}`}
       style={style}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}

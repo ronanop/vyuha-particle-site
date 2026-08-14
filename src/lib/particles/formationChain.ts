@@ -25,11 +25,38 @@ export const FORMATION_CHAIN: readonly ParticleFormation[] = [
 
 export const FORMATION_STAGE_MAX = FORMATION_CHAIN.length - 1;
 
-/** How far a section has entered the focus band (0–1). */
-function sectionEnter(sectionId: string, viewportHeight: number): number {
+/*
+ * Section tops are cached in document space (measured once per invalidation)
+ * so the per-frame stage read never touches layout — 7 getBoundingClientRect
+ * calls per frame were measurable on low-end CPUs. Viewport-relative top is
+ * derived from the live scroll offset instead.
+ */
+const sectionTopCache = new Map<string, number>();
+
+function sectionDocTop(sectionId: string): number | null {
+  if (typeof document === "undefined") return null;
+  const cached = sectionTopCache.get(sectionId);
+  if (cached !== undefined) return cached;
   const el = document.getElementById(sectionId);
-  if (!el) return 0;
-  const top = el.getBoundingClientRect().top;
+  if (!el) return null;
+  const docTop = el.getBoundingClientRect().top + window.scrollY;
+  sectionTopCache.set(sectionId, docTop);
+  return docTop;
+}
+
+export function invalidateFormationDomCache(): void {
+  sectionTopCache.clear();
+}
+
+/** How far a section has entered the focus band (0–1). */
+function sectionEnter(
+  sectionId: string,
+  viewportHeight: number,
+  scrollY: number,
+): number {
+  const docTop = sectionDocTop(sectionId);
+  if (docTop === null) return 0;
+  const top = docTop - scrollY;
   const start = viewportHeight * 0.9;
   const end = viewportHeight * 0.34;
   return Math.min(1, Math.max(0, (start - top) / Math.max(1, start - end)));
@@ -39,12 +66,12 @@ function sectionEnter(sectionId: string, viewportHeight: number): number {
  * Map #command into view → 0..1 earth-break amount.
  */
 export function readCommandBreakProgress(viewportHeight: number): number {
-  const el = document.getElementById("command");
-  if (!el) return 0;
-  const rect = el.getBoundingClientRect();
+  const docTop = sectionDocTop("command");
+  if (docTop === null) return 0;
+  const top = docTop - window.scrollY;
   const start = viewportHeight * 1.05;
   const end = viewportHeight * 0.18;
-  const t = (start - rect.top) / Math.max(1, start - end);
+  const t = (start - top) / Math.max(1, start - end);
   return Math.min(1, Math.max(0, t));
 }
 
@@ -53,13 +80,14 @@ export function readCommandBreakProgress(viewportHeight: number): number {
  * Monotonic with page order so reverse scroll unwinds cleanly.
  */
 export function readFormationStage(viewportHeight: number): number {
+  const scrollY = typeof window === "undefined" ? 0 : window.scrollY;
   const breakT = readCommandBreakProgress(viewportHeight);
-  const e1 = sectionEnter("command-01", viewportHeight);
-  const e2 = sectionEnter("command-02", viewportHeight);
-  const e3 = sectionEnter("command-03", viewportHeight);
-  const e4 = sectionEnter("box-perimeter", viewportHeight);
-  const e5 = sectionEnter("box-delivery", viewportHeight);
-  const e6 = sectionEnter("demo", viewportHeight);
+  const e1 = sectionEnter("command-01", viewportHeight, scrollY);
+  const e2 = sectionEnter("command-02", viewportHeight, scrollY);
+  const e3 = sectionEnter("command-03", viewportHeight, scrollY);
+  const e4 = sectionEnter("box-perimeter", viewportHeight, scrollY);
+  const e5 = sectionEnter("box-delivery", viewportHeight, scrollY);
+  const e6 = sectionEnter("demo", viewportHeight, scrollY);
 
   // Icons only add once the earth has mostly broken into the field
   const iconGate = smoothstep(Math.min(1, Math.max(0, (breakT - 0.82) / 0.18)));

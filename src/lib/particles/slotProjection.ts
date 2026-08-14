@@ -5,14 +5,75 @@ import { Vector3 } from "three";
 const _ndc = new Vector3();
 const _world = new Vector3();
 
-/** Read a section's particle slot from the DOM. */
-export function queryParticleSlot(slotId: string): HTMLElement | null {
-  if (typeof document === "undefined") return null;
-  return document.querySelector<HTMLElement>(
-    `[data-particle-slot="${CSS.escape(slotId)}"]`,
-  );
+/*
+ * Slot geometry is measured once per cache fill (document space) and derived
+ * per frame from the live scroll offset — the previous per-frame
+ * getBoundingClientRect on every slot was a steady layout-read tax on
+ * low-end devices. Horizontal position/size are viewport-stable (no
+ * horizontal scroll); invalidation on resize re-measures everything.
+ */
+interface SlotMetrics {
+  id: string;
+  el: HTMLElement;
+  left: number;
+  width: number;
+  height: number;
+  docTop: number;
 }
 
+let slotCache: SlotMetrics[] | null = null;
+
+export function invalidateParticleSlotCache(): void {
+  slotCache = null;
+}
+
+function measureSlot(id: string, el: HTMLElement): SlotMetrics {
+  const r = el.getBoundingClientRect();
+  return {
+    id,
+    el,
+    left: r.left,
+    width: r.width,
+    height: r.height,
+    docTop: r.top + window.scrollY,
+  };
+}
+
+function ensureSlotCache(): SlotMetrics[] {
+  if (slotCache && slotCache.length > 0) return slotCache;
+  if (typeof document === "undefined") return [];
+  const nodes = document.querySelectorAll<HTMLElement>("[data-particle-slot]");
+  const next: SlotMetrics[] = [];
+  nodes.forEach((el) => {
+    const id = el.getAttribute("data-particle-slot");
+    if (id) next.push(measureSlot(id, el));
+  });
+  slotCache = next.length > 0 ? next : null;
+  return next;
+}
+
+function metricsToRect(m: SlotMetrics, scrollY: number): SlotRect {
+  const top = m.docTop - scrollY;
+  return {
+    left: m.left,
+    top,
+    width: m.width,
+    height: m.height,
+    centerX: m.left + m.width / 2,
+    centerY: top + m.height / 2,
+  };
+}
+
+function findSlotMetrics(slotId: string): SlotMetrics | null {
+  return ensureSlotCache().find((s) => s.id === slotId) ?? null;
+}
+
+/** Read a section's particle slot from the DOM. */
+export function queryParticleSlot(slotId: string): HTMLElement | null {
+  return findSlotMetrics(slotId)?.el ?? null;
+}
+
+/** Direct (uncached) rect read — prefer the cached slot APIs in frame loops. */
 export function readSlotRect(el: HTMLElement): SlotRect {
   const r = el.getBoundingClientRect();
   return {
@@ -63,10 +124,10 @@ export function slotCenterToWorld(
   viewportHeight: number,
   planeZ = 0,
 ): Vector3 | null {
-  const el = queryParticleSlot(slotId);
-  if (!el) return null;
-  const rect = readSlotRect(el);
-  if (rect.width < 2 || rect.height < 2) return null;
+  const metrics = findSlotMetrics(slotId);
+  if (!metrics) return null;
+  if (metrics.width < 2 || metrics.height < 2) return null;
+  const rect = metricsToRect(metrics, window.scrollY);
   return screenToWorldOnPlane(
     rect.centerX,
     rect.centerY,
@@ -88,12 +149,13 @@ export function findActiveSlotId(
   let bestId: string | null = null;
   let bestScore = -Infinity;
   const focusY = viewportHeight * 0.45;
+  const scrollY = window.scrollY;
 
   for (const id of slotIds) {
-    const el = queryParticleSlot(id);
-    if (!el) continue;
-    const rect = readSlotRect(el);
-    if (rect.width < 2 || rect.height < 2) continue;
+    const metrics = findSlotMetrics(id);
+    if (!metrics) continue;
+    if (metrics.width < 2 || metrics.height < 2) continue;
+    const rect = metricsToRect(metrics, scrollY);
 
     const visibleTop = Math.max(0, rect.top);
     const visibleBottom = Math.min(viewportHeight, rect.top + rect.height);
@@ -131,14 +193,15 @@ export function resolveBlendedSlotWorld(
   contest: number;
 } | null {
   const focusY = viewportHeight * 0.45;
+  const scrollY = window.scrollY;
   const scored: { id: string; score: number; x: number; y: number; z: number }[] =
     [];
 
   for (const id of slotIds) {
-    const el = queryParticleSlot(id);
-    if (!el) continue;
-    const rect = readSlotRect(el);
-    if (rect.width < 2 || rect.height < 2) continue;
+    const metrics = findSlotMetrics(id);
+    if (!metrics) continue;
+    if (metrics.width < 2 || metrics.height < 2) continue;
+    const rect = metricsToRect(metrics, scrollY);
 
     const visibleTop = Math.max(0, rect.top);
     const visibleBottom = Math.min(viewportHeight, rect.top + rect.height);
@@ -188,12 +251,5 @@ export function resolveBlendedSlotWorld(
 
 /** Collect every data-particle-slot id currently in the document. */
 export function listParticleSlotIds(): string[] {
-  if (typeof document === "undefined") return [];
-  const nodes = document.querySelectorAll<HTMLElement>("[data-particle-slot]");
-  const ids: string[] = [];
-  nodes.forEach((node) => {
-    const id = node.getAttribute("data-particle-slot");
-    if (id) ids.push(id);
-  });
-  return ids;
+  return ensureSlotCache().map((s) => s.id);
 }

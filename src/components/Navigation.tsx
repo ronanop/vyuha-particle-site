@@ -12,7 +12,7 @@ const links = [
 
 export function Navigation() {
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl supports-[backdrop-filter]:bg-black/25">
+    <header className="nav-chrome pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl supports-[backdrop-filter]:bg-black/25">
       <nav className="pointer-events-auto mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 md:px-10">
         <a href="#top" className="inline-flex items-center" aria-label="Vyuha.ai">
           <Image

@@ -5,13 +5,14 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setLenisInstance } from "@/lib/utils/lenis";
+import { getScrollFeel, luxuryEase } from "@/lib/utils/scrollFeel";
+import {
+  shouldUseSmoothScroll,
+  tierWantsNativeScroll,
+} from "@/lib/particles/ParticlePerformance";
+import type { QualityTier } from "@/types/particles";
 
 gsap.registerPlugin(ScrollTrigger);
-
-function prefersReducedMotion(): boolean {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
 
 interface SmoothScrollProps {
   children: ReactNode;
@@ -19,41 +20,68 @@ interface SmoothScrollProps {
 
 /**
  * Lenis smooth scroll synced with GSAP ScrollTrigger.
- * Disabled when prefers-reduced-motion is set.
+ * Disabled when prefers-reduced-motion is set or the quality tier is
+ * LOW/MINIMAL — on weak devices Lenis ties page scroll to the WebGL rAF
+ * budget, so dropped canvas frames would stutter the whole page.
  */
 export function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    let lenis: Lenis | null = null;
+    let tickerCallback: ((time: number) => void) | null = null;
+
+    const destroyLenis = () => {
+      if (!lenis) return;
+      if (tickerCallback) {
+        gsap.ticker.remove(tickerCallback);
+        tickerCallback = null;
+      }
+      lenis.destroy();
+      lenis = null;
       setLenisInstance(null);
-      return;
+    };
+
+    if (shouldUseSmoothScroll()) {
+      const feel = getScrollFeel();
+      // lerp only — passing duration/easing would override and kill the lag
+      lenis = new Lenis({
+        lerp: feel.lerp,
+        smoothWheel: true,
+        touchMultiplier: feel.touchMultiplier,
+        wheelMultiplier: feel.wheelMultiplier,
+        autoRaf: false,
+        overscroll: true,
+      });
+
+      setLenisInstance(lenis);
+
+      lenis.on("scroll", () => {
+        ScrollTrigger.update();
+      });
+
+      tickerCallback = (time: number) => {
+        lenis?.raf(time * 1000);
+      };
+      gsap.ticker.add(tickerCallback);
+      gsap.ticker.lagSmoothing(0);
     }
 
-    const lenis = new Lenis({
-      // Longer glide — closer to Dala’s buttery scroll inertia
-      duration: 1.45,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 1.25,
-      autoRaf: false,
-      wheelMultiplier: 0.85,
-    });
-
-    setLenisInstance(lenis);
-
-    const onLenisScroll = () => {
-      ScrollTrigger.update();
+    // Runtime FPS downgrade to LOW/MINIMAL → hand scroll back to the browser
+    const onTierChange = (event: Event) => {
+      const tier = (event as CustomEvent<{ tier: QualityTier }>).detail?.tier;
+      if (tier && tierWantsNativeScroll(tier)) {
+        destroyLenis();
+      }
     };
-    lenis.on("scroll", onLenisScroll);
+    window.addEventListener("particle-tier-change", onTierChange);
 
-    const tickerCallback = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
-
+    // Debounced — mobile URL-bar resizes fire mid-scroll and refresh is heavy
+    let resizeTimer = 0;
     const onResize = () => {
-      lenis.resize();
-      ScrollTrigger.refresh();
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        lenis?.resize();
+        ScrollTrigger.refresh();
+      }, 200);
     };
     window.addEventListener("resize", onResize);
 
@@ -71,19 +99,24 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       if (!el) return;
 
       event.preventDefault();
-      lenis.scrollTo(el as HTMLElement, {
-        offset: 0,
-        duration: 1.25,
-      });
+      if (lenis) {
+        lenis.scrollTo(el as HTMLElement, {
+          offset: 0,
+          duration: getScrollFeel().anchorDuration,
+          easing: luxuryEase,
+        });
+      } else {
+        (el as HTMLElement).scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     };
     document.addEventListener("click", onClick);
 
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const onMotionChange = () => {
       if (mq.matches) {
-        lenis.stop();
+        lenis?.stop();
       } else {
-        lenis.start();
+        lenis?.start();
       }
     };
     mq.addEventListener("change", onMotionChange);
@@ -96,9 +129,9 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       mq.removeEventListener("change", onMotionChange);
       document.removeEventListener("click", onClick);
       window.removeEventListener("resize", onResize);
-      gsap.ticker.remove(tickerCallback);
-      lenis.destroy();
-      setLenisInstance(null);
+      window.removeEventListener("particle-tier-change", onTierChange);
+      window.clearTimeout(resizeTimer);
+      destroyLenis();
     };
   }, []);
 

@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { OptionWheel } from "@/components/OptionWheel";
+import { prefersReducedMotion } from "@/lib/particles/ParticlePerformance";
+import { getLenis } from "@/lib/utils/lenis";
 
 const pillars = [
   {
@@ -42,11 +46,68 @@ const pillars = [
   },
 ];
 
+gsap.registerPlugin(ScrollTrigger);
+
+const PILLAR_COUNT = pillars.length;
 const wheelItems = pillars.map((p) => p.wheel);
 
 export function Capabilities() {
   const [active, setActive] = useState(0);
+  const triggerRef = useRef<ScrollTrigger | null>(null);
+  const reduced = prefersReducedMotion();
   const pillar = pillars[active] ?? pillars[0];
+
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+
+    const section = document.getElementById("pillars");
+    if (!section) return;
+
+    const trigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: () => `+=${Math.round(window.innerHeight * PILLAR_COUNT)}`,
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        const idx = Math.min(
+          PILLAR_COUNT - 1,
+          Math.floor(self.progress * PILLAR_COUNT + 1e-4),
+        );
+        setActive((prev) => (prev === idx ? prev : idx));
+      },
+    });
+    triggerRef.current = trigger;
+
+    const refresh = () => ScrollTrigger.refresh();
+    const introWatch = new MutationObserver(refresh);
+    introWatch.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-intro", "data-intro-lock"],
+    });
+    requestAnimationFrame(refresh);
+
+    return () => {
+      introWatch.disconnect();
+      trigger.kill();
+      triggerRef.current = null;
+    };
+  }, []);
+
+  const jumpTo = (index: number) => {
+    const st = triggerRef.current;
+    if (!st) {
+      setActive(index);
+      return;
+    }
+    const p = PILLAR_COUNT <= 1 ? 0 : (index + 0.5) / PILLAR_COUNT;
+    const y = st.start + (st.end - st.start) * Math.min(1, Math.max(0, p));
+    const lenis = getLenis();
+    if (lenis) lenis.scrollTo(y, { duration: 0.55 });
+    else window.scrollTo({ top: y, behavior: "smooth" });
+  };
 
   return (
     <section
@@ -60,7 +121,7 @@ export function Capabilities() {
         className="pointer-events-none absolute inset-0"
       />
 
-      <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-10">
+      <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-6">
         <header className="max-w-2xl">
           <p className="mb-4 text-[13px] uppercase tracking-[0.18em] text-white/50">
             Four Core Pillars
@@ -70,11 +131,11 @@ export function Capabilities() {
           </h2>
         </header>
 
-        <div className="grid min-h-[min(70svh,640px)] grid-cols-1 items-stretch gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
-          <div className="relative min-h-[320px] md:min-h-0" data-lenis-prevent>
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-10">
+          <div className="relative h-[min(56svh,520px)] md:h-[min(70svh,640px)]">
             <OptionWheel
               items={wheelItems}
-              defaultSelected={0}
+              value={active}
               side="left"
               textColor="#6b7280"
               activeColor="#ffffff"
@@ -88,15 +149,16 @@ export function Capabilities() {
               smoothing={180}
               inset={12}
               loop={false}
-              draggable
-              className="h-full w-full"
-              onChange={(index) => setActive(index)}
+              draggable={reduced}
+              captureWheel={reduced}
+              className="absolute inset-0 h-full w-full"
+              onChange={jumpTo}
             />
           </div>
 
           <div
             key={pillar.num}
-            className="flex animate-[pillar-in_380ms_ease-out] flex-col justify-center border-t border-white/10 pt-8 md:border-t-0 md:border-l md:pt-0 md:pl-10 lg:pl-14"
+            className="flex animate-[pillar-in_380ms_ease-out] flex-col justify-start md:pt-1"
           >
             <span className="font-display text-[14px] tracking-wider text-white/45">
               {pillar.num}
@@ -112,7 +174,7 @@ export function Capabilities() {
               {pillar.intro}
             </p>
             <p className="mt-10 text-[12px] uppercase tracking-[0.16em] text-white/35">
-              Scroll or drag the wheel
+              {reduced ? "Scroll or drag the wheel" : "Scroll to move through pillars"}
             </p>
           </div>
         </div>

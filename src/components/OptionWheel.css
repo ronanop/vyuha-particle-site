@@ -18,6 +18,11 @@
   cursor: grabbing;
 }
 
+.option-wheel--page-scroll {
+  cursor: default;
+  touch-action: pan-y;
+}
+
 .option-wheel__item {
   position: absolute;
   top: 50%;

@@ -13,19 +13,24 @@ import {
   smoothstep,
 } from "@/lib/particles/ParticleMorph";
 import {
+  FORMATION_CHAIN,
   FORMATION_STAGE_MAX,
   resolveFormationSegment,
 } from "@/lib/particles/formationChain";
 import {
   downgradeTier,
   FpsMonitor,
+  fpsFloorForTier,
   getQualityProfile,
+  persistQualityTier,
   prefersReducedMotion,
 } from "@/lib/particles/ParticlePerformance";
 import {
   completeIntroImmediately,
   decaySlotTravel,
   getEffectiveProgress,
+  markEngineReady,
+  markScrollWarmed,
   particleState,
   resetIntro,
   setIntroProgress,
@@ -34,8 +39,10 @@ import {
   buildTargetCache,
   getFormationBuffers,
   getTargetPositions,
+  hasTargetCache,
 } from "@/lib/particles/ParticleTarget";
 import { hash2 } from "@/lib/particles/ParticleNoise";
+import { getScrollFeel } from "@/lib/utils/scrollFeel";
 import type { ParticleFormation, QualityTier } from "@/types/particles";
 import { EARTH_FORMATION } from "@/components/particles/targets/earth";
 import { SCATTERED_BG_FORMATION } from "@/components/particles/targets/scatteredBg";
@@ -61,9 +68,8 @@ const FLOW_FLOOR = 0.04;
 const NOISE_FLOOR = 0.008;
 const INTENSITY_FLOOR = 1.55;
 
-const INTRO_ASSEMBLE = 5.2;
-const INTRO_DELAY = 0.12;
-const INTRO_SETTLE = 1.4;
+const INTRO_ASSEMBLE = 2.5;
+const INTRO_SETTLE = 0.85;
 
 function fillSeedBuffers(count: number) {
   const seeds = new Float32Array(count);
@@ -132,6 +138,28 @@ function lockEarthBuffers(
   writePositions(getPosAttr(geo, "aPositionTo"), earthBuf);
 }
 
+/**
+ * Build the target caches for every lower tier during idle time so a later
+ * FPS downgrade remount finds its buffers ready instead of stalling the
+ * main thread mid-scroll.
+ */
+function prewarmLowerTierCaches(tier: QualityTier): void {
+  const next = downgradeTier(tier);
+  if (next === tier) return;
+  const nextCount = getQualityProfile(next).count;
+  const run = () => {
+    if (!hasTargetCache(nextCount)) {
+      buildTargetCache(nextCount);
+    }
+    prewarmLowerTierCaches(next);
+  };
+  if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+    window.requestIdleCallback(run, { timeout: 4000 });
+  } else {
+    setTimeout(run, 600);
+  }
+}
+
 export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) {
   const pointsRef = useRef<THREE.Points>(null);
   const fromAttrRef = useRef<THREE.BufferAttribute | null>(null);
@@ -141,8 +169,9 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
     to: ParticleFormation;
     index: number;
   } | null>(null);
-  const fpsRef = useRef(new FpsMonitor(90));
+  const fpsRef = useRef(new FpsMonitor(30, 12));
   const downgradeCooldownRef = useRef(0);
+  const remountingRef = useRef(false);
   const defaultsRef = useRef<ReturnType<typeof fillSeedBuffers> | null>(null);
   const settledRef = useRef(false);
   const swayBlendRef = useRef(0);
@@ -158,17 +187,36 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
   const hasDisplayPosRef = useRef(false);
   const mouseSmoothRef = useRef(new THREE.Vector2(0, 0));
   const mouseBlendRef = useRef(0);
+  const warmupRef = useRef({ needed: false, compiled: false, step: 0, fonts: false });
+  const prewarmedRef = useRef(false);
   const { gl } = useThree();
 
-  const { geometry, material, uniforms, cache } = useMemo(() => {
+  // Material + uniforms persist across count remounts — recreating the
+  // ShaderMaterial on a quality downgrade forced a shader recompile exactly
+  // when the device was already struggling.
+  const { material, uniforms } = useMemo(() => {
+    const nextUniforms = createParticleUniforms(particleState.debug.visual);
+    nextUniforms.uLod.value = getQualityProfile(particleState.qualityTier).shaderLod;
+    const mat = createParticleMaterial(nextUniforms);
+    return { material: mat, uniforms: nextUniforms };
+  }, []);
+
+  const { geometry, cache } = useMemo(() => {
     const targetCache = buildTargetCache(count);
-    const scatterBuf = getTargetPositions(targetCache, SCATTERED_BG_FORMATION);
+    const resume = particleState.introComplete;
+    const resumeSegment = resume
+      ? resolveFormationSegment(particleState.formationStage)
+      : null;
+    const fromFormation = resumeSegment?.from ?? SCATTERED_BG_FORMATION;
+    const toFormation = resumeSegment?.to ?? EARTH_FORMATION;
+    const scatterBuf = getTargetPositions(targetCache, fromFormation);
+    const destBuf = getFormationBuffers(targetCache, toFormation);
     const earthBuf = getFormationBuffers(targetCache, EARTH_FORMATION);
     const defaults = fillSeedBuffers(count);
     defaultsRef.current = defaults;
 
     const from = new Float32Array(scatterBuf);
-    const to = new Float32Array(earthBuf.positions);
+    const to = new Float32Array(destBuf.positions);
     const position = new Float32Array(scatterBuf);
 
     const geo = new THREE.BufferGeometry();
@@ -177,9 +225,11 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
     fromAttr.setUsage(THREE.DynamicDrawUsage);
     toAttr.setUsage(THREE.DynamicDrawUsage);
 
-    const sizeArr = new Float32Array(earthBuf.sizes ?? defaults.sizes);
-    const opacityArr = new Float32Array(earthBuf.opacities ?? defaults.opacities);
-    const layerArr = new Float32Array(earthBuf.layers ?? defaults.layers);
+    const sizeArr = new Float32Array(destBuf.sizes ?? earthBuf.sizes ?? defaults.sizes);
+    const opacityArr = new Float32Array(
+      destBuf.opacities ?? earthBuf.opacities ?? defaults.opacities,
+    );
+    const layerArr = new Float32Array(destBuf.layers ?? earthBuf.layers ?? defaults.layers);
 
     geo.setAttribute("position", new THREE.BufferAttribute(position, 3));
     geo.setAttribute("aPositionFrom", fromAttr);
@@ -189,63 +239,105 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
     geo.setAttribute("aOpacity", new THREE.BufferAttribute(opacityArr, 1));
     geo.setAttribute("aLayer", new THREE.BufferAttribute(layerArr, 1));
 
-    const nextUniforms = createParticleUniforms(particleState.debug.visual);
-    nextUniforms.uPixelRatio.value = Math.min(gl.getPixelRatio(), 2);
-    nextUniforms.uEarthMode.value = 0;
-    nextUniforms.uIntroActive.value = 1;
-    nextUniforms.uFlowFade.value = 1;
-    nextUniforms.uProgress.value = 0;
-    nextUniforms.uPulse.value = 0;
-    nextUniforms.uBreakMode.value = 0;
-    nextUniforms.uNoiseStrength.value = 0.22;
-    nextUniforms.uNoiseSpeed.value = 0.12;
-    const mat = createParticleMaterial(nextUniforms);
+    // Uniform state is synced by the reset/resume effect below (it runs after
+    // every geometry rebuild); uLod / uPixelRatio / uNoiseSpeed are re-set
+    // each frame, and the warmup path holds uOpacity at 0 until ready.
 
     fromAttrRef.current = fromAttr;
     toAttrRef.current = toAttr;
-    lastSegmentRef.current = {
-      from: SCATTERED_BG_FORMATION,
-      to: EARTH_FORMATION,
-      index: -1,
-    };
-    settledRef.current = false;
+    lastSegmentRef.current = resumeSegment
+      ? {
+          from: resumeSegment.from,
+          to: resumeSegment.to,
+          index: resumeSegment.fromIndex,
+        }
+      : {
+          from: SCATTERED_BG_FORMATION,
+          to: EARTH_FORMATION,
+          index: -1,
+        };
+    settledRef.current = !!resume;
     swayBlendRef.current = 0;
+    warmupRef.current = {
+      needed: !resume,
+      compiled: false,
+      step: 0,
+      fonts:
+        typeof document === "undefined" ||
+        document.fonts?.status === "loaded",
+    };
+
+    for (const buf of Object.values(targetCache)) {
+      void buf.positions.byteLength;
+    }
 
     return {
       geometry: geo,
-      material: mat,
-      uniforms: nextUniforms,
       cache: targetCache,
     };
-  }, [count, gl]);
+  }, [count]);
 
   useEffect(() => {
     return () => {
       geometry.dispose();
-      material.dispose();
     };
-  }, [geometry, material]);
+  }, [geometry]);
 
   useEffect(() => {
+    return () => {
+      material.dispose();
+    };
+  }, [material]);
+
+  useEffect(() => {
+    const reduced = prefersReducedMotion() || particleState.reducedMotion;
+    const resumeAfterQuality = particleState.introComplete && !reduced;
+
+    if (reduced || resumeAfterQuality) {
+      if (reduced) completeIntroImmediately();
+      warmupRef.current.needed = false;
+      markEngineReady();
+      markScrollWarmed();
+      const stage = Math.min(
+        FORMATION_STAGE_MAX,
+        Math.max(0, particleState.formationStage),
+      );
+      const segment = resolveFormationSegment(stage);
+      writePositions(
+        getPosAttr(geometry, "aPositionFrom"),
+        getTargetPositions(cache, segment.from),
+      );
+      writePositions(
+        getPosAttr(geometry, "aPositionTo"),
+        getTargetPositions(cache, segment.to),
+      );
+      if (defaultsRef.current) {
+        applyVisualAttrs(geometry, segment.to, cache, defaultsRef.current);
+        visualFormationRef.current = segment.to;
+      }
+      lastSegmentRef.current = {
+        from: segment.from,
+        to: segment.to,
+        index: segment.fromIndex,
+      };
+      stageDisplayRef.current = stage;
+      morphProgressRef.current = segment.local;
+      uniforms.uProgress.value = segment.local;
+      uniforms.uIntroActive.value = 0;
+      uniforms.uFlowFade.value = 0;
+      uniforms.uEarthMode.value = segment.isBreak ? 1 - segment.local : 1;
+      uniforms.uNoiseStrength.value = 0;
+      uniforms.uPulse.value = 0;
+      uniforms.uBreakMode.value = segment.isBreak ? 1 : 0;
+      settledRef.current = true;
+      return;
+    }
+
     resetIntro();
     const scatterBuf = getTargetPositions(cache, SCATTERED_BG_FORMATION);
     const earthBuf = getTargetPositions(cache, EARTH_FORMATION);
     writePositions(getPosAttr(geometry, "aPositionFrom"), scatterBuf);
     writePositions(getPosAttr(geometry, "aPositionTo"), earthBuf);
-
-    if (prefersReducedMotion() || particleState.reducedMotion) {
-      completeIntroImmediately();
-      lockEarthBuffers(cache, geometry);
-      uniforms.uProgress.value = 1;
-      uniforms.uIntroActive.value = 0;
-      uniforms.uFlowFade.value = 0;
-      uniforms.uEarthMode.value = 1;
-      uniforms.uNoiseStrength.value = 0;
-      uniforms.uPulse.value = 0;
-      settledRef.current = true;
-      return;
-    }
-
     particleState.introProgress = 0;
     particleState.introComplete = false;
     settledRef.current = false;
@@ -259,72 +351,114 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
     uniforms.uFlowFade.value = 1;
     uniforms.uEarthMode.value = 0;
     uniforms.uCyanOnly.value = 0;
-    uniforms.uNoiseStrength.value = 0.22;
+    uniforms.uNoiseStrength.value = getQualityProfile(
+      particleState.qualityTier,
+    ).noiseEnabled
+      ? 0.22
+      : 0;
     uniforms.uPulse.value = 0;
     uniforms.uBreakMode.value = 0;
 
     const proxy = { t: 0, flow: 1, earth: 0 };
+    let tl: gsap.core.Timeline | null = null;
+    let waitRaf = 0;
+    let cancelled = false;
 
-    const tl = gsap.timeline({
-      delay: INTRO_DELAY,
-      onComplete: () => {
-        setIntroProgress(1);
-        lockEarthBuffers(cache, geometry);
-        lastSegmentRef.current = {
-          from: EARTH_FORMATION,
-          to: EARTH_FORMATION,
-          index: 0,
-        };
-        uniforms.uProgress.value = 1;
-        uniforms.uIntroActive.value = 0;
-        uniforms.uFlowFade.value = 0;
-        uniforms.uEarthMode.value = 1;
-        uniforms.uNoiseStrength.value = 0;
-        uniforms.uPulse.value = 0;
-        settledRef.current = true;
-      },
-    });
+    const playAssemble = () => {
+      if (cancelled) return;
+      tl = gsap.timeline({
+        onComplete: () => {
+          setIntroProgress(1);
+          lockEarthBuffers(cache, geometry);
+          lastSegmentRef.current = {
+            from: EARTH_FORMATION,
+            to: EARTH_FORMATION,
+            index: 0,
+          };
+          uniforms.uProgress.value = 1;
+          uniforms.uIntroActive.value = 0;
+          uniforms.uFlowFade.value = 0;
+          uniforms.uEarthMode.value = 1;
+          uniforms.uNoiseStrength.value = 0;
+          uniforms.uPulse.value = 0;
+          settledRef.current = true;
+        },
+      });
 
-    tl.to(proxy, {
-      t: 1,
-      earth: 1,
-      duration: INTRO_ASSEMBLE,
-      ease: "power2.inOut",
-      onUpdate: () => {
-        particleState.introProgress = proxy.t;
-        uniforms.uProgress.value = proxy.t;
-        uniforms.uEarthMode.value = proxy.earth;
-        uniforms.uIntroActive.value = 1;
-        const mid = proxy.t * (1 - proxy.t) * 4;
-        uniforms.uFlowFade.value = 0.7 + mid * 0.3;
-        uniforms.uNoiseStrength.value = 0.12 + mid * 0.16;
-        uniforms.uPulse.value = 0;
-      },
-    });
+      tl.to(proxy, {
+        t: 1,
+        earth: 1,
+        duration: INTRO_ASSEMBLE,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          particleState.introProgress = proxy.t;
+          uniforms.uProgress.value = proxy.t;
+          uniforms.uEarthMode.value = proxy.earth;
+          uniforms.uIntroActive.value = 1;
+          const mid = proxy.t * (1 - proxy.t) * 4;
+          uniforms.uFlowFade.value = 0.7 + mid * 0.3;
+          uniforms.uNoiseStrength.value = getQualityProfile(
+            particleState.qualityTier,
+          ).noiseEnabled
+            ? 0.12 + mid * 0.16
+            : 0;
+          uniforms.uPulse.value = 0;
+        },
+      });
 
-    tl.to(proxy, {
-      flow: 0,
-      duration: INTRO_SETTLE,
-      ease: "power2.inOut",
-      onStart: () => {
-        lockEarthBuffers(cache, geometry);
-        particleState.introProgress = 1;
-        uniforms.uProgress.value = 1;
-        uniforms.uEarthMode.value = 1;
-        uniforms.uPulse.value = 0;
-      },
-      onUpdate: () => {
-        uniforms.uProgress.value = 1;
-        uniforms.uEarthMode.value = 1;
-        uniforms.uPulse.value = 0;
-        uniforms.uFlowFade.value = proxy.flow;
-        uniforms.uNoiseStrength.value = 0.06 * proxy.flow;
-        uniforms.uIntroActive.value = proxy.flow > 0.02 ? 1 : 0;
-      },
-    });
+      tl.to(proxy, {
+        flow: 0,
+        duration: INTRO_SETTLE,
+        ease: "power2.inOut",
+        onStart: () => {
+          lockEarthBuffers(cache, geometry);
+          particleState.introProgress = 1;
+          uniforms.uProgress.value = 1;
+          uniforms.uEarthMode.value = 1;
+          uniforms.uPulse.value = 0;
+        },
+        onUpdate: () => {
+          uniforms.uProgress.value = 1;
+          uniforms.uEarthMode.value = 1;
+          uniforms.uPulse.value = 0;
+          uniforms.uFlowFade.value = proxy.flow;
+          uniforms.uNoiseStrength.value = getQualityProfile(
+            particleState.qualityTier,
+          ).noiseEnabled
+            ? 0.06 * proxy.flow
+            : 0;
+          uniforms.uIntroActive.value = proxy.flow > 0.02 ? 1 : 0;
+        },
+      });
+    };
+
+    const waitForArm = () => {
+      if (cancelled) return;
+      if (particleState.introArmed && !warmupRef.current.needed) {
+        playAssemble();
+        return;
+      }
+      waitRaf = requestAnimationFrame(waitForArm);
+    };
+    waitForArm();
+
+    let fontsTimer = 0;
+    if (typeof document !== "undefined" && document.fonts?.ready) {
+      void document.fonts.ready.then(() => {
+        warmupRef.current.fonts = true;
+      });
+      fontsTimer = window.setTimeout(() => {
+        warmupRef.current.fonts = true;
+      }, 1200);
+    } else {
+      warmupRef.current.fonts = true;
+    }
 
     return () => {
-      tl.kill();
+      cancelled = true;
+      cancelAnimationFrame(waitRaf);
+      if (fontsTimer) window.clearTimeout(fontsTimer);
+      tl?.kill();
     };
   }, [uniforms, cache, geometry]);
 
@@ -332,56 +466,141 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
     const points = pointsRef.current;
     if (!points) return;
 
+    const warm = warmupRef.current;
+    if (warm.needed) {
+      const warmProfile = getQualityProfile(particleState.qualityTier);
+      uniforms.uOpacity.value = 0;
+      uniforms.uLod.value = warmProfile.shaderLod;
+      if (!warm.compiled) {
+        try {
+          state.gl.compile(state.scene, state.camera);
+        } catch {
+          /* compile is best-effort */
+        }
+        warm.compiled = true;
+        return;
+      }
+      const pairCount = FORMATION_CHAIN.length - 1;
+      if (warm.step < pairCount) {
+        const segment = resolveFormationSegment(warm.step + 0.5);
+        writePositions(
+          getPosAttr(geometry, "aPositionFrom"),
+          getTargetPositions(cache, segment.from),
+        );
+        writePositions(
+          getPosAttr(geometry, "aPositionTo"),
+          getTargetPositions(cache, segment.to),
+        );
+        if (defaultsRef.current) {
+          applyVisualAttrs(geometry, segment.to, cache, defaultsRef.current);
+        }
+        uniforms.uProgress.value = 0.5;
+        uniforms.uBreakMode.value = segment.isBreak ? 1 : 0;
+        uniforms.uEarthMode.value = segment.isBreak ? 0.4 : 1;
+        uniforms.uCyanOnly.value = warm.step >= pairCount - 1 ? 1 : 0;
+        uniforms.uIntroActive.value = 1;
+        uniforms.uFlowFade.value = 1;
+        uniforms.uNoiseStrength.value = warmProfile.noiseEnabled ? 0.2 : 0;
+        uniforms.uPulse.value = 0;
+        warm.step += 1;
+        return;
+      }
+      if (!warm.fonts) return;
+
+      writePositions(
+        getPosAttr(geometry, "aPositionFrom"),
+        getTargetPositions(cache, SCATTERED_BG_FORMATION),
+      );
+      writePositions(
+        getPosAttr(geometry, "aPositionTo"),
+        getTargetPositions(cache, EARTH_FORMATION),
+      );
+      if (defaultsRef.current) {
+        applyVisualAttrs(
+          geometry,
+          EARTH_FORMATION,
+          cache,
+          defaultsRef.current,
+        );
+      }
+      lastSegmentRef.current = {
+        from: SCATTERED_BG_FORMATION,
+        to: EARTH_FORMATION,
+        index: -1,
+      };
+      uniforms.uProgress.value = 0;
+      uniforms.uBreakMode.value = 0;
+      uniforms.uEarthMode.value = 0;
+      uniforms.uCyanOnly.value = 0;
+      uniforms.uIntroActive.value = 1;
+      uniforms.uFlowFade.value = 1;
+      uniforms.uNoiseStrength.value = warmProfile.noiseEnabled ? 0.22 : 0;
+      uniforms.uPulse.value = 0;
+      warm.needed = false;
+      markEngineReady();
+      markScrollWarmed();
+    }
+
     const visual = particleState.debug.visual;
     const introDone = particleState.introComplete;
+    if (introDone && !prewarmedRef.current) {
+      prewarmedRef.current = true;
+      prewarmLowerTierCaches(particleState.qualityTier);
+    }
     const introT = particleState.introProgress;
     const settling = introT >= 0.999 && !settledRef.current;
+    const profile = getQualityProfile(particleState.qualityTier);
+    const feel = getScrollFeel(particleState.qualityTier);
+    const allowNoise = profile.noiseEnabled && !particleState.reducedMotion;
+    const allowMouse = profile.mouseEnabled && !particleState.reducedMotion;
 
+    uniforms.uLod.value = profile.shaderLod;
     uniforms.uTime.value = state.clock.elapsedTime;
     uniforms.uNoiseSpeed.value = introDone ? 0.045 : 0.09;
-    uniforms.uMouseInfluence.value = visual.mouseInfluence;
+    uniforms.uMouseInfluence.value = allowMouse ? visual.mouseInfluence : 0;
     uniforms.uOpacity.value = visual.particleOpacity;
     uniforms.uReducedMotion.value = particleState.reducedMotion ? 1 : 0;
 
     // Smooth cursor → parallax (ease out when pointer leaves)
     const wantMouse =
-      particleState.mouseActive && !particleState.reducedMotion ? 1 : 0;
+      allowMouse && particleState.mouseActive ? 1 : 0;
     mouseBlendRef.current = THREE.MathUtils.damp(
       mouseBlendRef.current,
       wantMouse,
       wantMouse > 0.5 ? 5 : 2.4,
       delta,
     );
-    mouseSmoothRef.current.x = THREE.MathUtils.damp(
-      mouseSmoothRef.current.x,
-      particleState.mouseActive ? particleState.mouseX : 0,
-      4.5,
-      delta,
-    );
-    mouseSmoothRef.current.y = THREE.MathUtils.damp(
-      mouseSmoothRef.current.y,
-      particleState.mouseActive ? particleState.mouseY : 0,
-      4.5,
-      delta,
-    );
+    if (allowMouse || mouseBlendRef.current > 0.001) {
+      mouseSmoothRef.current.x = THREE.MathUtils.damp(
+        mouseSmoothRef.current.x,
+        particleState.mouseActive && allowMouse ? particleState.mouseX : 0,
+        4.5,
+        delta,
+      );
+      mouseSmoothRef.current.y = THREE.MathUtils.damp(
+        mouseSmoothRef.current.y,
+        particleState.mouseActive && allowMouse ? particleState.mouseY : 0,
+        4.5,
+        delta,
+      );
+    }
     const mx = mouseSmoothRef.current.x;
     const my = mouseSmoothRef.current.y;
-    const mBlend = mouseBlendRef.current;
+    const mBlend = allowMouse ? mouseBlendRef.current : 0;
     uniforms.uMouse.value.set(mx, my);
     uniforms.uMouseActive.value = mBlend;
-    uniforms.uPixelRatio.value = Math.min(gl.getPixelRatio(), 2);
+    uniforms.uPixelRatio.value = Math.min(gl.getPixelRatio(), profile.dprCap);
 
     let stage = 0;
 
     if (introDone) {
       const stageTarget = particleState.formationStage;
-      // Soft catch-up — lower lambda = Dala-like inertia on scrub
       const stageDelta = stageTarget - stageDisplayRef.current;
       const stageLambda = particleState.reducedMotion
         ? 18
         : stageDelta < 0
-          ? 2.6
-          : 3.1;
+          ? feel.stageLambdaRev
+          : feel.stageLambdaFwd;
       stageDisplayRef.current = THREE.MathUtils.damp(
         stageDisplayRef.current,
         stageTarget,
@@ -438,7 +657,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
         morphProgressRef.current = THREE.MathUtils.damp(
           morphProgressRef.current,
           localTarget,
-          particleState.reducedMotion ? 18 : 3.4,
+          particleState.reducedMotion ? 18 : feel.morphLambda,
           delta,
         );
         if (Math.abs(morphProgressRef.current - localTarget) < 0.0004) {
@@ -487,7 +706,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
 
       const mid = local * (1 - local) * 4;
       // Near-zero noise when settled — Dala particles sit still on the mark
-      const flowing = local > 0.04 && local < 0.96;
+      const flowing = allowNoise && local > 0.04 && local < 0.96;
       const flowTarget = flowing
         ? FLOW_FLOOR + mid * (segment.isBreak ? 0.1 : 0.055)
         : 0;
@@ -508,10 +727,11 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
         delta,
       );
 
-      const sizeTarget = Math.max(
-        visual.particleSize,
-        stage < 1 ? THREE.MathUtils.lerp(2.2, 2.4, Math.min(1, stage)) : 2.5,
-      );
+      const sizeTarget =
+        Math.max(
+          visual.particleSize,
+          stage < 1 ? THREE.MathUtils.lerp(2.2, 2.4, Math.min(1, stage)) : 2.5,
+        ) * profile.sizeBoost;
       uniforms.uSize.value = THREE.MathUtils.damp(
         uniforms.uSize.value,
         sizeTarget,
@@ -527,7 +747,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
       uniforms.uCyanOnly.value = 0;
       cyanOnlyDisplayRef.current = 0;
       uniforms.uPulse.value = 0;
-      uniforms.uSize.value = Math.max(visual.particleSize, 2.0);
+      uniforms.uSize.value = Math.max(visual.particleSize, 2.0) * profile.sizeBoost;
       uniforms.uIntensity.value = Math.max(visual.particleIntensity, 1.2);
     }
 
@@ -541,9 +761,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
       displayPosRef.current.set(targetPos.x, targetPos.y, targetPos.z);
       hasDisplayPosRef.current = true;
     } else {
-      const follow = particleState.reducedMotion
-        ? 14
-        : THREE.MathUtils.lerp(1.8, 1.15, Math.min(1, stage));
+      const follow = particleState.reducedMotion ? 14 : feel.slotFollow;
       displayPosRef.current.x = THREE.MathUtils.damp(
         displayPosRef.current.x,
         targetPos.x,
@@ -609,7 +827,8 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
       introDone &&
       settledRef.current &&
       stage < 0.06 &&
-      !particleState.reducedMotion
+      !particleState.reducedMotion &&
+      profile.shaderLod > 1
         ? 1
         : 0;
     swayBlendRef.current = THREE.MathUtils.damp(
@@ -674,24 +893,56 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
       uniforms.uBreakMode.value = 0;
     }
 
-    if (introDone && onQualityChange && particleState.qualityTier !== "LOW") {
+    if (!allowNoise) {
+      uniforms.uNoiseStrength.value = 0;
+    }
+
+    if (delta > 1 / 38) {
+      state.performance.regress();
+    }
+
+    if (onQualityChange && particleState.qualityTier !== "MINIMAL") {
       fpsRef.current.push(delta);
       downgradeCooldownRef.current = Math.max(
         0,
         downgradeCooldownRef.current - delta,
       );
+      const floor = fpsFloorForTier(particleState.qualityTier);
       if (
         downgradeCooldownRef.current === 0 &&
-        fpsRef.current.shouldDowngrade(40)
+        fpsRef.current.shouldDowngrade(floor)
       ) {
-        const nextTier = downgradeTier(particleState.qualityTier);
-        const profile = getQualityProfile(nextTier);
-        particleState.qualityTier = profile.tier;
-        particleState.particleCount = profile.count;
-        downgradeCooldownRef.current = 4;
+        // Far below the floor → skip a tier so the device settles faster
+        let nextTier = downgradeTier(particleState.qualityTier);
+        if (fpsRef.current.average() < floor * 0.7) {
+          nextTier = downgradeTier(nextTier);
+        }
+        const nextProfile = getQualityProfile(nextTier);
+        particleState.qualityTier = nextProfile.tier;
+        persistQualityTier(nextProfile.tier);
+        downgradeCooldownRef.current = 1.5;
         fpsRef.current.reset();
-        onQualityChange(profile.count, profile.tier);
+        // During intro: lod/dpr only. After intro: remount at the cheaper count.
+        const nextCount = introDone ? nextProfile.count : count;
+        particleState.particleCount = nextCount;
+        onQualityChange(nextCount, nextProfile.tier);
       }
+    }
+
+    if (
+      introDone &&
+      onQualityChange &&
+      !remountingRef.current &&
+      particleState.particleCount !==
+        getQualityProfile(particleState.qualityTier).count
+    ) {
+      const settled = getQualityProfile(particleState.qualityTier);
+      remountingRef.current = true;
+      particleState.particleCount = settled.count;
+      onQualityChange(settled.count, settled.tier);
+    }
+    if (count === particleState.particleCount) {
+      remountingRef.current = false;
     }
   });
 

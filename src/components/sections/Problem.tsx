@@ -97,13 +97,13 @@ export function Problem() {
         <ul className="mt-12 grid grid-cols-1 gap-12 border-t border-white/10 pt-10 md:grid-cols-3 md:gap-8 lg:gap-12">
           {deliveryModels.map((model, i) => (
             <li key={model.title} className="text-left">
-              <span className="font-display block text-[clamp(3.25rem,5vw,5rem)] font-medium leading-none tracking-[-0.04em] text-white/25">
+              <span className="font-display block text-[clamp(3.25rem,5vw,5rem)] font-medium leading-none tracking-[-0.04em] text-white">
                 0{i + 1}
               </span>
               <h4 className="font-display mt-5 text-[clamp(1.35rem,2vw,1.75rem)] font-medium leading-tight tracking-[-0.02em] text-white">
                 {model.title}
               </h4>
-              <p className="mt-4 max-w-sm text-[16px] leading-relaxed text-white/55">
+              <p className="mt-4 max-w-sm text-[16px] leading-relaxed text-white">
                 {model.body}
               </p>
             </li>

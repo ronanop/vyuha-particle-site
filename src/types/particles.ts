@@ -3,7 +3,7 @@
  * Formation names stay open — register generators in ParticleTarget, then add morph segments.
  */
 
-export type QualityTier = "HIGH" | "MEDIUM" | "LOW";
+export type QualityTier = "HIGH" | "MEDIUM" | "LOW" | "MINIMAL";
 
 export interface QualityRange {
   min: number;
@@ -16,6 +16,14 @@ export interface QualityProfile {
   count: number;
   dprCap: number;
   mouseEnabled: boolean;
+  /** Curl-noise / mid-flight flow. Off on LOW+MINIMAL. */
+  noiseEnabled: boolean;
+  /** 3=full, 2=cheap noise, 1=no noise/mouse, 0=simplest morph. */
+  shaderLod: 0 | 1 | 2 | 3;
+  /** Slot projection interval (ms). Formation stage still updates every frame. */
+  slotMs: number;
+  /** Multiply point size so sparser clouds still read as a silhouette. */
+  sizeBoost: number;
 }
 
 /**

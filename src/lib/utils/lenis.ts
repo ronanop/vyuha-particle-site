@@ -1,4 +1,5 @@
 import type Lenis from "lenis";
+import { getScrollFeel, luxuryEase } from "@/lib/utils/scrollFeel";
 
 let lenisInstance: Lenis | null = null;
 
@@ -15,9 +16,11 @@ export function scrollToTarget(
   options?: { offset?: number; duration?: number },
 ): void {
   if (lenisInstance) {
+    const feel = getScrollFeel();
     lenisInstance.scrollTo(target, {
       offset: options?.offset ?? 0,
-      duration: options?.duration ?? 1.25,
+      duration: options?.duration ?? feel.anchorDuration,
+      easing: luxuryEase,
     });
     return;
   }

@@ -28,6 +28,7 @@ uniform float uFlowFade;
 uniform float uIdleSway;
 uniform float uPulse;
 uniform float uBreakMode;
+uniform float uLod;
 
 varying float vOpacity;
 varying float vDepth;
@@ -96,19 +97,23 @@ void main() {
   // Soft quintic both modes for buttery scrub
   float eased = easeInOutQuint(raw);
 
-  vec3 delta = aPositionTo - aPositionFrom;
-  vec3 side = normalize(cross(delta, vec3(0.15, 1.0, 0.05)) + vec3(0.0001));
-  float arcAmt = 0.04 + aSeed * 0.05;
-  if (uBreakMode > 0.5) {
-    side = normalize(mix(side, vec3(0.0, -1.0, 0.0), 0.45) + vec3(0.0001));
-    arcAmt = 0.14 + aSeed * 0.12;
-  }
-  float arc = sin(3.14159265 * eased) * arcAmt;
-  vec3 pos = mix(aPositionFrom, aPositionTo, eased) + side * arc * length(delta) * (uBreakMode > 0.5 ? 0.045 : 0.018);
-
+  vec3 pos = mix(aPositionFrom, aPositionTo, eased);
   float arrive = eased * eased;
   float flowGate = (1.0 - arrive) * (1.0 - arrive);
-  // Noise only while mid-flight — settled shapes stay still
+
+  // Arc + curl are fill/ALU heavy — skip on LOW/MINIMAL (uLod < 2)
+  if (uLod > 1.5) {
+    vec3 delta = aPositionTo - aPositionFrom;
+    vec3 side = normalize(cross(delta, vec3(0.15, 1.0, 0.05)) + vec3(0.0001));
+    float arcAmt = 0.04 + aSeed * 0.05;
+    if (uBreakMode > 0.5) {
+      side = normalize(mix(side, vec3(0.0, -1.0, 0.0), 0.45) + vec3(0.0001));
+      arcAmt = 0.14 + aSeed * 0.12;
+    }
+    float arc = sin(3.14159265 * eased) * arcAmt;
+    pos += side * arc * length(delta) * (uBreakMode > 0.5 ? 0.045 : 0.018);
+  }
+
   float noiseAmp = uNoiseStrength * uFlowFade * flowGate;
   if (uBreakMode > 0.5) {
     noiseAmp *= 0.45;
@@ -116,13 +121,19 @@ void main() {
     noiseAmp *= 0.55;
   }
 
-  if (uReducedMotion < 0.5 && noiseAmp > 0.0004) {
-    vec3 flow = curlNoise(pos * 0.11 + vec3(aSeed * 1.7, uTime * uNoiseSpeed * 0.4, aSeed));
-    pos += flow * noiseAmp * 0.18;
+  if (uReducedMotion < 0.5 && noiseAmp > 0.0004 && uLod > 0.5) {
+    if (uLod > 2.5) {
+      vec3 flow = curlNoise(pos * 0.11 + vec3(aSeed * 1.7, uTime * uNoiseSpeed * 0.4, aSeed));
+      pos += flow * noiseAmp * 0.18;
+    } else {
+      // MEDIUM: one hash instead of 6-tap curl
+      float n = hash(pos * 0.11 + vec3(aSeed * 1.7, uTime * uNoiseSpeed * 0.4, aSeed));
+      pos += (vec3(n) - 0.5) * noiseAmp * 0.22;
+    }
   }
 
   float pulse = uPulse;
-  if (uReducedMotion < 0.5 && abs(pulse) > 0.0005) {
+  if (uLod > 1.5 && uReducedMotion < 0.5 && abs(pulse) > 0.0005) {
     float phase = aSeed * 6.2831853;
     float wave = pulse * (0.85 + 0.15 * sin(phase));
     vec3 radial = normalize(pos + vec3(0.0001));
@@ -131,7 +142,9 @@ void main() {
   }
 
   // Mouse-relative depth parallax — farther / outer particles shift more
-  float mouseAmt = uMouseActive * uMouseInfluence * (1.0 - uReducedMotion) * mix(1.0, 0.35, flowGate);
+  float mouseAmt = uLod > 1.5
+    ? uMouseActive * uMouseInfluence * (1.0 - uReducedMotion) * mix(1.0, 0.35, flowGate)
+    : 0.0;
   if (mouseAmt > 0.001) {
     float depthPlane = clamp(0.42 + (-pos.z) * 0.35 + aLayer * 0.08 + aSeed * 0.12, 0.28, 1.25);
     pos.x -= uMouse.x * mouseAmt * depthPlane * 0.55;
@@ -157,7 +170,9 @@ void main() {
   }
   sizeMul *= mix(0.94, 1.0, eased);
   sizeMul *= 1.0 + abs(pulse) * 0.35;
-  gl_PointSize = clamp(uSize * sizeMul * uPixelRatio * depthScale, 1.0, 64.0);
+  // 44px cap bounds fill rate on iGPUs that boot HIGH/MEDIUM
+  float maxPt = uLod < 0.5 ? 14.0 : (uLod < 1.5 ? 18.0 : 44.0);
+  gl_PointSize = clamp(uSize * sizeMul * uPixelRatio * depthScale, 1.0, maxPt);
 
   float depthFade = earthBlend > 0.45
     ? mix(0.78, 1.0, smoothstep(18.0, 4.0, -mvPosition.z))
@@ -203,8 +218,8 @@ varying float vGrad;
 void main() {
   vec2 uv = gl_PointCoord * 2.0 - 1.0;
   float dist = length(uv);
-  if (dist > 1.0) discard;
 
+  // No discard — it defeats tile-GPU fast paths; soft falls to 0 past the disc
   float soft = smoothstep(1.0, 0.18, dist);
   float core = smoothstep(0.55, 0.0, dist);
 

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { IntroLoader } from "@/components/IntroLoader";
 import { Navigation } from "@/components/Navigation";
 import { Hero } from "@/components/sections/Hero";
 import { Intelligence } from "@/components/sections/Intelligence";
@@ -44,6 +45,7 @@ export function PageContent() {
       <Suspense fallback={null}>
         <ParticleLayer />
       </Suspense>
+      <IntroLoader />
       <Navigation />
       <main className="relative z-10">
         <Hero />

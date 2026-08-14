@@ -47,12 +47,19 @@ import {
 
 const generators = new Map<ParticleFormation, TargetGenerator>();
 
+/**
+ * Built caches are memoized per count — a quality-downgrade remount to an
+ * already-built (or idle-prewarmed) count must not stall the main thread.
+ */
+const cacheByCount = new Map<number, Record<string, FormationBuffers>>();
+
 /** Register or replace a formation sampler. */
 export function registerTarget(
   formation: ParticleFormation,
   generator: TargetGenerator,
 ): void {
   generators.set(formation, generator);
+  cacheByCount.clear();
 }
 
 export function getRegisteredFormations(): ParticleFormation[] {
@@ -96,6 +103,8 @@ function ensureDefaults(): void {
 export function buildTargetCache(
   count: number,
 ): Record<string, FormationBuffers> {
+  const memoized = cacheByCount.get(count);
+  if (memoized) return memoized;
   ensureDefaults();
   const cache: Record<string, FormationBuffers> = {};
   for (const [name, generate] of generators) {
@@ -117,7 +126,13 @@ export function buildTargetCache(
       cache[name] = { positions: generate(count) };
     }
   }
+  cacheByCount.set(count, cache);
   return cache;
+}
+
+/** True when a cache for this count is already built (prewarm check). */
+export function hasTargetCache(count: number): boolean {
+  return cacheByCount.has(count);
 }
 
 export function getTargetPositions(

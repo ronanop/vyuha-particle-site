@@ -4,7 +4,11 @@ import type {
   QualityTier,
 } from "@/types/particles";
 import { DEFAULT_VISUAL_CONFIG } from "@/types/particles";
-import { detectQualityTier, getQualityProfile } from "@/lib/particles/ParticlePerformance";
+import {
+  detectQualityTier,
+  getQualityProfile,
+  markDocumentTier,
+} from "@/lib/particles/ParticlePerformance";
 import { FORMATION_STAGE_MAX } from "@/lib/particles/formationChain";
 
 export interface ParticleDebugState {
@@ -45,6 +49,14 @@ export interface ParticleEngineState {
   /** 0 = scattered intro, 1 = earth formed. */
   introProgress: number;
   introComplete: boolean;
+  /** True once the particle mesh/cache exists and can morph. */
+  engineReady: boolean;
+  /** GPU + scroll timeline warmed during the loader. */
+  scrollWarmed: boolean;
+  /** Set by IntroLoader after text is on screen — starts scattered→earth. */
+  introArmed: boolean;
+  /** Bumped on each canvas boot so the loader can replay. */
+  introEpoch: number;
   debug: ParticleDebugState;
 }
 
@@ -68,6 +80,10 @@ export const particleState: ParticleEngineState = {
   breakProgress: 0,
   introProgress: 0,
   introComplete: false,
+  engineReady: false,
+  scrollWarmed: false,
+  introArmed: false,
+  introEpoch: 0,
   debug: {
     enabled: false,
     forceProgress: null,
@@ -129,6 +145,21 @@ export function setIntroProgress(value: number): void {
 export function completeIntroImmediately(): void {
   particleState.introProgress = 1;
   particleState.introComplete = true;
+  particleState.engineReady = true;
+  particleState.scrollWarmed = true;
+  particleState.introArmed = true;
+}
+
+export function markEngineReady(): void {
+  particleState.engineReady = true;
+}
+
+export function markScrollWarmed(): void {
+  particleState.scrollWarmed = true;
+}
+
+export function armIntroAssemble(): void {
+  particleState.introArmed = true;
 }
 
 export function getEffectiveProgress(): number {
@@ -146,12 +177,17 @@ export function bootParticleState(options: {
 }): void {
   const tier = options.qualityTier ?? detectQualityTier();
   const profile = getQualityProfile(tier);
+  markDocumentTier(profile.tier);
   particleState.webglAvailable = options.webglAvailable;
   particleState.reducedMotion = options.reducedMotion;
   particleState.qualityTier = profile.tier;
   particleState.particleCount = profile.count;
   particleState.introProgress = 0;
   particleState.introComplete = false;
+  particleState.engineReady = false;
+  particleState.scrollWarmed = false;
+  particleState.introArmed = false;
+  particleState.introEpoch += 1;
   particleState.formationStage = 0;
   particleState.breakProgress = 0;
 }

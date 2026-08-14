@@ -46,27 +46,26 @@ export function spatialSortKey(x: number, y: number, z: number): number {
 /**
  * Reorder interleaved xyz (and optional parallel float attrs) by spatial key
  * so morphs between shapes keep local coherence.
+ * Keys are precomputed once (decorate–sort–undecorate) — computing them in the
+ * sort comparator costs O(n log n) transcendental evals and stalls low-end
+ * CPUs during target-cache builds.
  */
 export function sortPointsSpatially(
   positions: Float32Array,
   attrs: Float32Array[] = [],
 ): void {
   const count = positions.length / 3;
-  const order = new Array<number>(count);
+  const keys = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
+    keys[i] = spatialSortKey(
+      positions[i * 3],
+      positions[i * 3 + 1],
+      positions[i * 3 + 2],
+    );
+  }
+  const order = new Uint32Array(count);
   for (let i = 0; i < count; i++) order[i] = i;
-  order.sort((a, b) => {
-    const ka = spatialSortKey(
-      positions[a * 3],
-      positions[a * 3 + 1],
-      positions[a * 3 + 2],
-    );
-    const kb = spatialSortKey(
-      positions[b * 3],
-      positions[b * 3 + 1],
-      positions[b * 3 + 2],
-    );
-    return ka - kb;
-  });
+  order.sort((a, b) => keys[a] - keys[b]);
 
   const posOut = new Float32Array(positions.length);
   const attrOuts = attrs.map((a) => new Float32Array(a.length));
