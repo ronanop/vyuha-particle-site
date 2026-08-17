@@ -30,7 +30,9 @@ import {
 } from "@/lib/particles/slotProjection";
 import type { PerspectiveCamera } from "three";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 function readScrollProgress(): number {
   const lenis = getLenis();

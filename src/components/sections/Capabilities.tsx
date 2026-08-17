@@ -46,7 +46,9 @@ const pillars = [
   },
 ];
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const PILLAR_COUNT = pillars.length;
 const wheelItems = pillars.map((p) => p.wheel);

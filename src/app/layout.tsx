@@ -14,7 +14,20 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
+function resolveSiteUrl(): URL {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return new URL(explicit);
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  }
+  if (process.env.VERCEL_URL) {
+    return new URL(`https://${process.env.VERCEL_URL}`);
+  }
+  return new URL("http://localhost:3000");
+}
+
 export const metadata: Metadata = {
+  metadataBase: resolveSiteUrl(),
   title: "Vyuha.ai — AI that understands your enterprise",
   description:
     "Connect knowledge, systems, workflows and teams through one intelligent layer.",

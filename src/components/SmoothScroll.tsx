@@ -12,7 +12,9 @@ import {
 } from "@/lib/particles/ParticlePerformance";
 import type { QualityTier } from "@/types/particles";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface SmoothScrollProps {
   children: ReactNode;
