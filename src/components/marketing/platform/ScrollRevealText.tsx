@@ -1,12 +1,12 @@
 "use client";
 
 import {
+  createElement,
   useEffect,
   useMemo,
   useRef,
   useState,
   type CSSProperties,
-  type ElementType,
 } from "react";
 import { getLenis } from "@/lib/utils/lenis";
 
@@ -354,8 +354,6 @@ export default function ScrollRevealText({
     colorRevealed,
   ]);
 
-  const Tag = tag as ElementType;
-
   const renderWordGroup = (group: WordGroup, gi: number) => {
     if (group.type === "word") {
       const unit = group.spans[0]?.unit ?? gi;
@@ -406,27 +404,27 @@ export default function ScrollRevealText({
   };
 
   if (isLinesMode && lineGroups) {
-    return (
-      <Tag ref={containerRef} className={className} style={style}>
-        {lineGroups.map((groupIndices, lineIdx) => (
-          <div key={lineIdx} style={{ overflow: "hidden", display: "block" }}>
-            <div
-              ref={(el) => {
-                lineRefs.current[lineIdx] = el;
-              }}
-              style={{ display: "block", willChange: "transform, opacity, filter" }}
-            >
-              {groupIndices.map((gi) => renderWordGroup(wordGroups[gi]!, gi))}
-            </div>
+    return createElement(
+      tag,
+      { ref: containerRef, className, style },
+      lineGroups.map((groupIndices, lineIdx) => (
+        <div key={lineIdx} style={{ overflow: "hidden", display: "block" }}>
+          <div
+            ref={(el) => {
+              lineRefs.current[lineIdx] = el;
+            }}
+            style={{ display: "block", willChange: "transform, opacity, filter" }}
+          >
+            {groupIndices.map((gi) => renderWordGroup(wordGroups[gi]!, gi))}
           </div>
-        ))}
-      </Tag>
+        </div>
+      )),
     );
   }
 
-  return (
-    <Tag ref={containerRef} className={className} style={style}>
-      {wordGroups.map((group, gi) => renderWordGroup(group, gi))}
-    </Tag>
+  return createElement(
+    tag,
+    { ref: containerRef, className, style },
+    wordGroups.map((group, gi) => renderWordGroup(group, gi)),
   );
 }

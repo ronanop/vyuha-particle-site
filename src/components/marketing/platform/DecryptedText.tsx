@@ -9,7 +9,6 @@ import {
   type CSSProperties,
   type HTMLAttributes,
 } from "react";
-import { motion } from "motion/react";
 
 type RevealDirection = "start" | "end" | "center";
 type AnimateOn = "view" | "hover" | "inViewHover" | "click";
@@ -376,7 +375,7 @@ export default function DecryptedText({
         : {};
 
   return (
-    <motion.span
+    <span
       className={parentClassName}
       ref={containerRef}
       style={styles.wrapper}
@@ -394,6 +393,6 @@ export default function DecryptedText({
           );
         })}
       </span>
-    </motion.span>
+    </span>
   );
 }
