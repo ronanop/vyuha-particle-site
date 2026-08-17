@@ -56,8 +56,10 @@ export function FluidButton({
   const duration = reduceMotion ? 0 : 0.5;
   const transition = { duration, ease: EASE };
 
-  const padding =
-    size === "sm" ? "12px 22px" : "18px 40px";
+  const paddingClass =
+    size === "sm"
+      ? "px-4 py-3 md:px-[22px] md:py-3"
+      : "px-5 py-3.5 sm:px-10 sm:py-[18px]";
   const fontSize =
     size === "sm" ? "0.8125rem" : "calc(1rem * 1.05)";
 
@@ -69,7 +71,6 @@ export function FluidButton({
     borderStyle: "solid",
     borderWidth,
     borderColor,
-    padding,
     textDecoration: "none",
     textShadow: "none",
     cursor: disabled ? "not-allowed" : "pointer",
@@ -133,7 +134,7 @@ export function FluidButton({
   );
 
   const motionProps = {
-    className: `relative inline-flex items-center justify-center overflow-hidden will-change-transform ${className}`,
+    className: `relative inline-flex max-w-full items-center justify-center overflow-hidden will-change-transform ${paddingClass} ${className}`,
     style: sharedStyle,
     onHoverStart: () => !disabled && setHovered(true),
     onHoverEnd: () => setHovered(false),

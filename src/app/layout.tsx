@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Noto_Serif_JP, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,6 +14,13 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
+const notoSerifJp = Noto_Serif_JP({
+  variable: "--font-jp-serif",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
 function resolveSiteUrl(): URL {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;
   if (explicit) return new URL(explicit);
@@ -25,6 +32,12 @@ function resolveSiteUrl(): URL {
   }
   return new URL("http://localhost:3000");
 }
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: resolveSiteUrl(),
@@ -42,7 +55,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-intro="loading"
-      className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${notoSerifJp.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-black text-white">{children}</body>
     </html>

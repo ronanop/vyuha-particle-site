@@ -28,9 +28,9 @@ export function Intelligence() {
         <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-white/50">
           Vyuha Command
         </p>
-        <h2 className="font-display mx-auto max-w-[20ch] text-[clamp(2.4rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white">
+        <h2 className="font-display mx-auto max-w-[20ch] text-[clamp(2rem,8vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white">
           The Sovereign{" "}
-          <span className="whitespace-nowrap">Enterprise Agentic OS</span>
+          <span className="md:whitespace-nowrap">Enterprise Agentic OS</span>
         </h2>
         <p className="mx-auto mt-8 max-w-lg text-[17px] leading-relaxed text-white/60 md:text-[18px]">
           One command plane. Infinite autonomous execution.

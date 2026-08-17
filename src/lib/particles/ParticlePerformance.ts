@@ -4,8 +4,8 @@ import type { QualityProfile, QualityRange, QualityTier } from "@/types/particle
 export const QUALITY_COUNTS: Record<QualityTier, QualityRange> = {
   HIGH: { min: 9000, max: 14000, target: 12000 },
   MEDIUM: { min: 6500, max: 9000, target: 8000 },
-  LOW: { min: 4000, max: 6500, target: 5500 },
-  MINIMAL: { min: 2200, max: 3600, target: 2800 },
+  LOW: { min: 4000, max: 6500, target: 4000 },
+  MINIMAL: { min: 1400, max: 2400, target: 1800 },
 };
 
 const TIER_FPS_FLOOR: Record<QualityTier, number> = {
@@ -40,6 +40,7 @@ let webglProbe: WebGLProbe | null = null;
  * window.matchMedia per call is measurable on low-end devices.
  */
 let touchCache: boolean | null = null;
+let narrowCache: boolean | null = null;
 let reducedMotionCache: boolean | null = null;
 const profileCache = new Map<QualityTier, QualityProfile>();
 let detectedTierCache: QualityTier | null = null;
@@ -59,6 +60,29 @@ export function isTouchDevice(): boolean {
     }
   }
   return touchCache;
+}
+
+/** Phone-width layout — used so DevTools and small windows share the mobile GPU budget. */
+export function isNarrowViewport(): boolean {
+  if (typeof window === "undefined") return false;
+  if (narrowCache === null) {
+    const mq = window.matchMedia("(max-width: 767px)");
+    narrowCache = mq.matches;
+    try {
+      mq.addEventListener("change", () => {
+        narrowCache = mq.matches;
+        profileCache.clear();
+      });
+    } catch {
+      /* older engines without MediaQueryList events */
+    }
+  }
+  return narrowCache;
+}
+
+/** Phones, tablets, and narrow windows cannot sustain the desktop particle budget. */
+export function isMobileParticleBudget(): boolean {
+  return isTouchDevice() || isNarrowViewport();
 }
 
 export function prefersReducedMotion(): boolean {
@@ -241,17 +265,17 @@ function detectQualityTierUncached(): QualityTier {
   const dpr = Math.min(window.devicePixelRatio || 1, 3);
   const cssPixels = window.innerWidth * window.innerHeight;
 
+  // Mobile GPUs (including flagship phones on a production Vercel build)
+  // cannot hold 5k+ points at 60fps. Boot the cheapest tier immediately —
+  // the FPS monitor never upgrades, so starting at LOW meant a janky first visit.
+  if (isMobileParticleBudget()) {
+    return "MINIMAL";
+  }
+
   if (prefersReducedMotion()) {
     return gpu === "weak" || (memory !== undefined && memory <= 4)
       ? "MINIMAL"
       : "LOW";
-  }
-
-  if (isTouchDevice()) {
-    if (gpu === "weak" || cores <= 4 || (memory !== undefined && memory <= 3)) {
-      return "MINIMAL";
-    }
-    return "LOW";
   }
 
   if (gpu === "weak" || cores <= 4 || (memory !== undefined && memory <= 4)) {
@@ -282,12 +306,12 @@ export function getQualityProfile(tier?: QualityTier): QualityProfile {
     tier: resolved,
     count: QUALITY_COUNTS[resolved].target,
     dprCap:
-      resolved === "HIGH" ? 2 : resolved === "MEDIUM" ? 1.5 : 1,
+      resolved === "HIGH" ? 2 : resolved === "MEDIUM" ? 1.5 : resolved === "LOW" ? 1 : 0.75,
     mouseEnabled,
     noiseEnabled,
     shaderLod: lod,
     slotMs: resolved === "HIGH" ? 16 : resolved === "MEDIUM" ? 24 : resolved === "LOW" ? 48 : 80,
-    sizeBoost: resolved === "MINIMAL" ? 1.42 : resolved === "LOW" ? 1.18 : 1,
+    sizeBoost: resolved === "MINIMAL" ? 1.7 : resolved === "LOW" ? 1.28 : 1,
   };
   profileCache.set(resolved, profile);
   return profile;
@@ -318,6 +342,11 @@ export function shouldUseSmoothScroll(): boolean {
 
 /** True when a tier is too weak for Lenis smooth scroll. */
 export function tierWantsNativeScroll(tier: QualityTier): boolean {
+  return tier === "LOW" || tier === "MINIMAL";
+}
+
+/** Cheap tiers render on demand — a 60fps WebGL loop is the mobile hitch. */
+export function wantsDemandFrameloop(tier: QualityTier): boolean {
   return tier === "LOW" || tier === "MINIMAL";
 }
 

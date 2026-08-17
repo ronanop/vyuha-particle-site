@@ -33,7 +33,7 @@ export function SectionFrame({
 
   const alignClass =
     align === "end"
-      ? "items-end pb-16 pt-28 md:pb-24 md:pt-20"
+      ? "items-end pb-[max(4rem,env(safe-area-inset-bottom))] pt-28 md:pb-24 md:pt-20"
       : align === "start"
         ? compact
           ? "items-start"
@@ -47,12 +47,15 @@ export function SectionFrame({
         ? "py-8 md:py-12"
         : "";
 
+  const gutter =
+    "pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] md:px-10";
+
   if (side === "center") {
     return (
       <section
         id={id}
         data-section-side="center"
-        className={`relative z-10 px-6 md:px-10 ${heightClass} ${compactPad} ${className}`}
+        className={`relative z-10 ${gutter} ${heightClass} ${compactPad} ${className}`}
       >
         <div
           aria-hidden
@@ -70,11 +73,11 @@ export function SectionFrame({
 
   const contentCol = (
     <div
-      className={`flex ${heightClass} ${alignClass} ${
-        side === "left" ? "md:pr-4" : "md:pl-4"
+      className={`flex ${compact ? "" : "md:min-h-svh"} ${alignClass} ${
+        side === "left" ? "order-2 md:order-1 md:pr-4" : "order-2 md:pl-4"
       }`}
     >
-      <div className="w-full">{children}</div>
+      <div className="w-full min-w-0">{children}</div>
     </div>
   );
 
@@ -82,9 +85,9 @@ export function SectionFrame({
     <div
       aria-hidden
       data-particle-slot={id}
-      className={`pointer-events-none relative hidden md:block ${
-        heightClass || "min-h-[8rem]"
-      }`}
+      className={`pointer-events-none relative order-1 h-[min(38svh,280px)] w-full md:h-auto ${
+        side === "left" ? "md:order-2" : "md:order-1"
+      } ${compact ? "md:min-h-[8rem]" : "md:min-h-svh"}`}
     />
   );
 
@@ -92,22 +95,15 @@ export function SectionFrame({
     <section
       id={id}
       data-section-side={side}
-      className={`relative z-10 px-6 md:px-10 ${heightClass} ${compactPad} ${className}`}
+      className={`relative z-10 ${gutter} ${heightClass} ${compactPad} ${className}`}
     >
       <div
-        className={`mx-auto grid w-full max-w-[1400px] grid-cols-1 items-stretch md:grid-cols-2 md:gap-10 lg:gap-16 ${heightClass}`}
+        className={`mx-auto grid w-full max-w-[1400px] grid-cols-1 items-stretch md:grid-cols-2 md:gap-10 lg:gap-16 ${heightClass} ${
+          compact ? "" : "max-md:grid-rows-[auto_minmax(0,1fr)]"
+        }`}
       >
-        {side === "left" ? (
-          <>
-            {contentCol}
-            {particleSlot}
-          </>
-        ) : (
-          <>
-            {particleSlot}
-            {contentCol}
-          </>
-        )}
+        {contentCol}
+        {particleSlot}
       </div>
     </section>
   );

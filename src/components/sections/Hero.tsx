@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <SectionFrame id="top" side="left" align="end">
       <div className="hero-copy">
-        <h1 className="font-display text-[clamp(2.38rem,5.4vw,5.8rem)] font-medium leading-[0.92] tracking-[-0.04em] text-white">
+        <h1 className="font-display text-[clamp(2rem,9vw,5.8rem)] font-medium leading-[0.92] tracking-[-0.04em] text-white">
           <span data-hero-in className="block">
             Sovereign
           </span>
@@ -30,9 +30,9 @@ export function Hero() {
           and Business Operations, giving AI deep enterprise context while
           operating under uncompromising governance.
         </p>
-        <div data-hero-in className="mt-10 flex flex-wrap items-center gap-4">
-          <FluidButton text="Discover Platform" href="#command" />
-          <FluidButton text="Request Architecture Sprint" href="#demo" />
+        <div data-hero-in className="mt-10 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+          <FluidButton text="Discover Platform" href="#command" className="w-full sm:w-auto" />
+          <FluidButton text="Request Architecture Sprint" href="#demo" className="w-full sm:w-auto" />
         </div>
       </div>
     </SectionFrame>

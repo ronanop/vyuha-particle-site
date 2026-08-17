@@ -9,6 +9,7 @@ import {
   isWebGLAvailable,
   markDocumentTier,
   prefersReducedMotion,
+  wantsDemandFrameloop,
 } from "@/lib/particles/ParticlePerformance";
 import { bootParticleState, particleState } from "@/lib/particles/ParticleState";
 import type { QualityTier } from "@/types/particles";
@@ -77,23 +78,29 @@ export function ParticleScene() {
     return <FallbackBackground />;
   }
 
-  const dprCap = getQualityProfile(tier).dprCap;
+  const profile = getQualityProfile(tier);
+  const dprCap = profile.dprCap;
+  const demand = wantsDemandFrameloop(tier);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[1]" aria-hidden>
+    <div
+      className="pointer-events-none fixed inset-x-0 top-0 z-[1] h-[100svh] w-full"
+      aria-hidden
+    >
       <Canvas
-        dpr={[1, dprCap]}
-        frameloop={hidden ? "never" : "always"}
+        dpr={dprCap}
+        frameloop={hidden ? "never" : demand ? "demand" : "always"}
         flat
+        resize={{ debounce: 280, scroll: false }}
         camera={{ position: [0, 0.35, 11], fov: 50, near: 0.1, far: 80 }}
-        performance={{ min: 0.5, max: 1, debounce: 1200 }}
+        performance={{ min: 0.45, max: 1, debounce: 1200 }}
         gl={{
           alpha: true,
           antialias: false,
           stencil: false,
           // Single Points draw with depthWrite off — a depth buffer only costs bandwidth
           depth: false,
-          powerPreference: "high-performance",
+          powerPreference: demand ? "low-power" : "high-performance",
           preserveDrawingBuffer: false,
         }}
         style={{ width: "100%", height: "100%" }}

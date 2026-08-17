@@ -43,7 +43,7 @@ export function Problem() {
         <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-white/50">
           Vyuha Box
         </p>
-        <h2 className="font-display whitespace-nowrap text-[clamp(1.35rem,3.2vw,3.75rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white">
+        <h2 className="font-display text-[clamp(1.65rem,7vw,3.75rem)] font-medium leading-[1.05] tracking-[-0.035em] text-white">
           Sovereign Perimeter &amp; Delivery Engine
         </h2>
         <p className="mx-auto mt-8 max-w-2xl text-[17px] leading-relaxed text-white/60 md:text-[18px]">

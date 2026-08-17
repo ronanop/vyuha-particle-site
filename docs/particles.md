@@ -93,8 +93,8 @@ Helpers: `setFormationStage`, `setScrollProgress`, `setMouse`, `setActiveSlot`, 
 Quality detection (`ParticlePerformance.ts`):
 
 - Software GL / Save-Data → **MINIMAL**
-- Weak GPU (old Mali/Adreno, Intel HD/UHD except Iris/Arc) → **LOW** (touch + weak → **MINIMAL**)
-- Touch: **LOW**, or **MINIMAL** if ≤4 cores / ≤3 GB
+- Touch **or** viewport ≤767px → **MINIMAL** (phones, tablets, DevTools mobile)
+- Weak GPU (old Mali/Adreno, Intel HD/UHD except Iris/Arc) → **LOW**
 - Desktop: ≤4 cores or ≤4 GB → **LOW**; 1440p+ or <8 cores → **MEDIUM**; else **HIGH**
 - Reduced motion still boots LOW/MINIMAL (intro skipped)
 - The tier a previous visit settled on is persisted (`localStorage`, 7-day TTL) and clamps boot detection down — repeat visits skip the downgrade ladder
@@ -107,10 +107,10 @@ Counts (`fitCount` resamples bakes — MINIMAL uses the LOW bake):
 |---|---|---|---|---|---|
 | HIGH | 12000 | 2 | yes (unless touch) | curl | 3 |
 | MEDIUM | 8000 | 1.5 | yes | cheap hash | 2 |
-| LOW | 5500 | 1 | no | off | 1 |
-| MINIMAL | 2800 | 1 | no | off | 0 |
+| LOW | 4000 | 1 | no | off | 1 |
+| MINIMAL | 1800 | 0.75 | no | off | 0 |
 
-Runtime FPS: rolling 30-frame window (including intro). Floors 48 / 42 / 36; average below ~0.7× the floor drops **two** tiers at once. Soft drop (LOD + DPR, same count) during intro; remount to the cheaper count after intro — does **not** replay the assemble. Never upgrades; each drop is persisted for the next visit. Downgrades are cheap: target caches are memoized per count and every lower tier is prebuilt during idle time after the intro, and the ShaderMaterial persists across count remounts (no mid-scroll shader recompile — only geometry rebuilds). R3F `performance.regress()` also lowers DPR when a frame exceeds ~26 ms. Tab hidden → `frameloop="never"`. LOW and MINIMAL skip Lenis (see §4.4); a runtime drop to LOW/MINIMAL destroys Lenis mid-session via the `particle-tier-change` window event. The active tier is mirrored to `<html data-particle-tier>` so CSS can gate expensive effects (e.g. the nav backdrop blur).
+Runtime FPS: rolling 30-frame window (including intro). Floors 48 / 42 / 36; average below ~0.7× the floor drops **two** tiers at once. Soft drop (LOD + DPR, same count) during intro; remount to the cheaper count after intro — does **not** replay the assemble. Never upgrades; each drop is persisted for the next visit. Downgrades are cheap: target caches are memoized per count and every lower tier is prebuilt during idle time after the intro, and the ShaderMaterial persists across count remounts (no mid-scroll shader recompile — only geometry rebuilds). R3F `performance.regress()` also lowers DPR when a frame exceeds ~26 ms. Tab hidden → `frameloop="never"`. LOW/MINIMAL use `frameloop="demand"` (GPU sleeps while the cloud is settled; scroll/intro `invalidate()`). LOW and MINIMAL skip Lenis (see §4.4); a runtime drop to LOW/MINIMAL destroys Lenis mid-session via the `particle-tier-change` window event. The active tier is mirrored to `<html data-particle-tier>` so CSS can gate expensive effects (e.g. the nav backdrop blur). The canvas is `100svh` (not `inset-0`) so iOS URL-bar show/hide does not constantly resize the GL buffer.
 
 ### 4.2 Intro (pre-scroll)
 
@@ -118,7 +118,7 @@ Only if motion is allowed. `ParticleSystem` GSAP timeline:
 
 | Phase | Duration | From → To | Notes |
 |---|---|---|---|
-| Warm | ~N frames | each `FORMATION_CHAIN` pair | Same `THREE.Points`, `uOpacity=0`. Compiles shader, uploads every adjacent buffer pair, waits `document.fonts.ready` (1.2s cap). Then restores scatter→earth and sets `engineReady` + `scrollWarmed`. |
+| Warm | 1–N frames | HIGH/MEDIUM: each `FORMATION_CHAIN` pair. LOW/MINIMAL: compile + scatter→earth only | Same `THREE.Points`, `uOpacity=0`. Waits `document.fonts.ready` (1.2s cap). Then restores scatter→earth and sets `engineReady` + `scrollWarmed`. |
 | Load | ≥0.85s | — | Overlay waits for `engineReady` **and** `scrollWarmed` |
 | Text | 0.52s + fade | — | Overlay out, hero/nav in |
 | Gate | 250ms | — | After text is on screen |
@@ -232,7 +232,7 @@ Driven in `ParticleSystem` from damped `stage`:
 
 Sections declare `data-particle-slot="<id>"`. `SectionFrame` does this automatically: `id` is both the section `id` and the slot id.
 
-- **Left / right** (`side="left"|"right"`): slot is the empty column (hidden on mobile). Copy occupies the other half.
+- **Left / right** (`side="left"|"right"`): slot is the empty column. On mobile it is a top band (`~38svh`) so icons sit above the copy; from `md` it is the opposite half.
 - **Center**: slot is `absolute inset-0` behind the copy.
 
 Each animation frame, `listParticleSlotIds()` + `resolveBlendedSlotWorld()`:
@@ -354,7 +354,7 @@ Icons: sample polylines / rings / disks in a ~[-1,1] design space, `normalizeToR
 - Bake: `npm run bake:earth` → `scripts/bake-earth.cjs`
 - Sources in `scripts/earth-raw/`: Natural Earth 10m India-POV countries + DataMeet `india-composite.geojson`
 - Sphere projection: `lonOffsetDeg = 78.9` so India faces the camera at `+Z`
-- Bake **counts** (7000 / 4800 / 3600) are smaller than runtime targets; `fitCount` resamples. Prefer exact-count bakes if you re-run the pipeline — update `TIERS` in the bake script to 12000 / 8000 / 5500 if you want 1:1
+- Bake **counts** (7000 / 4800 / 3600) are smaller than runtime targets; `fitCount` resamples. Prefer exact-count bakes if you re-run the pipeline — update `TIERS` in the bake script to 12000 / 8000 / 4000 if you want 1:1
 - Shell share is kept sparse (~8%) so borders read as outlines, not a filled ball
 
 ### 9.2 Baked logo
@@ -362,7 +362,7 @@ Icons: sample polylines / rings / disks in a ~[-1,1] design space, `normalizeToR
 - Assets: `src/lib/particles/vyuhaLogoData/{high,medium,low}.json`
 - Bake: `npm run bake:vyuha` → `scripts/bake-vyuha-logo.mjs`
 - Source: `scripts/vyuha-raw/logo-ref-flat.png` (do **not** sample the Meshy GLB atlas)
-- Tiers **match** runtime: 12000 / 8000 / 5500
+- LOW bake file is 5500 points; runtime LOW is 4000 and MINIMAL is 1800 (`fitCount` resamples)
 - Samples glowing (cyan-biased) pixels; hot cores → layer 3; radius 2.55
 
 ---
@@ -394,7 +394,7 @@ Do **not** call `setMorphSegments` for the live timeline. That API is leftover (
 | Copy-only section (no morph) | Any `SectionFrame`; optional slot. Do **not** add to `readFormationStage` |
 | Section that **is** a morph beat | Stable `id` + `FORMATION_CHAIN` entry + `sectionEnter` term in page order |
 | Keep earth centered on a new mid-page field | Treat like delivery: pin band in `ParticleController` using `smoothstep(stage - n)` |
-| Mobile | Left/right slots are `hidden md:block`. Icons still morph; they stay centered via pin logic when the slot is gone |
+| Mobile | Left/right slots are a top band below `md`, then the empty column. Icons morph into that band instead of sitting on the copy. |
 
 Never animate a second particle system for a section. Never put `pointer-events` on the canvas (it is `pointer-events-none` so UI stays clickable).
 
@@ -404,9 +404,9 @@ Never animate a second particle system for a section. Never put `pointer-events`
 
 - `prefers-reduced-motion: reduce`: no Lenis, skip intro, snap stage to integers, no mouse, no idle sway, noise off
 - No WebGL: CSS radial gradient only (`ParticleScene` fallback + `PageContent` background)
-- Touch: quality LOW (MINIMAL on weak GPUs / ≤4 cores), mouse disabled
-- LOW: native scroll (no Lenis), 5500 points, DPR 1, no noise, no nav backdrop blur
-- MINIMAL: native scroll (no Lenis), 2800 points, DPR 1, no noise, no nav backdrop blur
+- Touch / ≤767px: quality **MINIMAL**, mouse disabled, demand frameloop
+- LOW: native scroll (no Lenis), 4000 points, DPR 1, no noise, no nav backdrop blur, demand frameloop
+- MINIMAL: native scroll (no Lenis), 1800 points, DPR 0.75, no noise, no nav backdrop blur, demand frameloop
 - Hidden tab pauses the WebGL loop
 - Canvas is `aria-hidden`
 

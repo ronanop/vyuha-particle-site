@@ -24,6 +24,7 @@ import {
   getQualityProfile,
   persistQualityTier,
   prefersReducedMotion,
+  wantsDemandFrameloop,
 } from "@/lib/particles/ParticlePerformance";
 import {
   completeIntroImmediately,
@@ -189,7 +190,11 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
   const mouseBlendRef = useRef(0);
   const warmupRef = useRef({ needed: false, compiled: false, step: 0, fonts: false });
   const prewarmedRef = useRef(false);
-  const { gl } = useThree();
+  const { gl, invalidate } = useThree();
+  const invalidateRef = useRef(invalidate);
+  useEffect(() => {
+    invalidateRef.current = invalidate;
+  }, [invalidate]);
 
   // Material + uniforms persist across count remounts — recreating the
   // ShaderMaterial on a quality downgrade forced a shader recompile exactly
@@ -382,6 +387,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
           uniforms.uNoiseStrength.value = 0;
           uniforms.uPulse.value = 0;
           settledRef.current = true;
+          invalidateRef.current();
         },
       });
 
@@ -403,6 +409,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
             ? 0.12 + mid * 0.16
             : 0;
           uniforms.uPulse.value = 0;
+          invalidateRef.current();
         },
       });
 
@@ -428,6 +435,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
             ? 0.06 * proxy.flow
             : 0;
           uniforms.uIntroActive.value = proxy.flow > 0.02 ? 1 : 0;
+          invalidateRef.current();
         },
       });
     };
@@ -438,6 +446,7 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
         playAssemble();
         return;
       }
+      invalidateRef.current();
       waitRaf = requestAnimationFrame(waitForArm);
     };
     waitForArm();
@@ -478,10 +487,12 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
           /* compile is best-effort */
         }
         warm.compiled = true;
+        invalidate();
         return;
       }
       const pairCount = FORMATION_CHAIN.length - 1;
-      if (warm.step < pairCount) {
+      // LOW/MINIMAL skip uploading every adjacent pair — one compile + scatter→earth is enough.
+      if (warmProfile.shaderLod >= 2 && warm.step < pairCount) {
         const segment = resolveFormationSegment(warm.step + 0.5);
         writePositions(
           getPosAttr(geometry, "aPositionFrom"),
@@ -503,9 +514,13 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
         uniforms.uNoiseStrength.value = warmProfile.noiseEnabled ? 0.2 : 0;
         uniforms.uPulse.value = 0;
         warm.step += 1;
+        invalidate();
         return;
       }
-      if (!warm.fonts) return;
+      if (!warm.fonts) {
+        invalidate();
+        return;
+      }
 
       writePositions(
         getPosAttr(geometry, "aPositionFrom"),
@@ -545,7 +560,9 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
     const introDone = particleState.introComplete;
     if (introDone && !prewarmedRef.current) {
       prewarmedRef.current = true;
-      prewarmLowerTierCaches(particleState.qualityTier);
+      if (particleState.qualityTier !== "MINIMAL") {
+        prewarmLowerTierCaches(particleState.qualityTier);
+      }
     }
     const introT = particleState.introProgress;
     const settling = introT >= 0.999 && !settledRef.current;
@@ -943,6 +960,19 @@ export function ParticleSystem({ count, onQualityChange }: ParticleSystemProps) 
     }
     if (count === particleState.particleCount) {
       remountingRef.current = false;
+    }
+
+    if (wantsDemandFrameloop(particleState.qualityTier)) {
+      const stageGap = Math.abs(
+        stageDisplayRef.current - particleState.formationStage,
+      );
+      const busy =
+        warm.needed ||
+        !introDone ||
+        !settledRef.current ||
+        stageGap > 0.0015 ||
+        swayBlendRef.current > 0.01;
+      if (busy) invalidate();
     }
   });
 

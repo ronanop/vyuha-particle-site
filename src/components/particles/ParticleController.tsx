@@ -10,6 +10,7 @@ import {
   getQualityProfile,
   isTouchDevice,
   prefersReducedMotion,
+  wantsDemandFrameloop,
 } from "@/lib/particles/ParticlePerformance";
 import {
   setActiveSlot,
@@ -50,7 +51,11 @@ function readScrollProgress(): number {
  * and slot → world anchoring. Must run inside the R3F Canvas.
  */
 export function useParticleController(): void {
-  const { camera, size } = useThree();
+  const { camera, size, invalidate } = useThree();
+  const invalidateRef = useRef(invalidate);
+  useEffect(() => {
+    invalidateRef.current = invalidate;
+  }, [invalidate]);
   const mouseEnabled = getQualityProfile(particleState.qualityTier).mouseEnabled;
   const lastSlotIdRef = useRef<string | null>(null);
   const lastPosRef = useRef({ x: 0, y: 0, z: 0 });
@@ -63,6 +68,7 @@ export function useParticleController(): void {
 
     const syncProgress = () => {
       setScrollProgress(readScrollProgress());
+      if (wantsDemandFrameloop(particleState.qualityTier)) invalidateRef.current();
     };
 
     const trigger = ScrollTrigger.create({

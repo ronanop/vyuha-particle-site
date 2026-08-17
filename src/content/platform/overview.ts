@@ -4,6 +4,8 @@ export const platformOverview: PlatformOverviewContent = {
   path: "/platform",
   eyebrow: "Platform",
   title: "Platform",
+  displayTitle: ["Intelligence.", "Orchestrated."],
+  leitmotif: "Adapt. Think. Act.",
   subtitle: "Intelligence. Orchestrated. Adapt. Think. Act.",
   quote:
     "India has built for digital scale. Now, it’s time to build intelligence on our own terms.",
@@ -11,9 +13,33 @@ export const platformOverview: PlatformOverviewContent = {
     "The AI revolution is no longer a distant horizon — it is the current operational reality. For Indian enterprises, PSUs, and highly regulated industries, the barriers remain steep: scarce AI talent, prohibitive cloud costs, and the risk of sending sensitive, localized data to foreign-hosted models.",
     "Vyuha is a sovereign agentic platform, built on the Airrived Engine, that lets organizations build, deploy, and scale autonomous agents without code, complexity, or a single byte leaving their perimeter.",
   ],
+  engineName: "Airrived Engine",
   primaryCtas: [
     { label: "Request Architecture Demo", href: "/book-a-demo" },
     { label: "Explore Solutions", href: "/solutions" },
+  ],
+  stats: [
+    { value: "200+", label: "native connectors on day one" },
+    { value: "0", label: "bytes leaving your perimeter" },
+    { value: "DPDP", label: "aligned by architecture" },
+  ],
+  problemsTitle: "The barriers that stall Indian enterprise AI",
+  problems: [
+    {
+      index: "01",
+      title: "Scarce AI talent",
+      body: "You should not need a research lab to run agents. Operators become orchestrators — no dedicated AI engineering team required.",
+    },
+    {
+      index: "02",
+      title: "Rented intelligence",
+      body: "Hyperscaler models are expensive, generic, and trained far from your topology. Ownership of models, logs, and outcomes stays with you.",
+    },
+    {
+      index: "03",
+      title: "Data that cannot leave",
+      body: "DPDP and sectoral rules make foreign-hosted inference a non-starter. Vyuha reasons inside the perimeter you already operate.",
+    },
   ],
   productsIntro:
     "One foundation. Three ways to run it — Command to orchestrate agents, In a BOX to deploy at the edge, and native integrations that bind the stack you already have.",
@@ -41,6 +67,8 @@ export const platformOverview: PlatformOverviewContent = {
     },
   ],
   kintsugiTitle: "The art of Kintsugi — strength in the seams",
+  kintsugiEyebrow: "The metaphor we build by",
+  kintsugiSignature: "継ぎ目の強度",
   kintsugiBody: [
     "Kintsugi is the Japanese art of repairing broken pottery with gold. The repair does not hide the damage; it illuminates it. The golden seams create an object more resilient than the original unbroken piece.",
     "In the modern enterprise, Vyuha is the gold. We do not force a massive rip-and-replace of the tools you already trust. Vyuha binds fragmented systems with agentic AI — filling operational cracks with reasoning, automation, and deep integrations.",
@@ -61,6 +89,7 @@ export const platformOverview: PlatformOverviewContent = {
       body: "Standing up AI infrastructure often derails transformation before it begins. Vyuha In a BOX is plug-and-play, edge-deployable infrastructure — on-premise, air-gapped, or private cloud — so teams of any skill level can consume, build, and deploy agentic workflows in seconds.",
     },
   ],
+  finalHeadline: "Take back control with sovereign AI.",
   finalCtas: [
     { label: "Book a Demo", href: "/book-a-demo" },
     { label: "See Solutions", href: "/solutions" },

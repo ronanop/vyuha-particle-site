@@ -4,7 +4,8 @@ import { platformOverview } from "@/content/platform/overview";
 
 export const metadata: Metadata = {
   title: "Platform — Vyuha.ai",
-  description: platformOverview.subtitle,
+  description:
+    "Sovereign agentic platform for Indian enterprise. Orchestrate agents with Vyuha Command, deploy at the edge with In a BOX, and bind the stack you already run — without a byte leaving the perimeter.",
 };
 
 export default function PlatformPage() {
