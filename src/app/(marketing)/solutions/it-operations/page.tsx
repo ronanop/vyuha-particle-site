@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { SolutionsFunctionView } from "@/components/marketing/solutions/SolutionsViews";
+import { MarketingPageView } from "@/components/marketing/MarketingPageView";
 import { itOperations } from "@/content/solutions/itOperations";
 
 export const metadata: Metadata = {
   title: "IT Operations — Vyuha.ai",
-  description: itOperations.headline,
+  description: itOperations.body[0],
 };
 
 export default function ItOperationsPage() {
-  return <SolutionsFunctionView content={itOperations} />;
+  return <MarketingPageView content={itOperations} />;
 }

@@ -25,9 +25,11 @@ export function PlaceholderPage({
       <h1 className="font-display text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.05] tracking-tight text-white">
         {title}
       </h1>
-      <p className="mt-4 max-w-md text-[14px] text-white/40">
-        Content coming soon.
-      </p>
+      {childrenNodes && childrenNodes.length > 0 ? null : (
+        <p className="mt-4 max-w-md text-[14px] text-white/40">
+          Content coming soon.
+        </p>
+      )}
 
       {childrenNodes && childrenNodes.length > 0 ? (
         <ul className="mt-12 space-y-3 border-t border-white/10 pt-10">

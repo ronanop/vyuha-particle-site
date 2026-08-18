@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/marketing/PlaceholderPage";
+import { MarketingPageView } from "@/components/marketing/MarketingPageView";
+import { contactPage } from "@/content/contact";
 
-export const metadata: Metadata = { title: "Contact — Vyuha.ai" };
+export const metadata: Metadata = {
+  title: "Contact — Vyuha.ai",
+  description: contactPage.body[0],
+};
 
 export default function ContactPage() {
-  return <PlaceholderPage title="Contact" path="/contact" />;
+  return <MarketingPageView content={contactPage} />;
 }

@@ -3,6 +3,7 @@ import type { SolutionBullet, SolutionCta, SolutionLinkCard } from "@/content/so
 export type PlatformPillar = {
   title: string;
   body: string;
+  items?: string[];
 };
 
 export type PlatformStat = {
@@ -29,17 +30,43 @@ export type PlatformOverviewContent = {
   primaryCtas: SolutionCta[];
   stats: PlatformStat[];
   problemsTitle: string;
+  problemsIntro?: string;
   problems: PlatformProblem[];
   productsIntro: string;
   products: SolutionLinkCard[];
   kintsugiTitle: string;
   kintsugiEyebrow: string;
-  kintsugiSignature: string;
+  kintsugiSignature?: string;
   kintsugiBody: string[];
   pillarsTitle: string;
+  pillarsIntro?: string;
   pillars: PlatformPillar[];
   finalHeadline: string;
+  finalBody?: string;
   finalCtas: SolutionCta[];
+};
+
+export type PlatformProductCard = {
+  title: string;
+  body?: string;
+  items?: string[];
+};
+
+export type PlatformCompareTable = {
+  headers: string[];
+  rows: string[][];
+};
+
+export type PlatformProductSection = {
+  title: string;
+  intro?: string;
+  paragraphs?: string[];
+  items?: SolutionBullet[];
+  cards?: PlatformProductCard[];
+  cardsColumns?: 2 | 3;
+  table?: PlatformCompareTable;
+  closer?: string;
+  cta?: SolutionCta;
 };
 
 export type PlatformProductContent = {
@@ -49,11 +76,8 @@ export type PlatformProductContent = {
   headline: string;
   body: string[];
   primaryCtas: SolutionCta[];
-  sections: {
-    title: string;
-    intro?: string;
-    items: SolutionBullet[];
-    closer?: string;
-  }[];
+  sections: PlatformProductSection[];
+  finalHeadline?: string;
+  finalBody?: string;
   finalCtas: SolutionCta[];
 };

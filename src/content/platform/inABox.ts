@@ -2,42 +2,94 @@ import type { PlatformProductContent } from "@/content/platform/types";
 
 export const platformInABox: PlatformProductContent = {
   path: "/platform/in-a-box",
-  eyebrow: "Platform · In a BOX",
+  eyebrow: "Powered by Airrived Engine | On-Premise AI Appliance",
   title: "Vyuha In a BOX",
-  headline: "AI at the edge — plug-and-play, air-gapped if you need it",
+  headline: "The Turnkey Self-Governed On-Premises AI Appliance",
   body: [
-    "The complexity of standing up AI infrastructure often derails digital transformation before it begins. Organizations spend months wrestling with cloud integrations, compute scaling, and architecture redesigns.",
-    "Vyuha In a BOX bypasses that friction. This plug-and-play, edge-deployable infrastructure gives enterprises a clean canvas to activate deep reasoning agents immediately — on-premise, in an air-gapped environment, or within a private cloud.",
+    "The complete Vyuha Command OS pre-loaded onto enterprise GPU hardware. Complete physical data localization, zero external egress, and hardware-accelerated intelligence engineered for on-premise data centers and air-gapped defense environments.",
   ],
   primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
-    { label: "Explore Command", href: "/platform/command" },
+    { label: "Schedule On-Premise Demo", href: "/book-a-demo" },
+    { label: "Explore Hardware Specifications", href: "/contact" },
   ],
   sections: [
     {
-      title: "Deploy without the engineering roadblock",
-      items: [
-        "Activate agentic workflows in seconds — no massive architecture redesign required.",
-        "Run entirely on-premise, air-gapped, or in a private cloud. Your data never has to leave the building.",
-        "Teams of any skill level can consume, build, and deploy — Command sits on top of the box, not a specialist toolchain.",
-        "To be effective, the gold must set inside your environment. In a BOX is designed as a localized platform that fits the perimeter you already operate.",
+      title: "Plug-and-Play Self-Governed Infrastructure",
+      paragraphs: [
+        "Vyuha In a BOX delivers the full agentic intelligence, 200+ enterprise connectors, and multi-agent orchestration of Vyuha Command as a turnkey, hardware-accelerated appliance for organizations requiring physical containment and local performance.",
       ],
     },
     {
-      title: "Sovereign by construction",
-      intro:
-        "Every report, reconciliation, containment action, and agent log stays inside your Vyuha One or Vyuha In a BOX perimeter.",
-      items: [
-        "Absolute ownership of data, models, agents, and execution logs — no vendor lock-in.",
-        "Built for DPDP Act 2023 and sectoral rules that make sending proprietary data to external APIs a non-starter.",
-        "Policy-based autonomy with RBAC and human-in-the-loop — control where data lives and how AI acts.",
+      title: "Self-Governed AI Under Your Physical Boundary",
+      cards: [
+        {
+          title: "Zero External Egress",
+          body: "Core inference and workflow execution run natively inside your physical network.",
+        },
+        {
+          title: "DPDP Act 2023 Alignment",
+          body: "Built around Indian data residency, data localization, and regulatory requirements.",
+        },
+        {
+          title: "Immunity from External Logging",
+          body: "Enterprise IP remains yours—never transmitted externally or used to train public models.",
+        },
       ],
-      closer:
-        "The future of Indian enterprise intelligence will not be rented; it will be owned. In a BOX hands the keys directly to the enterprises that drive the nation forward.",
+    },
+    {
+      title: "Hardware Delivery Models",
+      cards: [
+        {
+          title: "Dedicated On-Premise GPU Provisioning",
+          body: "Hardware-accelerated deployment within your data center.",
+        },
+        {
+          title: "Air-Gapped / Sena Environment",
+          body: "Offline, physically isolated deployment for defense, PSUs, and critical national infrastructure.",
+        },
+        {
+          title: "Dedicated Private Edge Node",
+          body: "Localized appliance units for distributed regional hubs requiring local AI autonomy under central governance.",
+        },
+      ],
+    },
+    {
+      title: "Why Deploy Vyuha In a BOX?",
+      cards: [
+        {
+          title: "Zero Latency Inference",
+          body: "Direct local hardware access for rapid model execution, real-time response, and high-volume data ingestion.",
+        },
+        {
+          title: "Total Physical IP Containment",
+          body: "Custom DSLMs, agentic playbooks, and historical enterprise telemetry remain on local physical drives.",
+        },
+        {
+          title: "Identical OS Capabilities",
+          body: "Feature parity with Vyuha Command—including App Store, Composable Agents, A2A Mesh, and No-Code Orchestrator—delivered offline.",
+        },
+      ],
+    },
+    {
+      title: "Vyuha Command vs Vyuha In a BOX",
+      table: {
+        headers: ["Dimension", "Vyuha Command", "Vyuha In a BOX"],
+        rows: [
+          ["Operating System", "Vyuha Command OS", "Vyuha Command OS (Pre-installed)"],
+          ["Deployment", "AWS, Azure, GCP, Private VPC", "On-Premise / Enterprise GPU Infrastructure"],
+          ["200+ Integrations", "Supported", "Supported"],
+          ["App Store & Agents", "Included", "Included"],
+          ["A2A Mesh", "Included", "Included"],
+          ["Air-Gapped / Sena", "Optional", "Built-in Native"],
+        ],
+      },
     },
   ],
+  finalHeadline: "Command Self-Governed AI Inside Your Physical Perimeter",
+  finalBody:
+    "Vyuha In a BOX provides infrastructure control, air-gapped security, and hardware-accelerated performance—enabling autonomous AI without data leaving your facility.",
   finalCtas: [
-    { label: "Book a Demo", href: "/book-a-demo" },
-    { label: "See Integrations", href: "/platform/integrations" },
+    { label: "Request On-Premise Demo", href: "/book-a-demo" },
+    { label: "Contact Infrastructure Team", href: "/contact" },
   ],
 };

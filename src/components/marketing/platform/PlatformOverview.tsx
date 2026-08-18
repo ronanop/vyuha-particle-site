@@ -18,8 +18,6 @@ import { ScrambleText } from "@/components/marketing/platform/ScrambleText";
 import type { PlatformOverviewContent } from "@/content/platform/types";
 
 const PRODUCT_WAY = ["Orchestrate", "Deploy", "Bind"] as const;
-const INDIA_WORD = ["Indian"];
-const INDIA_FLAG: [string, string, string] = ["#FF9933", "#FFFFFF", "#138808"];
 
 function SectionLabel({
   children,
@@ -111,6 +109,12 @@ export function PlatformOverviewView({
         </div>
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-6.5rem)] w-full max-w-[1400px] items-center justify-center px-6 py-10 md:px-10 lg:py-6">
           <div className="mx-auto w-full max-w-5xl text-center">
+            <p
+              data-hero-in
+              className="mb-5 font-display text-[11px] font-medium uppercase tracking-[0.22em] text-cyan-300/85"
+            >
+              {content.eyebrow}
+            </p>
             <h1
               data-hero-in
               className="font-display text-[clamp(2.6rem,7vw,6.25rem)] font-medium leading-[0.9] tracking-[-0.045em] text-white"
@@ -130,12 +134,14 @@ export function PlatformOverviewView({
             >
               {content.quote}
             </blockquote>
-            <p
+            <div
               data-hero-in
-              className="mx-auto mt-6 max-w-4xl text-[16px] leading-relaxed text-white/55 [animation-delay:300ms] md:text-[17px]"
+              className="mx-auto mt-6 max-w-4xl space-y-4 text-[16px] leading-relaxed text-white/55 [animation-delay:300ms] md:text-[17px]"
             >
-              {content.body[1]}
-            </p>
+              {content.body.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+              ))}
+            </div>
             <div
               data-hero-in
               className="mt-10 flex flex-wrap items-center justify-center gap-4 [animation-delay:380ms]"
@@ -158,13 +164,13 @@ export function PlatformOverviewView({
               className="mt-12 hidden justify-center gap-6 border-t border-white/10 pt-6 text-[12px] uppercase tracking-[0.16em] text-white/40 sm:flex"
             >
               <a href="#platform-architecture" className="transition-colors hover:text-white">
-                Architecture
+                Delivery
               </a>
               <a href="#platform-why" className="transition-colors hover:text-white">
-                Why Vyuha
+                Architecture
               </a>
               <a href="#platform-kintsugi" className="transition-colors hover:text-white">
-                Kintsugi
+                Govern
               </a>
             </nav>
           </div>
@@ -204,7 +210,7 @@ export function PlatformOverviewView({
             <div className="mb-5 flex items-center gap-4">
               <div aria-hidden className="h-px w-16 bg-cyan-300/70" />
               <BlurText
-                text="THE PROBLEM"
+                text="CONTROLLED AUTONOMY"
                 delay={90}
                 animateBy="letters"
                 direction="top"
@@ -218,6 +224,11 @@ export function PlatformOverviewView({
               direction="top"
               className="max-w-[18ch] font-display text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white"
             />
+            {content.problemsIntro ? (
+              <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-white/55 md:text-[17px]">
+                {content.problemsIntro}
+              </p>
+            ) : null}
           </div>
           <ul className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6 lg:gap-8">
             {content.problems.map((problem) => (
@@ -281,12 +292,14 @@ export function PlatformOverviewView({
               className="font-display"
               style={{ height: "clamp(220px, 28vw, 320px)" }}
             />
-            <p
-              data-reveal
-              className="mx-auto mt-2 max-w-2xl text-center text-[16px] leading-relaxed text-white/55 md:text-[17px]"
-            >
-              {content.productsIntro}
-            </p>
+            {content.productsIntro ? (
+              <p
+                data-reveal
+                className="mx-auto mt-2 max-w-2xl text-center text-[16px] leading-relaxed text-white/55 md:text-[17px]"
+              >
+                {content.productsIntro}
+              </p>
+            ) : null}
           </div>
 
           <div className="relative mt-16">
@@ -346,10 +359,10 @@ export function PlatformOverviewView({
         </div>
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-10">
           <div>
-            <SectionLabel className="text-center">Built for India</SectionLabel>
+            <SectionLabel className="text-center">Built on Airrived</SectionLabel>
             <h2 className="sr-only">{content.pillarsTitle}</h2>
             <WarpText
-              text={"Why the Indian enterprise\nneeds a new approach"}
+              text={"CREATE. ACTIVATE.\nBUILD."}
               color="#f8f5ff"
               warpStrength={0.08}
               warpScale={1.7}
@@ -365,9 +378,15 @@ export function PlatformOverviewView({
               lineHeight={0.92}
               className="font-display"
               style={{ height: "clamp(220px, 28vw, 320px)" }}
-              gradientWords={INDIA_WORD}
-              gradientColors={INDIA_FLAG}
             />
+            {content.pillarsIntro ? (
+              <p
+                data-reveal
+                className="mx-auto mt-2 max-w-2xl text-center text-[16px] leading-relaxed text-white/55 md:text-[17px]"
+              >
+                {content.pillarsIntro}
+              </p>
+            ) : null}
           </div>
           <ul className="mt-8 space-y-0 md:mt-12">
             {content.pillars.map((pillar, i) => (
@@ -395,19 +414,31 @@ export function PlatformOverviewView({
                     colorRevealed="#f8f5ff"
                     className="max-w-[16ch] font-display text-[clamp(1.6rem,2.6vw,2.35rem)] font-medium leading-[1.12] tracking-[-0.03em]"
                   />
-                  <ScrollRevealText
-                    text={pillar.body}
-                    tag="p"
-                    splitMode="Words"
-                    stagger={0.045}
-                    yOffset={6}
-                    blur={1.5}
-                    offsetStart={94}
-                    offsetEnd={32}
-                    colorHidden="rgba(255,255,255,0.14)"
-                    colorRevealed="rgba(255,255,255,0.72)"
-                    className="mt-5 max-w-2xl text-[16px] leading-relaxed md:text-[17px]"
-                  />
+                  {pillar.body ? (
+                    <ScrollRevealText
+                      text={pillar.body}
+                      tag="p"
+                      splitMode="Words"
+                      stagger={0.045}
+                      yOffset={6}
+                      blur={1.5}
+                      offsetStart={94}
+                      offsetEnd={32}
+                      colorHidden="rgba(255,255,255,0.14)"
+                      colorRevealed="rgba(255,255,255,0.72)"
+                      className="mt-5 max-w-2xl text-[16px] leading-relaxed md:text-[17px]"
+                    />
+                  ) : null}
+                  {pillar.items?.length ? (
+                    <ul className="mt-6 max-w-xl space-y-2 text-[15px] leading-relaxed text-white/58">
+                      {pillar.items.map((item) => (
+                        <li key={item} className="flex gap-3">
+                          <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-cyan-400/80" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
               </li>
             ))}
@@ -432,21 +463,24 @@ export function PlatformOverviewView({
                 {content.kintsugiTitle}
               </h2>
             </div>
-            <TypewriterText
-              lang="ja"
-              text={content.kintsugiSignature}
-              delayMs={1280}
-              charMs={170}
-              className="font-jp-serif mt-6 ml-auto w-fit origin-right -rotate-[6deg] text-[clamp(2.1rem,4.4vw,3.5rem)] font-bold leading-none tracking-[0.08em] text-cyan-300"
-            />
+            {content.kintsugiSignature ? (
+              <TypewriterText
+                lang="ja"
+                text={content.kintsugiSignature}
+                delayMs={1280}
+                charMs={170}
+                className="font-jp-serif mt-6 ml-auto w-fit origin-right -rotate-[6deg] text-[clamp(2.1rem,4.4vw,3.5rem)] font-bold leading-none tracking-[0.08em] text-cyan-300"
+              />
+            ) : null}
             <div
               aria-hidden
               className="mt-8 h-px w-24 bg-gradient-to-r from-kintsugi to-transparent"
             />
           </div>
-          <div className="space-y-5 text-[16px] leading-relaxed text-white/60 md:text-[17px]">
+          <div className="space-y-4 text-[16px] leading-relaxed text-white/60 md:text-[17px]">
             {content.kintsugiBody.map((p, i) => (
-              <p key={p.slice(0, 48)}>
+              <p key={p.slice(0, 48)} className="flex gap-3">
+                <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-cyan-400/80" />
                 <DecryptedText
                   text={p}
                   animateOn="view"
@@ -476,10 +510,11 @@ export function PlatformOverviewView({
             <h2 className="font-display max-w-[14ch] text-[clamp(2.4rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white">
               {content.finalHeadline}
             </h2>
-            <p className="mt-8 max-w-md text-[17px] leading-relaxed text-white/60">
-              Own, lead, and govern your AI assets and operational workflows —
-              under your perimeter, with uncompromising governance.
-            </p>
+            {content.finalBody ? (
+              <p className="mt-8 max-w-md text-[17px] leading-relaxed text-white/60">
+                {content.finalBody}
+              </p>
+            ) : null}
             <div className="mt-10">
               <SolutionCtas ctas={content.finalCtas} />
             </div>

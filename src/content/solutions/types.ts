@@ -5,22 +5,6 @@ export type SolutionCta = {
 
 export type SolutionBullet = string;
 
-export type SolutionCapability = {
-  title: string;
-  eyebrow: string;
-  body: string;
-  outcomes: SolutionBullet[];
-};
-
-export type SolutionIndustry = {
-  title: string;
-  headline: string;
-  body: string;
-  howHelps: SolutionBullet[];
-  outcome: string;
-  comingSoon?: boolean;
-};
-
 export type SolutionLinkCard = {
   title: string;
   headline: string;
@@ -29,53 +13,50 @@ export type SolutionLinkCard = {
   cta: string;
 };
 
-export type SolutionsOverviewContent = {
-  path: string;
-  eyebrow: string;
+export type MarketingCard = {
   title: string;
-  subtitle: string;
-  quote: string;
-  body: string[];
-  primaryCtas: SolutionCta[];
-  functionsIntro: string;
-  functions: SolutionLinkCard[];
-  replaceTitle: string;
-  replaceBody: string;
-  replaceItems: SolutionBullet[];
-  replaceCloser: string;
-  sovereigntyTitle: string;
-  sovereigntyBody: string[];
-  finalCtas: SolutionCta[];
+  headline?: string;
+  body?: string;
+  items?: string[];
+  itemsLabel?: string;
+  outcomes?: string[];
+  outcome?: string;
+  cta?: SolutionCta;
+  comingSoon?: boolean;
 };
 
-export type SolutionsFunctionContent = {
-  path: string;
-  eyebrow: string;
-  title: string;
-  headline: string;
-  body: string[];
-  primaryCtas: SolutionCta[];
-  pillars?: SolutionBullet[];
-  capabilitiesTitle: string;
-  capabilitiesIntro?: string;
-  capabilities: SolutionCapability[];
-  whyTitle: string;
-  whyItems: SolutionBullet[];
-  impactTitle: string;
-  impactItems: SolutionBullet[];
-  integrations?: string;
-  audience?: string;
-  finalCtas: SolutionCta[];
+export type MarketingStat = {
+  value: string;
+  label: string;
 };
 
-export type SolutionsIndustryContent = {
+export type MarketingSection = {
+  id?: string;
+  title?: string;
+  headline?: string;
+  intro?: string;
+  paragraphs?: string[];
+  items?: string[];
+  cards?: MarketingCard[];
+  cardsColumns?: 2 | 3 | 4;
+  stats?: MarketingStat[];
+  pendingNotice?: string;
+  closer?: string;
+  closerLines?: string[];
+  cta?: SolutionCta;
+};
+
+export type MarketingPageContent = {
   path: string;
   eyebrow: string;
   title: string;
-  headline: string;
-  body: string;
-  industries: SolutionIndustry[];
-  foundationTitle: string;
-  foundationBody: string;
-  finalCtas: SolutionCta[];
+  headline?: string;
+  quote?: string;
+  body: string[];
+  primaryCtas: SolutionCta[];
+  sections: MarketingSection[];
+  finalEyebrow?: string;
+  finalHeadline?: string;
+  finalBody?: string;
+  finalCtas?: SolutionCta[];
 };

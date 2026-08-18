@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/marketing/PlaceholderPage";
+import { MarketingPageView } from "@/components/marketing/MarketingPageView";
+import { bookADemo } from "@/content/bookADemo";
 
-export const metadata: Metadata = { title: "Book a Demo — Vyuha.ai" };
+export const metadata: Metadata = {
+  title: "Book a Demo — Vyuha.ai",
+  description: bookADemo.body[0],
+};
 
 export default function BookADemoPage() {
-  return <PlaceholderPage title="Book a Demo" path="/book-a-demo" />;
+  return <MarketingPageView content={bookADemo} />;
 }

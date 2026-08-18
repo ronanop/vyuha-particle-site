@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { SolutionsFunctionView } from "@/components/marketing/solutions/SolutionsViews";
+import { MarketingPageView } from "@/components/marketing/MarketingPageView";
 import { securityCompliance } from "@/content/solutions/securityCompliance";
 
 export const metadata: Metadata = {
   title: "Security & Compliance — Vyuha.ai",
-  description: securityCompliance.headline,
+  description: securityCompliance.body[0],
 };
 
 export default function SecurityCompliancePage() {
-  return <SolutionsFunctionView content={securityCompliance} />;
+  return <MarketingPageView content={securityCompliance} />;
 }

@@ -6,11 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setLenisInstance } from "@/lib/utils/lenis";
 import { getScrollFeel, luxuryEase } from "@/lib/utils/scrollFeel";
-import {
-  shouldUseSmoothScroll,
-  tierWantsNativeScroll,
-} from "@/lib/particles/ParticlePerformance";
-import type { QualityTier } from "@/types/particles";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -22,9 +18,7 @@ interface SmoothScrollProps {
 
 /**
  * Lenis smooth scroll synced with GSAP ScrollTrigger.
- * Disabled when prefers-reduced-motion is set or the quality tier is
- * LOW/MINIMAL — on weak devices Lenis ties page scroll to the WebGL rAF
- * budget, so dropped canvas frames would stutter the whole page.
+ * Disabled when prefers-reduced-motion is set.
  */
 export function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
@@ -42,7 +36,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       setLenisInstance(null);
     };
 
-    if (shouldUseSmoothScroll()) {
+    if (!prefersReducedMotion()) {
       const feel = getScrollFeel();
       // lerp only — passing duration/easing would override and kill the lag
       lenis = new Lenis({
@@ -66,15 +60,6 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       gsap.ticker.add(tickerCallback);
       gsap.ticker.lagSmoothing(0);
     }
-
-    // Runtime FPS downgrade to LOW/MINIMAL → hand scroll back to the browser
-    const onTierChange = (event: Event) => {
-      const tier = (event as CustomEvent<{ tier: QualityTier }>).detail?.tier;
-      if (tier && tierWantsNativeScroll(tier)) {
-        destroyLenis();
-      }
-    };
-    window.addEventListener("particle-tier-change", onTierChange);
 
     // Debounced — mobile URL-bar resizes fire mid-scroll and refresh is heavy
     let resizeTimer = 0;
@@ -131,7 +116,6 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       mq.removeEventListener("change", onMotionChange);
       document.removeEventListener("click", onClick);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("particle-tier-change", onTierChange);
       window.clearTimeout(resizeTimer);
       destroyLenis();
     };

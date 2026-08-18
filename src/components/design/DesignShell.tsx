@@ -3,7 +3,7 @@
 import { useEffect, type ReactNode } from "react";
 
 /**
- * Design lab is outside the particle intro path.
+ * Design lab is outside the home intro path.
  * Root layout boots with data-intro="loading"; clear that here.
  */
 export function DesignShell({ children }: { children: ReactNode }) {

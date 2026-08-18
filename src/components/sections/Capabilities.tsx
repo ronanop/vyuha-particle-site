@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { OptionWheel } from "@/components/OptionWheel";
-import { prefersReducedMotion } from "@/lib/particles/ParticlePerformance";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 import { getLenis } from "@/lib/utils/lenis";
 
 const pillars = [
@@ -81,7 +81,7 @@ export function Capabilities() {
       trigger?.kill();
       trigger = null;
       triggerRef.current = null;
-      // Pinning four viewports on a phone fights the particle canvas and
+      // Pinning four viewports on a phone fights native scroll and
       // native scroll — keep the wheel tappable instead.
       if (!mq.matches) return;
 
@@ -142,12 +142,6 @@ export function Capabilities() {
       data-section-side="left"
       className="relative z-10 min-h-svh px-[max(1.25rem,env(safe-area-inset-left))] py-16 pr-[max(1.25rem,env(safe-area-inset-right))] md:px-10 md:py-20"
     >
-      <div
-        aria-hidden
-        data-particle-slot="pillars"
-        className="pointer-events-none absolute inset-0"
-      />
-
       <div className="relative mx-auto flex w-full max-w-[1400px] flex-col gap-6">
         <header className="max-w-2xl">
           <p className="mb-4 text-[13px] uppercase tracking-[0.18em] text-white/50">

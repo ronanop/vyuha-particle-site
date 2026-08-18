@@ -26,10 +26,7 @@ export const SITE_MAP: SiteNode[] = [
     path: "/solutions",
     title: "Solutions",
     children: [
-      {
-        path: "/solutions/security-compliance",
-        title: "Security & Compliance",
-      },
+      { path: "/solutions/security-compliance", title: "Security & Compliance" },
       { path: "/solutions/it-operations", title: "IT Operations" },
       {
         path: "/solutions/business-operations",

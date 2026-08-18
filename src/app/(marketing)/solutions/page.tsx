@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { SolutionsOverviewView } from "@/components/marketing/solutions/SolutionsViews";
+import { MarketingPageView } from "@/components/marketing/MarketingPageView";
 import { solutionsOverview } from "@/content/solutions/overview";
 
 export const metadata: Metadata = {
   title: "Solutions Overview — Vyuha.ai",
-  description: solutionsOverview.subtitle,
+  description: solutionsOverview.body[0],
 };
 
 export default function SolutionsPage() {
-  return <SolutionsOverviewView content={solutionsOverview} />;
+  return <MarketingPageView content={solutionsOverview} />;
 }

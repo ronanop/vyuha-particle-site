@@ -2,13 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { prefersReducedMotion } from "@/lib/particles/ParticlePerformance";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 
 const LightTunnel = dynamic(() => import("./LightTunnel"), { ssr: false });
 
 /**
  * Fibre-optic tunnel behind the platform hero only.
- * Not the site particle morph engine — marketing page, copy-only timeline.
  */
 export function PlatformHeroTunnel() {
   const [enabled, setEnabled] = useState(false);

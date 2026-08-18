@@ -65,9 +65,11 @@ export function SolutionHero({
             <p key={p.slice(0, 48)}>{p}</p>
           ))}
         </div>
-        <div className="mt-8">
-          <SolutionCtas ctas={ctas} />
-        </div>
+        {ctas.length > 0 ? (
+          <div className="mt-8">
+            <SolutionCtas ctas={ctas} />
+          </div>
+        ) : null}
       </div>
     </header>
   );
@@ -75,25 +77,41 @@ export function SolutionHero({
 
 export function SolutionSection({
   title,
+  headline,
   intro,
+  id,
   children,
 }: {
-  title: string;
+  title?: string;
+  headline?: string;
   intro?: string;
+  id?: string;
   children: ReactNode;
 }) {
   return (
-    <section className="border-b border-white/10 py-14 md:py-16">
+    <section
+      id={id}
+      className={`border-b border-white/10 py-14 md:py-16${id ? " scroll-mt-28" : ""}`}
+    >
       <div className="mx-auto w-full max-w-[1400px] px-6 md:px-10">
-        <h2 className="max-w-3xl font-display text-2xl font-medium tracking-tight text-white md:text-3xl">
-          {title}
-        </h2>
+        {title ? (
+          <h2 className="max-w-3xl font-display text-2xl font-medium tracking-tight text-white md:text-3xl">
+            {title}
+          </h2>
+        ) : null}
+        {headline ? (
+          <h3
+            className={`max-w-3xl font-display text-xl font-medium tracking-tight text-white/90 md:text-2xl ${title ? "mt-4" : ""}`}
+          >
+            {headline}
+          </h3>
+        ) : null}
         {intro ? (
-          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/55 md:text-base">
+          <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-white/55 md:text-base">
             {intro}
           </p>
         ) : null}
-        <div className="mt-10">{children}</div>
+        <div className={title || headline || intro ? "mt-10" : ""}>{children}</div>
       </div>
     </section>
   );

@@ -2,51 +2,74 @@ import type { PlatformProductContent } from "@/content/platform/types";
 
 export const platformIntegrations: PlatformProductContent = {
   path: "/platform/integrations",
-  eyebrow: "Platform · Integrations",
-  title: "Integrations",
-  headline: "Connect the stack you already run — then let agents reason across it",
+  eyebrow: "Integrations",
+  title: "ONE PLATFORM. EVERY SYSTEM.",
+  headline:
+    "With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly—no re-architecture, no rip-and-replace.",
   body: [
-    "We do not believe in forcing a massive rip-and-replace of the tools you already trust. Vyuha flows into the cracks of the organization: correlating signals across silos, absorbing repetitive triage, and taking autonomous action — without a query ever leaving your perimeter.",
-    "With 200+ cyber and IT integrations available on day one, Vyuha instantly connects the enterprise stack into a single intelligent foundation. No massive engineering overhaul required.",
+    "This isn't about merely wiring tools together. It's about binding fragmented silos into a context-aware fabric that enables autonomous agents to reason and act across the enterprise stack.",
   ],
-  primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
-    { label: "Explore Command", href: "/platform/command" },
-  ],
+  primaryCtas: [{ label: "Request A Demo", href: "/book-a-demo" }],
   sections: [
     {
-      title: "Security, identity, and cloud",
+      title: "Built For The Stack You Already Trust",
       intro:
-        "Agents connect natively into existing SIEM, EDR, IAM, and case-management tools rather than replacing them outright — then reason and act entirely inside your Vyuha One or In a BOX perimeter.",
-      items: [
-        "SIEM, XDR, and detection: Splunk, CrowdStrike, Palo Alto Networks, Wiz",
-        "Cloud and data: AWS, GCP, Azure, Snowflake",
-        "Identity and ITSM: IAM platforms and ServiceNow",
+        "Unify security platforms, cloud & IT infrastructure, ERP/FinOps tools, collaboration networks, knowledge bases, data lakes, and vector stores into a single self-governed foundation.",
+      cards: [
+        {
+          title: "Correlate Signals Across Silos",
+          body: "Bridge isolated telemetry into a shared, context-rich intelligence layer.",
+        },
+        {
+          title: "Apply Context-Aware Reasoning",
+          body: "Evaluate events through your organization's operational, financial, and risk lens.",
+        },
+        {
+          title: "Take Real, Autonomous Action",
+          body: "Execute policy-governed remediation directly inside your tools.",
+        },
       ],
     },
     {
-      title: "Conversational operations",
-      intro:
-        "Talk to machine data like a human expert — across the collaboration and operations tools the team already lives in.",
-      items: [
-        "Snowflake, Slack, Microsoft Teams, ServiceNow, SharePoint, and more",
-        "Natural-language access to operational data without switching tools",
-        "No query leaves the perimeter",
+      title: "Operational Impact & Ecosystem Reach",
+      paragraphs: [
+        "Vyuha unifies SIEM, XDR, IAM, Cloud, ITSM, and ERP platforms across Splunk, CrowdStrike, Palo Alto Networks, Wiz, AWS, GCP, Azure, Snowflake, ServiceNow, SAP, and Salesforce.",
+        "Agents can monitor, assess, and autonomously resolve operational, financial, and security risks across these systems at enterprise scale.",
       ],
+      cta: { label: "Explore Solutions", href: "/solutions" },
     },
     {
-      title: "What the gold fills",
-      items: [
-        "Context across silos — agents apply context-aware reasoning instead of surface-level insights.",
-        "Workforce load — reasoning agents absorb alert fatigue and upgrade analysts into orchestrators.",
-        "Structural control — data, custom agents, and models remain exclusively yours, with policy-based autonomy that meets Indian compliance requirements.",
+      title: "Integration Categories",
+      cards: [
+        {
+          title: "Security",
+          body: "SIEM, XDR, IAM and security platforms.",
+        },
+        {
+          title: "Cloud & IT",
+          body: "Cloud infrastructure, IT operations and service management.",
+        },
+        {
+          title: "ERP & FinOps",
+          body: "ERP and financial operations systems.",
+        },
+        {
+          title: "Collaboration",
+          body: "Collaboration networks and enterprise communication.",
+        },
+        {
+          title: "Knowledge & Data",
+          body: "Knowledge bases and data lakes.",
+        },
+        {
+          title: "Model & Vector Stores",
+          body: "Enterprise model and vector-store environments.",
+        },
       ],
-      closer:
-        "By filling operational cracks with reasoning, automation, and deep integrations, Vyuha turns a fragmented set of tools into an autonomous, self-healing enterprise.",
     },
   ],
   finalCtas: [
-    { label: "Book a Demo", href: "/book-a-demo" },
-    { label: "See Industry Use Cases", href: "/solutions/industry-use-cases" },
+    { label: "Request A Demo", href: "/book-a-demo" },
+    { label: "Explore Solutions", href: "/solutions" },
   ],
 };

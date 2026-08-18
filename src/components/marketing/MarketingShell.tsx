@@ -5,7 +5,7 @@ import { Navigation } from "@/components/Navigation";
 
 /**
  * Shared chrome for marketing routes (everything except / and /design).
- * Clears the particle-intro lock so secondary pages are immediately interactive.
+ * Clears the home intro lock so secondary pages are immediately interactive.
  */
 export function MarketingShell({ children }: { children: ReactNode }) {
   useEffect(() => {

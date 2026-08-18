@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/marketing/PlaceholderPage";
+import { MarketingPageView } from "@/components/marketing/MarketingPageView";
+import { resourcesNewsEvents } from "@/content/resources/newsEvents";
 
-export const metadata: Metadata = { title: "News & Events — Vyuha.ai" };
+export const metadata: Metadata = {
+  title: "News & Events — Vyuha.ai",
+  description: resourcesNewsEvents.body[0],
+};
 
 export default function NewsEventsPage() {
-  return (
-    <PlaceholderPage title="News & Events" path="/resources/news-events" />
-  );
+  return <MarketingPageView content={resourcesNewsEvents} />;
 }

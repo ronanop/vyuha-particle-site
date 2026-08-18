@@ -21,10 +21,10 @@ const COLORS = [
   { name: "Background", varName: "--background", hex: "#000000" },
   { name: "Foreground", varName: "--foreground", hex: "#ffffff" },
   { name: "Secondary", varName: "--foreground-secondary", hex: "#a3a3a3" },
-  { name: "Cyan", varName: "--particle-color", hex: "#22d3ee" },
-  { name: "Orange", varName: "--particle-color-orange", hex: "#f97316" },
-  { name: "Blue", varName: "--particle-color-blue", hex: "#3b82f6" },
-  { name: "Dark blue", varName: "--particle-color-dark-blue", hex: "#0b1f4d" },
+  { name: "Cyan", varName: "--kintsugi", hex: "#22d3ee" },
+  { name: "Cyan soft", varName: "--kintsugi-soft", hex: "#67e8f9" },
+  { name: "Orange", varName: "--accent-orange", hex: "#f97316" },
+  { name: "Blue", varName: "--accent-blue", hex: "#3b82f6" },
 ] as const;
 
 const WHEEL_ITEMS = [
@@ -158,8 +158,7 @@ export function DesignLab() {
             <PreviewFrame label="Body — Inter">
               <p className="max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
                 Connect knowledge, systems, workflows and teams through one
-                intelligent layer. Keep paragraphs short on the live site —
-                particle morphs carry the visual weight.
+                intelligent layer. Keep paragraphs short on the live site.
               </p>
               <p className="mt-4 text-[13px] tracking-wide text-white/40">
                 Secondary / meta · 13px · tracking-wide
@@ -198,7 +197,7 @@ export function DesignLab() {
         <DesignSection
           id="navigation"
           title="Navigation"
-          description="Fixed chrome used on the marketing site. Backdrop blur is gated off on LOW/MINIMAL particle tiers."
+          description="Fixed chrome used on the marketing site. Frosted bar over the page."
         >
           <PreviewFrame label="Header preview" className="!p-0">
             <div className="border-b border-white/10 bg-black/40 px-6 py-5 backdrop-blur-xl supports-[backdrop-filter]:bg-black/25">
@@ -261,22 +260,22 @@ export function DesignLab() {
         <DesignSection
           id="sections"
           title="Section patterns"
-          description="SectionFrame drives copy + particle slots. Left/right leave a column for morphs; center pins copy over the field."
+          description="SectionFrame places copy left, right, or center in a single column. No empty half for a canvas."
         >
           <div className="grid gap-4 md:grid-cols-3">
             {(
               [
                 {
                   side: "left",
-                  note: "Copy left · particle column right",
+                  note: "Copy left-aligned in the max-width column",
                 },
                 {
                   side: "right",
-                  note: "Particle column left · copy right",
+                  note: "Copy right-aligned in the max-width column",
                 },
                 {
                   side: "center",
-                  note: "Copy centered · full-bleed slot behind",
+                  note: "Copy centered",
                 },
               ] as const
             ).map((item) => (
@@ -286,37 +285,28 @@ export function DesignLab() {
               >
                 <div
                   className={`mb-3 grid h-28 gap-2 rounded-lg bg-black/50 p-2 ${
-                    item.side === "center"
-                      ? "grid-cols-1"
-                      : "grid-cols-2"
+                    item.side === "center" ? "grid-cols-1" : "grid-cols-3"
                   }`}
                 >
                   {item.side === "left" ? (
                     <>
-                      <div className="flex items-center justify-center rounded bg-white/10 text-[11px] text-white/70">
+                      <div className="col-span-2 flex items-center justify-center rounded bg-white/10 text-[11px] text-white/70">
                         Copy
                       </div>
-                      <div className="flex items-center justify-center rounded border border-dashed border-cyan-400/40 text-[11px] text-cyan-300/70">
-                        Slot
-                      </div>
+                      <div className="rounded bg-white/[0.03]" />
                     </>
                   ) : null}
                   {item.side === "right" ? (
                     <>
-                      <div className="flex items-center justify-center rounded border border-dashed border-cyan-400/40 text-[11px] text-cyan-300/70">
-                        Slot
-                      </div>
-                      <div className="flex items-center justify-center rounded bg-white/10 text-[11px] text-white/70">
+                      <div className="rounded bg-white/[0.03]" />
+                      <div className="col-span-2 flex items-center justify-center rounded bg-white/10 text-[11px] text-white/70">
                         Copy
                       </div>
                     </>
                   ) : null}
                   {item.side === "center" ? (
-                    <div className="relative flex items-center justify-center rounded border border-dashed border-cyan-400/30">
-                      <span className="absolute inset-1 rounded bg-cyan-400/5" />
-                      <span className="relative z-[1] rounded bg-white/10 px-3 py-1 text-[11px] text-white/70">
-                        Copy
-                      </span>
+                    <div className="flex items-center justify-center rounded bg-white/10 text-[11px] text-white/70">
+                      Copy
                     </div>
                   ) : null}
                 </div>

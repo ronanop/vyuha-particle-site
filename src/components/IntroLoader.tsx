@@ -2,19 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import {
-  isWebGLAvailable,
-  prefersReducedMotion,
-} from "@/lib/particles/ParticlePerformance";
-import {
-  armIntroAssemble,
-  particleState,
-} from "@/lib/particles/ParticleState";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 import { getLenis } from "@/lib/utils/lenis";
 
 const MIN_LOADER_MS = 1400;
 const TEXT_AFTER_FADE_MS = 240;
-const ASSEMBLE_AFTER_TEXT_MS = 140;
 const RELEASE_SCROLL_MS = 1000;
 const LETTERS = ["V", "Y", "U", "H", "A"] as const;
 
@@ -59,7 +51,7 @@ function IntroWord({ tone }: { tone: "ghost" | "solid" }) {
 
 /**
  * Typographic boot overlay. Progress fills the wordmark, then a staggered
- * exit hands off to hero copy and the scattered→earth assemble.
+ * exit hands off to the home hero copy.
  */
 export function IntroLoader() {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -68,17 +60,12 @@ export function IntroLoader() {
   const counterRef = useRef<HTMLParagraphElement>(null);
   const [visible, setVisible] = useState(true);
   const dismissedRef = useRef(false);
-  const epochRef = useRef(particleState.introEpoch);
   const startedAtRef = useRef(0);
 
   useEffect(() => {
-    const reduced =
-      prefersReducedMotion() || !isWebGLAvailable() || particleState.reducedMotion;
-
-    if (reduced) {
+    if (prefersReducedMotion()) {
       setVisible(false);
       setIntroAttr("ready");
-      armIntroAssemble();
       releaseScroll();
       return;
     }
@@ -102,7 +89,7 @@ export function IntroLoader() {
       ];
       const mid = Math.floor(nodes.length / 2);
       return { ghost: nodes.slice(0, mid), fill: nodes.slice(mid), all: nodes };
-    }
+    };
 
     const paintProgress = (value: number) => {
       const clipped = Math.max(0, Math.min(100, value));
@@ -174,7 +161,6 @@ export function IntroLoader() {
       dismissedRef.current = false;
       motionGen += 1;
       const gen = motionGen;
-      epochRef.current = particleState.introEpoch;
       startedAtRef.current = performance.now();
       displayed = 0;
       setVisible(true);
@@ -263,12 +249,6 @@ export function IntroLoader() {
         gsap.delayedCall(TEXT_AFTER_FADE_MS / 1000, () => {
           setIntroAttr("ready");
         }),
-        gsap.delayedCall(
-          (TEXT_AFTER_FADE_MS + ASSEMBLE_AFTER_TEXT_MS) / 1000,
-          () => {
-            armIntroAssemble();
-          },
-        ),
         gsap.delayedCall(RELEASE_SCROLL_MS / 1000, () => {
           releaseScroll();
         }),
@@ -276,22 +256,12 @@ export function IntroLoader() {
     };
 
     const tick = () => {
-      if (particleState.introEpoch !== epochRef.current) {
-        killMotion();
-        beginLoad();
-      }
-
       if (!dismissedRef.current) {
         const elapsed = performance.now() - startedAtRef.current;
-        const ready =
-          particleState.engineReady && particleState.scrollWarmed;
         const timeT = Math.min(1, elapsed / MIN_LOADER_MS);
-        const target = ready
-          ? Math.min(100, timeT * 100)
-          : Math.min(92, timeT * 92);
-        const gain = ready ? 0.18 : 0.09;
-        displayed += (target - displayed) * gain;
-        if (ready && elapsed >= MIN_LOADER_MS && displayed >= 99.4) {
+        const target = timeT * 100;
+        displayed += (target - displayed) * 0.18;
+        if (elapsed >= MIN_LOADER_MS && displayed >= 99.4) {
           displayed = 100;
           paintProgress(100);
           openPage();

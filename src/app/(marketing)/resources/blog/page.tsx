@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/marketing/PlaceholderPage";
+import { MarketingPageView } from "@/components/marketing/MarketingPageView";
+import { resourcesBlog } from "@/content/resources/blog";
 
-export const metadata: Metadata = { title: "Blog / Insights — Vyuha.ai" };
+export const metadata: Metadata = {
+  title: "Blog / Insights — Vyuha.ai",
+  description: resourcesBlog.body[0],
+};
 
 export default function BlogPage() {
-  return <PlaceholderPage title="Blog / Insights" path="/resources/blog" />;
+  return <MarketingPageView content={resourcesBlog} />;
 }

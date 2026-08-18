@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { prefersReducedMotion } from "@/lib/particles/ParticlePerformance";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 
 const Scanner = dynamic(() => import("./Scanner"), { ssr: false });
 
