@@ -1,16 +1,26 @@
-import type { ReactNode } from "react";
+import { Children, type ReactNode } from "react";
 import { SectionFrame } from "@/components/SectionFrame";
 import { FluidButton } from "@/components/FluidButton";
 import { ArchitectureTimeline } from "@/components/sections/ArchitectureTimeline";
+import { StandardizeWheel } from "@/components/sections/StandardizeWheel";
+import WarpText from "@/components/marketing/platform/WarpText";
 import { homeContent } from "@/content/home";
 
-function HomeCopyBlock({ children }: { children: ReactNode }) {
+function HomeCopyBlock({
+  children,
+  align = "right",
+}: {
+  children: ReactNode;
+  align?: "right" | "center";
+}) {
+  const inner =
+    align === "center"
+      ? "mx-auto w-full max-w-xl px-2 text-center md:max-w-2xl"
+      : "ml-auto w-full max-w-xl pr-2 text-right md:max-w-2xl md:pr-12 lg:pr-20";
   return (
     <section className="relative z-10 py-16 pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] md:py-24 md:px-10">
       <div className="mx-auto w-full max-w-[1400px]">
-        <div className="ml-auto w-full max-w-xl pr-2 text-right md:max-w-2xl md:pr-12 lg:pr-20">
-          {children}
-        </div>
+        <div className={inner}>{children}</div>
       </div>
     </section>
   );
@@ -28,10 +38,10 @@ function GlassCard({
   items?: string[];
 }) {
   return (
-    <div className="relative overflow-hidden border border-white/12 bg-white/[0.04] p-6 backdrop-blur-xl md:p-7">
+    <div className="relative overflow-hidden rounded-[1.25rem] border border-white/12 bg-[#0a1018]/85 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.85)] backdrop-blur-xl md:p-7">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.01))]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.07),rgba(255,255,255,0.01))]"
       />
       <div className="relative">
         <h3 className="font-display text-[clamp(1.2rem,1.8vw,1.5rem)] font-medium tracking-[-0.02em] text-white">
@@ -56,6 +66,44 @@ function GlassCard({
           </ul>
         ) : null}
       </div>
+    </div>
+  );
+}
+
+// Turns a list of cards into a scroll-driven 3D stacked deck: each card is
+// sticky, so as you scroll they pile up under a slight perspective tilt, with
+// deeper cards scaled down and dimmed for depth. Pure CSS — no scroll JS.
+function CardStack({ children }: { children: ReactNode }) {
+  const items = Children.toArray(children);
+  const n = items.length;
+  return (
+    <div className="mt-8 [perspective:1600px]">
+      <ul className="relative [transform-style:preserve-3d]">
+        {items.map((child, i) => {
+          const depth = n - 1 - i; // 0 = front card, higher = further back
+          return (
+            <li
+              key={i}
+              className="sticky"
+              style={{
+                top: `calc(6.5rem + ${i * 1.6}rem)`,
+                zIndex: i + 1,
+                marginBottom: i === n - 1 ? 0 : "1.25rem",
+              }}
+            >
+              <div
+                className="origin-top transition-[transform,filter] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform"
+                style={{
+                  transform: `scale(${1 - depth * 0.04})`,
+                  filter: `brightness(${1 - depth * 0.14})`,
+                }}
+              >
+                {child}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -134,14 +182,35 @@ export function HomeView() {
         </HomeCopyBlock>
       ))}
 
-      <SectionFrame id="command" side="center" align="start" compact>
-        <h2
-          data-earth-morph="3"
-          className="font-display mx-auto max-w-[18ch] text-balance text-[clamp(2rem,8vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white"
-        >
-          Command the <span className="whitespace-nowrap">Agentic Enterprise</span>
-        </h2>
-        <p className="mx-auto mt-8 max-w-2xl text-balance text-[17px] leading-relaxed text-white/60 md:text-[18px]">
+      <SectionFrame
+        id="command"
+        side="center"
+        align="start"
+        compact
+        contentClassName="mx-auto w-full max-w-4xl text-center"
+      >
+        <div data-earth-morph="3">
+          <h2 className="sr-only">Command the Agentic Enterprise</h2>
+          <WarpText
+            text={"Command the\nAgentic Enterprise"}
+            color="#f8f5ff"
+            warpStrength={0.08}
+            warpScale={1.7}
+            speed={0.55}
+            pointerInfluence={0.42}
+            pointerStrength={0.38}
+            refraction={0.018}
+            ripple
+            fontSize="clamp(2rem, 8vw, 5.5rem)"
+            fontWeight={500}
+            fontFamily="var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif"
+            letterSpacing="-0.035em"
+            lineHeight={0.95}
+            className="font-display"
+            style={{ height: "clamp(120px, 16vw, 220px)" }}
+          />
+        </div>
+        <p className="mx-auto mt-3 max-w-2xl text-balance text-[17px] leading-relaxed text-white/60 md:text-[18px]">
           {content.command.body}
         </p>
         <div className="mt-8 flex justify-center">
@@ -152,11 +221,11 @@ export function HomeView() {
         </div>
       </SectionFrame>
 
-      <HomeCopyBlock>
-        <h2 className="font-display ml-auto max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white">
+      <HomeCopyBlock align="center">
+        <h2 className="font-display mx-auto max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white">
           {content.architectureTitle}
         </h2>
-        <p className="ml-auto mt-6 max-w-lg text-[17px] leading-relaxed text-white/60">
+        <p className="mx-auto mt-6 max-w-lg text-[17px] leading-relaxed text-white/60">
           {content.architectureIntro}
         </p>
       </HomeCopyBlock>
@@ -184,26 +253,18 @@ export function HomeView() {
         <p className="mt-4 max-w-lg text-[16px] leading-relaxed text-white/55">
           {content.standardizeIntro}
         </p>
-        <ul className="mt-8 grid grid-cols-1 gap-4">
-          {content.standardizeCards.map((card) => (
-            <li key={card.title}>
-              <GlassCard title={card.title} body={card.body} />
-            </li>
-          ))}
-        </ul>
+        <StandardizeWheel cards={content.standardizeCards} />
       </SectionFrame>
 
       <SectionFrame id="box-delivery" side="left" align="start">
         <h2 className="font-display max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white">
           {content.controlTitle}
         </h2>
-        <ul className="mt-10 grid grid-cols-1 gap-4">
+        <CardStack>
           {content.controlCards.map((card) => (
-            <li key={card.title}>
-              <GlassCard title={card.title} items={card.items} />
-            </li>
+            <GlassCard key={card.title} title={card.title} items={card.items} />
           ))}
-        </ul>
+        </CardStack>
       </SectionFrame>
 
       <SectionFrame id="demo" side="left">

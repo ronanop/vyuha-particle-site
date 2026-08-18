@@ -17,7 +17,7 @@ export function MarketingShell({ children }: { children: ReactNode }) {
   return (
     <div className="marketing-shell min-h-svh bg-black text-white">
       <Navigation />
-      <main className="relative z-10 pt-24 md:pt-28">{children}</main>
+      <main className="relative z-10 pt-20 md:pt-24">{children}</main>
     </div>
   );
 }

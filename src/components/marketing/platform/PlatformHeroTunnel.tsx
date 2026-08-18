@@ -7,7 +7,7 @@ import { prefersReducedMotion } from "@/lib/utils/motion";
 const LightTunnel = dynamic(() => import("./LightTunnel"), { ssr: false });
 
 /**
- * Fibre-optic tunnel behind the platform hero only.
+ * Fibre-optic tunnel behind marketing heroes.
  */
 export function PlatformHeroTunnel() {
   const [enabled, setEnabled] = useState(false);

@@ -218,7 +218,8 @@ body {
   animation: kintsugi-flow 12s linear infinite;
 }
 
-.platform-page [data-hero-in] {
+.platform-page [data-hero-in],
+.solutions-page [data-hero-in] {
   animation: platform-hero-in 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -239,7 +240,8 @@ body {
     stroke-dasharray: none;
   }
 
-  .platform-page [data-hero-in] {
+  .platform-page [data-hero-in],
+  .solutions-page [data-hero-in] {
     animation: none;
     opacity: 1;
     transform: none;

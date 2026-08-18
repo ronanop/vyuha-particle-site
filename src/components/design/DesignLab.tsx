@@ -197,30 +197,26 @@ export function DesignLab() {
         <DesignSection
           id="navigation"
           title="Navigation"
-          description="Fixed chrome used on the marketing site. Frosted bar over the page."
+          description="Motion Minimal Navs: floating dark shell, cream control bar, expanding menu panel."
         >
           <PreviewFrame label="Header preview" className="!p-0">
-            <div className="border-b border-white/10 bg-black/40 px-6 py-5 backdrop-blur-xl supports-[backdrop-filter]:bg-black/25">
-              <div className="flex items-center justify-between">
-                <Link href="/" className="inline-flex items-center" aria-label="Vyuha.ai">
-                  <Image
-                    src="/vyuha-logo.png"
-                    alt="Vyuha.ai"
-                    width={1297}
-                    height={393}
-                    className="h-7 w-auto"
-                  />
-                </Link>
-                <ul className="hidden items-center gap-8 md:flex">
-                  {["Command", "Vyuha Box", "Pillars", "Founders"].map((label) => (
-                    <li key={label}>
-                      <span className="text-[13px] tracking-wide text-white/55">
-                        {label}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <FluidButton text="Book a Demo" size="sm" />
+            <div className="flex items-start justify-between bg-black p-5">
+              <Link href="/" className="inline-flex items-center" aria-label="Vyuha.ai">
+                <Image
+                  src="/vyuha-logo.png"
+                  alt="Vyuha.ai"
+                  width={1297}
+                  height={393}
+                  className="h-7 w-auto"
+                />
+              </Link>
+              <div className="w-[280px] rounded-[24px] bg-[#0f0f11] p-2">
+                <div className="flex items-center justify-between rounded-[18px] bg-[#f7f6f3] py-2 pr-2 pl-5">
+                  <span className="text-[15px] text-[#0a0a0a]">Menu</span>
+                  <span className="rounded-full border border-black/20 px-3 py-1.5 text-[12px] text-[#0a0a0a]/80">
+                    Demo
+                  </span>
+                </div>
               </div>
             </div>
           </PreviewFrame>

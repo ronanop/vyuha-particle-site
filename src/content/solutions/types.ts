@@ -60,3 +60,45 @@ export type MarketingPageContent = {
   finalBody?: string;
   finalCtas?: SolutionCta[];
 };
+
+export type SolutionsFunction = SolutionLinkCard & {
+  index: string;
+  way: string;
+};
+
+export type SolutionsReplacement = {
+  index: string;
+  title: string;
+  body: string;
+};
+
+export type SolutionsIndustry = {
+  title: string;
+  headline: string;
+  body: string;
+};
+
+export type SolutionsOverviewContent = {
+  path: string;
+  eyebrow: string;
+  title: string;
+  displayTitle: [string, string];
+  leitmotif: string;
+  quote: string;
+  body: string[];
+  primaryCtas: SolutionCta[];
+  functionsTitle: string;
+  functionsIntro: string;
+  functions: SolutionsFunction[];
+  replaceTitle: string;
+  replaceIntro: string;
+  replacements: SolutionsReplacement[];
+  replaceCloser: string;
+  industriesTitle: string;
+  industriesIntro: string;
+  industries: SolutionsIndustry[];
+  industriesCta: SolutionCta;
+  finalHeadline: string;
+  finalBody: string;
+  finalCtas: SolutionCta[];
+};
