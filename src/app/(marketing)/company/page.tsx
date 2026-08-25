@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/marketing/PlaceholderPage";
-import { findSiteNode } from "@/lib/sitemap";
+import { CompanyOverviewView } from "@/components/marketing/company/CompanyViews";
+import { companyAbout } from "@/content/company/about";
 
-const node = findSiteNode("/company")!;
-
-export const metadata: Metadata = { title: `${node.title} — Vyuha.ai` };
+export const metadata: Metadata = {
+  title: "Company — Vyuha.ai",
+  description: companyAbout.body[0],
+};
 
 export default function CompanyPage() {
-  return (
-    <PlaceholderPage
-      title={node.title}
-      path={node.path}
-      childrenNodes={node.children}
-    />
-  );
+  return <CompanyOverviewView content={companyAbout} />;
 }

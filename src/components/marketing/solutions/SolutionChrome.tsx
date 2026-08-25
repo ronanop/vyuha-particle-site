@@ -43,7 +43,7 @@ export function SolutionHero({
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(34,211,238,0.12),transparent_55%),radial-gradient(ellipse_at_80%_20%,rgba(59,130,246,0.08),transparent_50%)]"
       />
-      <div className="relative mx-auto w-full max-w-[1400px] px-6 md:px-10">
+      <div className="relative mx-auto w-full max-w-[1400px] px-6 pt-24 md:px-10 md:pt-28">
         <p className="mb-4 font-display text-[11px] font-medium uppercase tracking-[0.28em] text-cyan-400/80">
           {eyebrow}
         </p>

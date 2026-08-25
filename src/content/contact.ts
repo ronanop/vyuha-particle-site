@@ -1,17 +1,19 @@
-import type { MarketingPageContent } from "@/content/solutions/types";
+export type ContactContent = {
+  path: string;
+  eyebrow: string;
+  title: string;
+  email: string;
+  phone: string;
+  phoneHref: string;
+  formIntro: string;
+};
 
-export const contactPage: MarketingPageContent = {
+export const contactPage: ContactContent = {
   path: "/contact",
   eyebrow: "CONTACT",
-  title: "Contact Vyuha.ai",
-  body: [
-    "Start a conversation about secure, governed, enterprise agentic intelligence.",
-  ],
-  primaryCtas: [],
-  sections: [
-    {
-      pendingNotice:
-        "Content pending: Final contact details, address, phone, email, social links, and approved contact-form fields were not supplied in the provided source material. Do not invent these details.",
-    },
-  ],
+  title: "Get in touch",
+  email: "hello@vyuha.ai",
+  phone: "+91 11 4108 2200",
+  phoneHref: "tel:+911141082200",
+  formIntro: "Send a message and we will follow up.",
 };

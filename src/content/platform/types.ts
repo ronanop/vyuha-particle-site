@@ -17,6 +17,12 @@ export type PlatformProblem = {
   body: string;
 };
 
+export type PlatformStrategyPoint = {
+  index: string;
+  title: string;
+  body: string;
+};
+
 export type PlatformOverviewContent = {
   path: string;
   eyebrow: string;
@@ -34,6 +40,8 @@ export type PlatformOverviewContent = {
   problems: PlatformProblem[];
   productsIntro: string;
   products: SolutionLinkCard[];
+  integrationStrategyTitle: string;
+  integrationStrategy: PlatformStrategyPoint[];
   kintsugiTitle: string;
   kintsugiEyebrow: string;
   kintsugiSignature?: string;

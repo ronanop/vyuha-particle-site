@@ -13,24 +13,13 @@ export type HomeCopyBlock = {
   cta: SolutionCta;
 };
 
-export type HomeArchitectureLayer = {
-  id: "command-01" | "command-02" | "command-03";
-  title: string;
-  headline: string;
-  items: string[];
-};
-
 export type HomeContent = {
-  eyebrow: string;
   displayTitle: [string, string, string];
   lead: string;
   primaryCtas: SolutionCta[];
   foundations: HomeCopyBlock[];
   command: HomeCopyBlock;
-  architectureTitle: string;
-  architectureIntro: string;
-  architecture: HomeArchitectureLayer[];
-  operatingTitle: string;
+  operatingTitle: [string, string];
   operatingBody: string[];
   operatingCta: SolutionCta;
   standardizeTitle: string;
@@ -45,7 +34,6 @@ export type HomeContent = {
 };
 
 export const homeContent: HomeContent = {
-  eyebrow: "Democratizing AI in INDIA • Engineered for Visionaries",
   displayTitle: ["Sovereign", "Agentic AI", "for the Enterprise"],
   lead: "One platform. Infinite autonomous outcomes. Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders to provide deep enterprise context to AI under uncompromising governance.",
   primaryCtas: [
@@ -61,55 +49,23 @@ export const homeContent: HomeContent = {
     {
       title: "Architected for Builders and Operators",
       body: "Built to scale with you—from instantly deploying pre-built apps to orchestrating custom workflows. We are democratizing AI in INDIA, empowering your teams to drive massive productivity without ever compromising your data perimeter.",
-      cta: { label: "Read More", href: "/company/about" },
+      cta: { label: "Read More", href: "/company" },
     },
     {
       title: "Reimagine the Enterprise with Agentic AI",
-      body: "One platform. Countless workflows transformed. Take the leap to shape, own, and scale your operations, providing deep context to AI across Cybersecurity, IT, and business functions.",
+      body: "One Agentic Fabric. Countless workflows transformed. Take the leap to shape, own, and scale your operations, providing deep context to AI across Cybersecurity, IT, and business functions.",
       cta: { label: "See the Apps in Action", href: "/platform/command" },
     },
   ],
   command: {
     title: "Command the Agentic Enterprise",
-    body: "One platform, many teams transformed across Cybersecurity, IT, FinOps, and Business Operations. Deploy agentic apps instantly to shape, own, and scale your intelligence.",
+    body: "One Agentic Fabric for Cybersecurity, IT, FinOps, and Business Operations. Deploy agentic apps instantly to shape, own, and scale your intelligence.",
     cta: { label: "Explore Agentic Apps", href: "/platform/command" },
   },
-  architectureTitle: "Platform Architecture",
-  architectureIntro:
-    "Open, agentic, and fully integrated with your existing stack. Built on Airrived's proven engine, Vyuha delivers true AI ownership, complete data control, and an adaptable architecture.",
-  architecture: [
-    {
-      id: "command-01",
-      title: "01 | CREATE",
-      headline: "Providing Context to AI",
-      items: [
-        "Democratize Fine-Tuning",
-        "Ground Models in Enterprise Telemetry",
-        "Domain-Specific Language Models (DSLMs)",
-      ],
-    },
-    {
-      id: "command-02",
-      title: "02 | ACTIVATE",
-      headline: "Deep Reasoning Agents",
-      items: [
-        "Agent-to-Agent (A2A) Mesh",
-        "Composable Agent Ecosystem",
-        "Multi-Agent Collaboration",
-      ],
-    },
-    {
-      id: "command-03",
-      title: "03 | BUILD",
-      headline: "Autonomous Orchestration",
-      items: [
-        "Living Workflows in Minutes",
-        "Beyond SOAR & RPA",
-        "Self-Healing Execution",
-      ],
-    },
+  operatingTitle: [
+    "The Operating Engine for",
+    "Enterprise-Controlled Intelligence",
   ],
-  operatingTitle: "The Operating Engine for Enterprise-Controlled Intelligence",
   operatingBody: [
     "Vyuha transforms advanced AI into real-world operational velocity—enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
     "No complexity. No specialized AI research team required. Just unified control, delivered entirely within your own private boundary.",
@@ -132,7 +88,7 @@ export const homeContent: HomeContent = {
       body: "Harness deep-reasoning agents without hiring armies of specialized AI engineers. Upgrade existing L1 and L2 operators into elite orchestrators.",
     },
   ],
-  controlTitle: "Take Back Control with Enterprise-Controlled AI",
+  controlTitle: "Intelligence on Your Terms: Sovereign, Private, Governed",
   controlCards: [
     {
       title: "Empower, Adapt, & Evolve",

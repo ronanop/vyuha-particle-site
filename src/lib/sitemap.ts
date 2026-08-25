@@ -17,7 +17,7 @@ export const SITE_MAP: SiteNode[] = [
     path: "/platform",
     title: "Platform",
     children: [
-      { path: "/platform/command", title: "Vyuha Command" },
+      { path: "/platform/command", title: "Vyuha.ONE" },
       { path: "/platform/in-a-box", title: "Vyuha In a BOX" },
       { path: "/platform/integrations", title: "Integrations" },
     ],
@@ -41,10 +41,6 @@ export const SITE_MAP: SiteNode[] = [
   {
     path: "/company",
     title: "Company",
-    children: [
-      { path: "/company/about", title: "About Us" },
-      { path: "/company/team", title: "Team" },
-    ],
   },
   {
     path: "/resources",
@@ -79,4 +75,17 @@ export function findSiteNode(path: string): SiteNode | null {
     return null;
   };
   return walk(SITE_MAP);
+}
+
+/** Depth-first list of every route in SITE_MAP (parents before children). */
+export function flattenSiteMap(nodes: SiteNode[] = SITE_MAP): SiteNode[] {
+  const out: SiteNode[] = [];
+  const walk = (list: SiteNode[]) => {
+    for (const node of list) {
+      out.push({ path: node.path, title: node.title });
+      if (node.children) walk(node.children);
+    }
+  };
+  walk(nodes);
+  return out;
 }

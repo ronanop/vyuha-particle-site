@@ -27,6 +27,8 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
 
     const destroyLenis = () => {
       if (!lenis) return;
+      ScrollTrigger.scrollerProxy(document.documentElement, {});
+      ScrollTrigger.defaults({ scroller: window });
       if (tickerCallback) {
         gsap.ticker.remove(tickerCallback);
         tickerCallback = null;
@@ -49,6 +51,32 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       });
 
       setLenisInstance(lenis);
+
+      ScrollTrigger.scrollerProxy(document.documentElement, {
+        scrollTop(value) {
+          // ScrollTrigger may call this after Lenis teardown (cleanup order).
+          if (!lenis) {
+            if (arguments.length) {
+              document.documentElement.scrollTop = value as number;
+            }
+            return window.scrollY || document.documentElement.scrollTop || 0;
+          }
+          if (arguments.length) {
+            lenis.scrollTo(value as number, { immediate: true });
+          }
+          return lenis.scroll;
+        },
+        getBoundingClientRect() {
+          return {
+            top: 0,
+            left: 0,
+            width: window.innerWidth,
+            height: window.innerHeight,
+          };
+        },
+      });
+
+      ScrollTrigger.defaults({ scroller: document.documentElement });
 
       lenis.on("scroll", () => {
         ScrollTrigger.update();

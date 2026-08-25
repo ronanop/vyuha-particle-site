@@ -1,8 +1,8 @@
 import { Children, type ReactNode } from "react";
 import { SectionFrame } from "@/components/SectionFrame";
 import { FluidButton } from "@/components/FluidButton";
-import { ArchitectureTimeline } from "@/components/sections/ArchitectureTimeline";
 import { StandardizeWheel } from "@/components/sections/StandardizeWheel";
+import ScrollReveal from "@/components/marketing/ScrollReveal";
 import WarpText from "@/components/marketing/platform/WarpText";
 import { homeContent } from "@/content/home";
 
@@ -120,18 +120,12 @@ export function HomeView() {
       >
         <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] items-end pb-[max(4rem,env(safe-area-inset-bottom))] pt-28 md:pb-24 md:pt-20">
           <div className="hero-copy w-full min-w-0 max-w-xl md:max-w-2xl">
-              <p
-                data-hero-in
-                className="mb-5 font-display text-[11px] font-medium uppercase tracking-[0.22em] text-cyan-300/85"
-              >
-                {content.eyebrow}
-              </p>
-              <h1 className="font-display text-[clamp(2rem,9vw,5.8rem)] font-medium leading-[0.92] tracking-[-0.04em] text-white">
+              <h1 className="font-display text-[clamp(2rem,9vw,5.8rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
                 {content.displayTitle.map((line, i) => (
                   <span
                     key={line}
                     data-hero-in
-                    className={i === 0 ? "hero-tricolor" : "block"}
+                    className={i === 0 ? "hero-tricolor block" : "block"}
                   >
                     {line}
                   </span>
@@ -173,7 +167,7 @@ export function HomeView() {
           >
             {block.title}
           </h2>
-          <p className="ml-auto mt-6 max-w-lg text-[17px] leading-relaxed text-white/60">
+          <p className="ml-auto mt-6 max-w-lg text-[17px] text-justify leading-relaxed text-white/60">
             {block.body}
           </p>
           <div className="mt-8 flex justify-end">
@@ -187,6 +181,7 @@ export function HomeView() {
         side="center"
         align="start"
         compact
+        className="mb-24 md:mb-36"
         contentClassName="mx-auto w-full max-w-4xl text-center"
       >
         <div data-earth-morph="3">
@@ -201,13 +196,13 @@ export function HomeView() {
             pointerStrength={0.38}
             refraction={0.018}
             ripple
-            fontSize="clamp(2rem, 8vw, 5.5rem)"
+            fontSize="clamp(2.4rem, 9.6vw, 6.6rem)"
             fontWeight={500}
             fontFamily="var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif"
             letterSpacing="-0.035em"
             lineHeight={0.95}
             className="font-display"
-            style={{ height: "clamp(120px, 16vw, 220px)" }}
+            style={{ height: "clamp(144px, 19.2vw, 264px)" }}
           />
         </div>
         <p className="mx-auto mt-3 max-w-2xl text-balance text-[17px] leading-relaxed text-white/60 md:text-[18px]">
@@ -221,51 +216,143 @@ export function HomeView() {
         </div>
       </SectionFrame>
 
-      <HomeCopyBlock align="center">
-        <h2 className="font-display mx-auto max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white">
-          {content.architectureTitle}
-        </h2>
-        <p className="mx-auto mt-6 max-w-lg text-[17px] leading-relaxed text-white/60">
-          {content.architectureIntro}
-        </p>
-      </HomeCopyBlock>
-
-      <ArchitectureTimeline layers={content.architecture} />
-
-      <SectionFrame id="box-perimeter" side="right" align="start">
-        <h2 className="font-display max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white">
-          {content.operatingTitle}
-        </h2>
-        <div className="mt-6 max-w-lg space-y-4 text-[17px] leading-relaxed text-white/60">
-          {content.operatingBody.map((paragraph) => (
-            <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-          ))}
+      <SectionFrame
+        id="box-perimeter"
+        side="center"
+        align="center"
+        contentClassName="w-full"
+      >
+        <div className="grid w-full grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="flex flex-col justify-center lg:min-h-[min(50vh,28rem)] lg:pr-8">
+            <h2 className="font-display text-left text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white">
+              {content.operatingTitle.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </h2>
+            <div className="mt-8 flex justify-start lg:mt-10">
+              <FluidButton
+                text={content.operatingCta.label}
+                href={content.operatingCta.href}
+              />
+            </div>
+          </div>
+          <div className="lg:pl-8">
+            <div className="space-y-10">
+              {content.operatingBody.map((paragraph) => (
+                <ScrollReveal
+                  key={paragraph.slice(0, 48)}
+                  baseOpacity={0}
+                  enableBlur
+                  baseRotation={5}
+                  blurStrength={10}
+                  containerClassName="text-left"
+                  textClassName="font-display text-left text-white !text-[clamp(1.15rem,2.2vw,1.85rem)] !font-medium !leading-[1.45]"
+                  wordAnimationEnd="bottom 70%"
+                >
+                  {paragraph}
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="mt-8">
-          <FluidButton
-            text={content.operatingCta.label}
-            href={content.operatingCta.href}
-          />
-        </div>
-        <h3 className="font-display mt-16 text-[clamp(1.5rem,2.4vw,2.1rem)] font-medium tracking-[-0.03em] text-white">
-          {content.standardizeTitle}
-        </h3>
-        <p className="mt-4 max-w-lg text-[16px] leading-relaxed text-white/55">
-          {content.standardizeIntro}
-        </p>
-        <StandardizeWheel cards={content.standardizeCards} />
+        <StandardizeWheel
+          cards={content.standardizeCards}
+          title={content.standardizeTitle}
+          intro={content.standardizeIntro}
+        />
       </SectionFrame>
 
-      <SectionFrame id="box-delivery" side="left" align="start">
-        <h2 className="font-display max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white">
-          {content.controlTitle}
-        </h2>
-        <CardStack>
-          {content.controlCards.map((card) => (
-            <GlassCard key={card.title} title={card.title} items={card.items} />
-          ))}
-        </CardStack>
-      </SectionFrame>
+      <section
+        id="box-delivery"
+        className="relative z-10 overflow-hidden pt-0 pb-12 md:pt-0 md:pb-16 lg:pt-0 lg:pb-20"
+      >
+        <div className="relative mx-auto w-full max-w-[1400px] px-6 md:px-10">
+          {/* Title block */}
+          <div className="mb-16 max-w-3xl md:mb-20">
+            <h2 className="font-display text-[clamp(2.25rem,5.5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.04em] text-white">
+              {content.controlTitle}
+            </h2>
+            <div
+              aria-hidden
+              className="mt-8 h-px w-24 bg-gradient-to-r from-cyan-400 to-transparent"
+            />
+          </div>
+
+          {/* Pillar grid */}
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:gap-16">
+            {content.controlCards.map((card, ci) => (
+              <div
+                key={card.title}
+                className="group relative overflow-hidden rounded-[1.75rem] border border-white/[0.12] bg-[#070b12]/90 p-8 shadow-[0_40px_120px_-36px_rgba(0,0,0,0.85)] backdrop-blur-2xl md:p-10 lg:p-12"
+              >
+                {/* Radial glow */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.16),transparent_48%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01))]"
+                />
+                {/* Ghost number */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -right-3 -top-5 font-display text-[clamp(6rem,16vw,11rem)] font-medium leading-none tracking-[-0.07em] text-white/[0.04] md:-right-5 md:-top-7"
+                >
+                  {String(ci + 1).padStart(2, "0")}
+                </div>
+
+                <div className="relative">
+                  <span className="font-display text-[12px] font-medium uppercase tracking-[0.28em] text-cyan-300/80">
+                    Pillar {String(ci + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="font-display mt-4 text-[clamp(1.65rem,2.8vw,2.5rem)] font-medium leading-[1.08] tracking-[-0.03em] text-white">
+                    {card.title}
+                  </h3>
+                  <div
+                    aria-hidden
+                    className="mt-6 h-px w-12 bg-gradient-to-r from-cyan-400/60 to-transparent"
+                  />
+                  {card.items?.length ? (
+                    <ul className="mt-8 space-y-5">
+                      {card.items.map((item, ii) => (
+                        <li key={item} className="flex items-start gap-4">
+                          <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-cyan-400/30 font-display text-[11px] font-medium text-cyan-300/80">
+                            {ii + 1}
+                          </span>
+                          <span className="text-[17px] leading-relaxed text-white/70 md:text-[18px]">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+
+                {/* Kintsugi seam at bottom */}
+                <svg
+                  aria-hidden
+                  className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full overflow-visible"
+                >
+                  <line
+                    x1="0"
+                    y1="1"
+                    x2="100%"
+                    y2="1"
+                    stroke="url(#kintsugi-line)"
+                    strokeWidth="2"
+                    className="kintsugi-seam"
+                  />
+                  <defs>
+                    <linearGradient id="kintsugi-line">
+                      <stop offset="0%" stopColor="rgba(34,211,238,0.55)" />
+                      <stop offset="100%" stopColor="rgba(34,211,238,0)" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <SectionFrame id="demo" side="left">
         <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-white/50">

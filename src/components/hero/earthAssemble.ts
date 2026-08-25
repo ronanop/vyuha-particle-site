@@ -38,7 +38,16 @@ function smoother(t: number): number {
 }
 
 /** Wide field behind the globe — particles drift in from the depth of the hero. */
-function createScatterStarts(targets: Float32Array): Float32Array {
+export type AssembleField = {
+  halfW: number;
+  halfH: number;
+  originX: number;
+};
+
+function createScatterStarts(
+  targets: Float32Array,
+  field?: AssembleField,
+): Float32Array {
   const starts = new Float32Array(targets.length);
   const count = targets.length / 3;
 
@@ -50,6 +59,12 @@ function createScatterStarts(targets: Float32Array): Float32Array {
     const h = hash(i);
     const h2 = hash(i + 17);
     const h3 = hash(i + 41);
+    if (field) {
+      starts[i3] = (h - 0.5) * 2 * field.halfW * 1.18 - field.originX;
+      starts[i3 + 1] = (h2 - 0.5) * 2 * field.halfH * 1.15;
+      starts[i3 + 2] = -3 - h3 * 14;
+      continue;
+    }
     const angle = h * Math.PI * 2;
     const radius = 16 + h2 * 26;
     starts[i3] = tx + Math.cos(angle) * radius + (h - 0.5) * 10;
@@ -108,13 +123,14 @@ export function updateAssembleLayers(layers: AssembleLayer[], progress: number) 
 function buildTiming(
   targets: Float32Array,
   isLines: boolean,
+  field?: AssembleField,
 ): {
   starts: Float32Array;
   delta: Float32Array;
   delay: Float32Array;
   invSpan: Float32Array;
 } {
-  const starts = createScatterStarts(targets);
+  const starts = createScatterStarts(targets, field);
   const count = targets.length / 3;
   const delta = new Float32Array(targets.length);
   const delay = new Float32Array(count);
@@ -144,11 +160,12 @@ export function addAnimatedPoints(
   color: string,
   size: number,
   opacity: number,
+  field?: AssembleField,
 ) {
   if (positions.length < 3) return;
 
   const targets = positions.slice();
-  const { starts, delta, delay, invSpan } = buildTiming(targets, false);
+  const { starts, delta, delay, invSpan } = buildTiming(targets, false, field);
   const live = starts.slice();
   const geo = new THREE.BufferGeometry();
   const attr = new THREE.BufferAttribute(live, 3);
@@ -192,6 +209,58 @@ export function addAnimatedPoints(
     invFadeSpan: 1 / 0.55,
     kind: "points",
     animatePosition: true,
+  });
+}
+
+/** Sparse dust that stays across the hero so the formed icon is not a boxed island. */
+export function addAmbientField(
+  group: THREE.Group,
+  meshes: Array<THREE.Points | THREE.LineSegments>,
+  layers: AssembleLayer[],
+  color: string,
+  size: number,
+  opacity: number,
+  field: AssembleField,
+  count = 1400,
+) {
+  const dummy = new Float32Array(count * 3);
+  const starts = createScatterStarts(dummy, field);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(starts, 3));
+
+  const col = new THREE.Color(color);
+  const colors = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    colors[i * 3] = col.r;
+    colors[i * 3 + 1] = col.g;
+    colors[i * 3 + 2] = col.b;
+  }
+  geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: size * 0.72,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    vertexColors: true,
+  });
+  const mesh = new THREE.Points(geo, mat);
+  group.add(mesh);
+  meshes.push(mesh);
+  const empty = new Float32Array(0);
+  layers.push({
+    mesh,
+    positions: starts,
+    starts,
+    delta: empty,
+    delay: empty,
+    invSpan: empty,
+    targetOpacity: opacity,
+    fadeDelay: 0,
+    invFadeSpan: 1 / 0.7,
+    kind: "points",
+    animatePosition: false,
   });
 }
 

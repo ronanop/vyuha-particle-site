@@ -7,13 +7,12 @@ export const solutionsOverview: SolutionsOverviewContent = {
   displayTitle: ["Sovereign AI.", "In Operation."],
   leitmotif: "Build, orchestrate, and deploy — without a byte leaving your perimeter.",
   quote:
-    "India has built for digital scale. Now, it’s time to build intelligence on our own terms.",
+    "INDIA has built for digital scale. Now, it’s time to build intelligence on our own terms.",
   body: [
     "Vyuha gives Indian enterprises a clean canvas to create and scale autonomous agents — without code, complexity, or a single byte leaving their perimeter. Transform security, IT, and business operations into connected, self-governed ecosystems that think, learn, and act in real time.",
   ],
   primaryCtas: [
     { label: "Explore by Function", href: "#solutions-functions" },
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
   ],
   functionsTitle: "Intelligence built around your operations",
   functionsIntro:
@@ -77,21 +76,25 @@ export const solutionsOverview: SolutionsOverviewContent = {
       title: "Financial Services",
       headline: "Sovereign AI for trusted financial operations",
       body: "Fraud, AML, and KYC stay inside the bank. Agents reason across transaction, identity, and GenAI usage — under RBI and DPDP Act 2023 — with zero data egress.",
+      icon: "/solutions/industries/financial.svg",
     },
     {
       title: "Telecom",
       headline: "Autonomous intelligence for connected networks",
       body: "Carrier-scale telemetry, SIM/roaming fraud, and capacity modeling — predicted and acted on in real time, entirely on your infrastructure.",
+      icon: "/solutions/industries/telecom.svg",
     },
     {
       title: "Retail",
       headline: "Fraud defense without expanding PCI scope",
       body: "POS fraud, shrinkage, account takeover, and vendor compliance — without sending cardholder or customer data to a third-party model.",
+      icon: "/solutions/industries/retail.svg",
     },
     {
       title: "Insurance",
       headline: "Claims, underwriting, and firewall intelligence",
       body: "IRDAI-regulated data stays inside. Agents coordinate fraud detection, risk assessment, and firewall change with an inspectable trail.",
+      icon: "/solutions/industries/insurance.svg",
     },
   ],
   industriesCta: {

@@ -76,6 +76,7 @@ export type SolutionsIndustry = {
   title: string;
   headline: string;
   body: string;
+  icon: string;
 };
 
 export type SolutionsOverviewContent = {

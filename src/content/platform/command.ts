@@ -3,7 +3,7 @@ import type { PlatformProductContent } from "@/content/platform/types";
 export const platformCommand: PlatformProductContent = {
   path: "/platform/command",
   eyebrow: "Powered by Airrived Engine | Cloud & Private VPC Deployment",
-  title: "Vyuha Command",
+  title: "Vyuha.ONE",
   headline: "The Enterprise Agentic OS for Your Private Cloud",
   body: [
     "One command plane. Infinite autonomous execution. Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders to orchestrate multi-agent workflows across your cloud infrastructure and enterprise stack.",
@@ -16,7 +16,7 @@ export const platformCommand: PlatformProductContent = {
     {
       title: "The Operating Engine for Controlled Cloud Intelligence",
       paragraphs: [
-        "Vyuha Command transforms advanced AI into real-world operational velocity—enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
+        "Vyuha.ONE transforms advanced AI into real-world operational velocity—enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
         "No complexity. No specialized AI research team required. Just unified control within your private cloud boundary (AWS, Azure, GCP, or hybrid VPCs).",
       ],
       cta: { label: "Schedule Control Plane Demo", href: "/book-a-demo" },
@@ -101,7 +101,7 @@ export const platformCommand: PlatformProductContent = {
   ],
   finalHeadline: "Experience Controlled Agentic AI in Seconds",
   finalBody:
-    "Vyuha Command lets your organization securely build, deploy, and scale autonomous AI agents across private cloud infrastructure without sacrificing data privacy, financial efficiency, or operational control.",
+    "Vyuha.ONE lets your organization securely build, deploy, and scale autonomous AI agents across private cloud infrastructure without sacrificing data privacy, financial efficiency, or operational control.",
   finalCtas: [
     { label: "Request Architecture Demo", href: "/book-a-demo" },
     { label: "Explore Enterprise Connectors", href: "/platform/integrations" },

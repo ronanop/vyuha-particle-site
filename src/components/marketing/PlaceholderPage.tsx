@@ -18,7 +18,7 @@ export function PlaceholderPage({
   childrenNodes,
 }: PlaceholderPageProps) {
   return (
-    <div className="mx-auto w-full max-w-[1400px] px-6 pb-24 md:px-10">
+    <div className="mx-auto w-full max-w-[1400px] px-6 pt-24 pb-24 md:px-10 md:pt-28">
       <p className="mb-3 font-display text-[11px] font-medium uppercase tracking-[0.28em] text-white/35">
         {path}
       </p>

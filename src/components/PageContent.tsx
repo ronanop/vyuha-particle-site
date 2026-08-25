@@ -1,9 +1,11 @@
 "use client";
 
+import { ViewTransition } from "react";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { IntroLoader } from "@/components/IntroLoader";
 import { Navigation } from "@/components/Navigation";
 import { HomeView } from "@/components/sections/HomeView";
+import { SiteFooter } from "@/components/SiteFooter";
 import { HeroParticle } from "@/components/hero/HeroParticle";
 
 export function PageContent() {
@@ -21,10 +23,13 @@ export function PageContent() {
         <HeroParticle />
       </div>
       <IntroLoader />
-      <Navigation />
+      <ViewTransition name="site-header">
+        <Navigation />
+      </ViewTransition>
       <main className="relative z-10">
         <HomeView />
       </main>
+      <SiteFooter />
     </SmoothScroll>
   );
 }

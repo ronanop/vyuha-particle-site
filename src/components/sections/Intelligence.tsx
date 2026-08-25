@@ -26,7 +26,7 @@ export function Intelligence() {
     <div id="command-block" className="pb-8 md:pb-12">
       <SectionFrame id="command" side="center" align="start" compact>
         <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-white/50">
-          Vyuha Command
+          Vyuha.ONE
         </p>
         <h2 className="font-display mx-auto max-w-[20ch] text-[clamp(2rem,8vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white">
           The Sovereign{" "}

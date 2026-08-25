@@ -6,7 +6,7 @@ export const platformInABox: PlatformProductContent = {
   title: "Vyuha In a BOX",
   headline: "The Turnkey Self-Governed On-Premises AI Appliance",
   body: [
-    "The complete Vyuha Command OS pre-loaded onto enterprise GPU hardware. Complete physical data localization, zero external egress, and hardware-accelerated intelligence engineered for on-premise data centers and air-gapped defense environments.",
+    "The complete Vyuha.ONE OS pre-loaded onto enterprise GPU hardware. Complete physical data localization, zero external egress, and hardware-accelerated intelligence engineered for on-premise data centers and air-gapped defense environments.",
   ],
   primaryCtas: [
     { label: "Schedule On-Premise Demo", href: "/book-a-demo" },
@@ -16,7 +16,7 @@ export const platformInABox: PlatformProductContent = {
     {
       title: "Plug-and-Play Self-Governed Infrastructure",
       paragraphs: [
-        "Vyuha In a BOX delivers the full agentic intelligence, 200+ enterprise connectors, and multi-agent orchestration of Vyuha Command as a turnkey, hardware-accelerated appliance for organizations requiring physical containment and local performance.",
+        "Vyuha In a BOX delivers the full agentic intelligence, 200+ enterprise connectors, and multi-agent orchestration of Vyuha.ONE as a turnkey, hardware-accelerated appliance for organizations requiring physical containment and local performance.",
       ],
     },
     {
@@ -61,21 +61,21 @@ export const platformInABox: PlatformProductContent = {
           body: "Direct local hardware access for rapid model execution, real-time response, and high-volume data ingestion.",
         },
         {
-          title: "Total Physical IP Containment",
+          title: "Total Containment of Proprietary Assets",
           body: "Custom DSLMs, agentic playbooks, and historical enterprise telemetry remain on local physical drives.",
         },
         {
           title: "Identical OS Capabilities",
-          body: "Feature parity with Vyuha Command—including App Store, Composable Agents, A2A Mesh, and No-Code Orchestrator—delivered offline.",
+          body: "Feature parity with Vyuha.ONE—including App Store, Composable Agents, A2A Mesh, and No-Code Orchestrator—delivered offline.",
         },
       ],
     },
     {
-      title: "Vyuha Command vs Vyuha In a BOX",
+      title: "Vyuha.ONE vs Vyuha In a BOX",
       table: {
-        headers: ["Dimension", "Vyuha Command", "Vyuha In a BOX"],
+        headers: ["Dimension", "Vyuha.ONE", "Vyuha In a BOX"],
         rows: [
-          ["Operating System", "Vyuha Command OS", "Vyuha Command OS (Pre-installed)"],
+          ["Operating System", "Vyuha.ONE OS", "Vyuha.ONE OS (Pre-installed)"],
           ["Deployment", "AWS, Azure, GCP, Private VPC", "On-Premise / Enterprise GPU Infrastructure"],
           ["200+ Integrations", "Supported", "Supported"],
           ["App Store & Agents", "Included", "Included"],

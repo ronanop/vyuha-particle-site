@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Noto_Serif_JP, Space_Grotesk } from "next/font/google";
+import { ViewTransition } from "react";
+import { Inter, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,10 +16,9 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-const notoSerifJp = Noto_Serif_JP({
-  variable: "--font-jp-serif",
-  subsets: ["latin"],
-  weight: ["400", "700"],
+const purgatory = localFont({
+  src: "../fonts/Purgatory.ttf",
+  variable: "--font-purgatory-face",
   display: "swap",
 });
 
@@ -55,9 +56,26 @@ export default function RootLayout({
     <html
       lang="en"
       data-intro="loading"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${notoSerifJp.variable} h-full antialiased`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${purgatory.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-black text-white">{children}</body>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body
+        className="min-h-full bg-black text-white"
+        suppressHydrationWarning
+      >
+        <ViewTransition>{children}</ViewTransition>
+      </body>
     </html>
   );
 }

@@ -7,8 +7,10 @@ import { createEarthCloud } from "@/components/hero/earthCloud";
 import {
   addAnimatedLines,
   addAnimatedPoints,
+  addAmbientField,
   EARTH_ASSEMBLE_MS,
   updateAssembleLayers,
+  type AssembleField,
   type AssembleLayer,
 } from "@/components/hero/earthAssemble";
 
@@ -32,6 +34,8 @@ export type IsometricParticleClusterProps = {
     /** Docks the shape on the right of the CTA, held straight (final logo). */
     logo?: boolean;
   }>;
+  /** Keep the earth in the homepage-hero pose (right side); no scroll glide. */
+  lockHero?: boolean;
   particleColor?: string;
   particleBrightness?: number;
   lineColor?: string;
@@ -89,6 +93,7 @@ export default function IsometricParticleCluster({
   shape = "hashtag",
   logoImage = "",
   morphStages,
+  lockHero = false,
   particleColor = "#ffffff",
   particleBrightness = 1,
   lineColor = "#ffffff",
@@ -178,39 +183,85 @@ export default function IsometricParticleCluster({
       meshes.length = 0;
     };
 
-    const addCloud = (positions: number[], edges: number[]) => {
-      const faceGeo = new THREE.BufferGeometry();
-      faceGeo.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(positions, 3),
-      );
-      const faceMat = new THREE.PointsMaterial({
-        size: particleSize,
-        color: pColor,
-        transparent: true,
-        opacity: 0.55,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      });
-      const faceMesh = new THREE.Points(faceGeo, faceMat);
-      clusterGroup.add(faceMesh);
-      meshes.push(faceMesh);
+    const addCloud = (positions: number[], edges: number[], assemble = false) => {
+      const face = new Float32Array(positions);
+      const outline = new Float32Array(edges);
+      if (assemble && !reduced) {
+        let field: AssembleField | undefined;
+        if (typeof logoImage === "string" && logoImage.trim()) {
+          const dist = Math.abs(camera.position.z);
+          const halfH = dist * Math.tan((camera.fov * Math.PI) / 360);
+          const halfW = halfH * Math.max(camera.aspect, 0.5);
+          const originX =
+            container.clientWidth < 768 ? halfW * 0.08 : halfW * 0.34;
+          clusterGroup.position.set(originX, 0, 0);
+          field = { halfW, halfH, originX };
+        }
+        addAnimatedPoints(
+          clusterGroup,
+          meshes,
+          assembleLayers,
+          face,
+          `#${pColor.getHexString()}`,
+          particleSize,
+          0.55,
+          field,
+        );
+        if (field) {
+          addAmbientField(
+            clusterGroup,
+            meshes,
+            assembleLayers,
+            `#${pColor.getHexString()}`,
+            particleSize,
+            0.38,
+            field,
+            2200,
+          );
+        }
+        addAnimatedLines(
+          clusterGroup,
+          meshes,
+          assembleLayers,
+          outline,
+          lineColor,
+          lineOpacity,
+        );
+        updateAssembleLayers(assembleLayers, 0);
+      } else {
+        const faceGeo = new THREE.BufferGeometry();
+        faceGeo.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(face, 3),
+        );
+        const faceMat = new THREE.PointsMaterial({
+          size: particleSize,
+          color: pColor,
+          transparent: true,
+          opacity: 0.55,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        });
+        const faceMesh = new THREE.Points(faceGeo, faceMat);
+        clusterGroup.add(faceMesh);
+        meshes.push(faceMesh);
 
-      const lineGeo = new THREE.BufferGeometry();
-      lineGeo.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(edges, 3),
-      );
-      const lineMat = new THREE.LineBasicMaterial({
-        color: lineColor,
-        transparent: true,
-        opacity: lineOpacity,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      });
-      const lineMesh = new THREE.LineSegments(lineGeo, lineMat);
-      clusterGroup.add(lineMesh);
-      meshes.push(lineMesh);
+        const lineGeo = new THREE.BufferGeometry();
+        lineGeo.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(outline, 3),
+        );
+        const lineMat = new THREE.LineBasicMaterial({
+          color: lineColor,
+          transparent: true,
+          opacity: lineOpacity,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        });
+        const lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+        clusterGroup.add(lineMesh);
+        meshes.push(lineMesh);
+      }
       paint();
     };
 
@@ -385,6 +436,13 @@ export default function IsometricParticleCluster({
       img.onload = () => {
         if (!isMounted) return;
         clearMeshes();
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        if (width > 0 && height > 0) {
+          renderer.setSize(width, height, false);
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+        }
         camera.position.set(0, 0, 60);
         camera.lookAt(0, 0, 0);
 
@@ -445,8 +503,8 @@ export default function IsometricParticleCluster({
         const centerX = (minX + maxX) / 2;
         const centerY = (minY + maxY) / 2;
         const maxPx = Math.max(maxX - minX, maxY - minY) || 1;
-        const scale = 24 / maxPx;
-        const D = 6;
+        const scale = 34 / maxPx;
+        const D = 5;
         const facePositions: number[] = [];
         const addParticle = (px: number, py: number, pz: number) => {
           const jitter = 0.3;
@@ -549,7 +607,7 @@ export default function IsometricParticleCluster({
           }
         }
 
-        addCloud(facePositions, edgePositions);
+        addCloud(facePositions, edgePositions, true);
       };
       img.onerror = () => {
         if (isMounted) buildHashtag();
@@ -572,7 +630,8 @@ export default function IsometricParticleCluster({
       targetY: 0,
       time: 0,
     };
-    let intersecting = true;
+    let intersecting = !(lockHero && shape === "earth");
+    let hasScrolled = typeof window !== "undefined" && window.scrollY > 4;
 
     let earthHalfW = 0;
     let earthHalfH = 0;
@@ -814,20 +873,28 @@ export default function IsometricParticleCluster({
       const rightX = earthNarrow ? earthHalfW * 0.1 : earthHalfW * 0.36;
       const leftX = earthNarrow ? -earthHalfW * 0.34 : -earthHalfW * 0.44;
       const y = earthNarrow ? earthHalfH * 0.06 : 0;
-      const eP = 1 - Math.pow(1 - scrollEased, 3);
+      const eP = lockHero ? 0 : 1 - Math.pow(1 - scrollEased, 3);
       clusterGroup.position.set(rightX + (leftX - rightX) * eP, y, 0);
     };
 
     const placeEarth = () => {
-      if (shape !== "earth") {
-        clusterGroup.position.set(0, 0, 0);
-        return;
-      }
       const dist = Math.abs(camera.position.z);
       earthHalfH = dist * Math.tan((camera.fov * Math.PI) / 360);
       earthHalfW = earthHalfH * camera.aspect;
       earthNarrow = container.clientWidth < 768;
-      applyEarthPosition();
+      if (shape === "earth") {
+        applyEarthPosition();
+        return;
+      }
+      if (typeof logoImage === "string" && logoImage.trim()) {
+        clusterGroup.position.set(
+          earthNarrow ? earthHalfW * 0.08 : earthHalfW * 0.34,
+          0,
+          0,
+        );
+        return;
+      }
+      clusterGroup.position.set(0, 0, 0);
     };
 
     const resize = () => {
@@ -846,8 +913,17 @@ export default function IsometricParticleCluster({
 
     const viewObserver = new IntersectionObserver((entries) => {
       intersecting = entries[0]?.isIntersecting ?? false;
-    });
+    }, { rootMargin: "18% 0px 0px 0px" });
     viewObserver.observe(container);
+
+    const markScrolled = () => {
+      hasScrolled = true;
+    };
+    if (lockHero && shape === "earth") {
+      window.addEventListener("scroll", markScrolled, { passive: true });
+      window.addEventListener("wheel", markScrolled, { passive: true });
+      window.addEventListener("touchmove", markScrolled, { passive: true });
+    }
 
     const allowPointer = !reduced && shape !== "earth";
     const handlePointerMove = (event: PointerEvent) => {
@@ -863,30 +939,47 @@ export default function IsometricParticleCluster({
       window.addEventListener("pointermove", handlePointerMove);
     }
 
+    const isLogoIcon =
+      typeof logoImage === "string" && logoImage.trim().length > 0;
+
     let frameId = 0;
     if (reduced) {
-      clusterGroup.rotation.x = shape === "earth" ? 0.16 : 0.22;
-      clusterGroup.rotation.y = shape === "earth" ? 0.12 : 0.55;
+      clusterGroup.rotation.x = isLogoIcon ? 0 : shape === "earth" ? 0.16 : 0.22;
+      clusterGroup.rotation.y = isLogoIcon ? 0 : shape === "earth" ? 0.12 : 0.55;
       paint();
     } else {
       const render = (now: number) => {
         frameId = requestAnimationFrame(render);
         if (!intersecting) return;
 
-        if (shape === "earth" && !introComplete) {
-          if (waitStart === 0) waitStart = now;
-          const introReady =
-            document.documentElement.dataset.intro === "ready";
-          // Start on the intro handoff, but never wait forever — guarantees the
-          // formation always plays on every refresh even if the flag is missed.
-          if (introReady || now - waitStart > INTRO_FALLBACK_MS) {
-            if (assembleStart === null) assembleStart = now;
-            const progress = Math.min(
-              1,
-              (now - assembleStart) / EARTH_ASSEMBLE_MS,
-            );
-            updateAssembleLayers(assembleLayers, progress);
-            if (progress >= 1) introComplete = true;
+        if ((shape === "earth" || isLogoIcon) && !introComplete) {
+          if (isLogoIcon && assembleLayers.length === 0) {
+            paint();
+            return;
+          }
+          if (lockHero && shape === "earth") {
+            if (intersecting && hasScrolled) {
+              if (assembleStart === null) assembleStart = now;
+              const progress = Math.min(
+                1,
+                (now - assembleStart) / EARTH_ASSEMBLE_MS,
+              );
+              updateAssembleLayers(assembleLayers, progress);
+              if (progress >= 1) introComplete = true;
+            }
+          } else {
+            if (waitStart === 0) waitStart = now;
+            const introReady =
+              document.documentElement.dataset.intro === "ready";
+            if (introReady || now - waitStart > INTRO_FALLBACK_MS) {
+              if (assembleStart === null) assembleStart = now;
+              const progress = Math.min(
+                1,
+                (now - assembleStart) / EARTH_ASSEMBLE_MS,
+              );
+              updateAssembleLayers(assembleLayers, progress);
+              if (progress >= 1) introComplete = true;
+            }
           }
         }
 
@@ -894,24 +987,31 @@ export default function IsometricParticleCluster({
         mouse.time += 0.002 * feel.autoRotationSpeed;
         mouse.x += (mouse.targetX - mouse.x) * feel.damping;
         mouse.y += (mouse.targetY - mouse.y) * feel.damping;
-        if (shape === "earth") {
+        if (isLogoIcon) {
+          // Flat to camera — no tumble / spin for icon silhouettes.
+          clusterGroup.rotation.x = 0;
+          clusterGroup.rotation.y = 0;
+          clusterGroup.rotation.z = 0;
+        } else if (shape === "earth") {
           // Glide the earth from the right (hero) to the left, synced to the
           // first section heading: progress hits 1 exactly when that heading
           // reaches the middle of the viewport.
           const vh = window.innerHeight || 1;
-          if (!dockEl) dockEl = document.querySelector("[data-earth-dock]");
-          let rawP: number;
-          if (dockEl) {
-            const rect = dockEl.getBoundingClientRect();
-            const center = rect.top + rect.height / 2;
-            // center at bottom of viewport -> 0, center at middle -> 1
-            rawP = (vh - center) / (vh * 0.5);
-          } else {
-            rawP = window.scrollY / (vh * 0.9);
+          let rawP = 0;
+          if (!lockHero) {
+            if (!dockEl) dockEl = document.querySelector("[data-earth-dock]");
+            if (dockEl) {
+              const rect = dockEl.getBoundingClientRect();
+              const center = rect.top + rect.height / 2;
+              // center at bottom of viewport -> 0, center at middle -> 1
+              rawP = (vh - center) / (vh * 0.5);
+            } else {
+              rawP = window.scrollY / (vh * 0.9);
+            }
           }
           rawP = Math.min(1, Math.max(0, rawP));
           scrollEased += (rawP - scrollEased) * 0.12;
-          const eP = 1 - Math.pow(1 - scrollEased, 3);
+          const eP = lockHero ? 0 : 1 - Math.pow(1 - scrollEased, 3);
           const rightX = earthNarrow ? earthHalfW * 0.1 : earthHalfW * 0.36;
           const leftX = earthNarrow ? -earthHalfW * 0.34 : -earthHalfW * 0.44;
           clusterGroup.position.x = rightX + (leftX - rightX) * eP;
@@ -1046,6 +1146,11 @@ export default function IsometricParticleCluster({
       cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
       viewObserver.disconnect();
+      if (lockHero && shape === "earth") {
+        window.removeEventListener("scroll", markScrolled);
+        window.removeEventListener("wheel", markScrolled);
+        window.removeEventListener("touchmove", markScrolled);
+      }
       window.removeEventListener("pointermove", handlePointerMove);
       clearMeshes();
       scene.clear();
@@ -1062,6 +1167,7 @@ export default function IsometricParticleCluster({
     particleDensity,
     particleSize,
     lineOpacity,
+    lockHero,
   ]);
 
   return (
@@ -1075,8 +1181,12 @@ export default function IsometricParticleCluster({
         minHeight: 100,
         background: "transparent",
         overflow: "hidden",
-        pointerEvents: shape === "earth" ? "none" : "auto",
-        cursor: shape === "earth" ? "default" : undefined,
+        pointerEvents:
+          shape === "earth" || Boolean(logoImage?.trim()) ? "none" : "auto",
+        cursor:
+          shape === "earth" || Boolean(logoImage?.trim())
+            ? "default"
+            : undefined,
         touchAction: "pan-y",
         ...style,
       }}

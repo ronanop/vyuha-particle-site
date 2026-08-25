@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { MarketingPageView } from "@/components/marketing/MarketingPageView";
+import { ContactOverviewView } from "@/components/marketing/contact/ContactOverview";
 import { contactPage } from "@/content/contact";
 
 export const metadata: Metadata = {
   title: "Contact — Vyuha.ai",
-  description: contactPage.body[0],
+  description: "Contact Vyuha.ai by email, phone, or the form on this page.",
 };
 
 export default function ContactPage() {
-  return <MarketingPageView content={contactPage} />;
+  return <ContactOverviewView content={contactPage} />;
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { ViewTransition } from "react";
 import { Navigation } from "@/components/Navigation";
+import { SiteFooter } from "@/components/SiteFooter";
 
 /**
  * Shared chrome for marketing routes (everything except / and /design).
@@ -16,8 +18,11 @@ export function MarketingShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="marketing-shell min-h-svh bg-black text-white">
-      <Navigation />
-      <main className="relative z-10 pt-20 md:pt-24">{children}</main>
+      <ViewTransition name="site-header">
+        <Navigation />
+      </ViewTransition>
+      <main className="relative z-10">{children}</main>
+      <SiteFooter />
     </div>
   );
 }
