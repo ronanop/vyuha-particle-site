@@ -41,7 +41,7 @@ export default function TiltedCard({
   overlayContent = null,
   displayOverlayContent = false,
 }: TiltedCardProps) {
-  const ref = useRef<HTMLFigureElement>(null);
+  const ref = useRef<HTMLElement>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);

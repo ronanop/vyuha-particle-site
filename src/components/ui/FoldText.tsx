@@ -46,15 +46,15 @@ const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value));
 
 const renderWhitespace = (value: string, key: string): ReactNode[] =>
-  value.split(/(\n)/).map((part, index) => {
-    if (part === "\n") return <br key={`${key}-br-${index}`} />;
-    if (!part) return null;
+  value.split(/(\n)/).flatMap((part, index) => {
+    if (part === "\n") return [<br key={`${key}-br-${index}`} />];
+    if (!part) return [];
 
-    return (
+    return [
       <span className="fold-text-whitespace" key={`${key}-space-${index}`}>
         {part.replace(/ /g, "\u00A0")}
-      </span>
-    );
+      </span>,
+    ];
   });
 
 export default function FoldText({
@@ -79,7 +79,7 @@ export default function FoldText({
   const safeCrease = clamp(creaseShading, 0, 1);
   const safePerspective = Math.max(120, perspective);
 
-  const segments = useMemo(() => {
+  const segments = useMemo((): ReactNode => {
     let segmentIndex = 0;
 
     const renderSegment = (
@@ -120,7 +120,7 @@ export default function FoldText({
     }
 
     if (splitBy === "word") {
-      return text.split(/(\s+)/).flatMap((part, index) => {
+      return text.split(/(\s+)/).flatMap((part, index): ReactNode[] => {
         if (!part) return [];
         if (/^\s+$/.test(part)) return renderWhitespace(part, `ws-${index}`);
         return [renderSegment(part, `segment-word-${segmentIndex}`)];
