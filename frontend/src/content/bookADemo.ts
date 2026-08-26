@@ -9,7 +9,7 @@ export const bookADemo: MarketingPageContent = {
   ],
   primaryCtas: [
     { label: "Request Architecture Demo", href: "/book-a-demo" },
-    { label: "Request Architecture Sprint", href: "/book-a-demo" },
+    { label: "Request Architecture Sprint", href: "/contact" },
   ],
   sections: [
     {

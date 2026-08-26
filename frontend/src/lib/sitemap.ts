@@ -43,6 +43,10 @@ export const SITE_MAP: SiteNode[] = [
     title: "Company",
   },
   {
+    path: "/partners",
+    title: "Partners",
+  },
+  {
     path: "/resources",
     title: "Resources",
     children: [

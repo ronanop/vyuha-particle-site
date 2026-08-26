@@ -8,7 +8,7 @@ export const companyAbout: CompanyContent = {
     "The name Vyuha comes from the idea of a strategic formation: multiple elements working together toward a common objective. We built Vyuha.ai on that exact principle—bring isolated data, software tools, and human expertise together into a single, synchronized workflow.",
   ],
   primaryCtas: [
-    { label: "Request an Architecture Sprint", href: "/book-a-demo" },
+    { label: "Request an Architecture Sprint", href: "/contact" },
   ],
   intelligence: {
     title: "Intelligence Built for the Enterprise.",
@@ -118,6 +118,6 @@ export const companyAbout: CompanyContent = {
     ],
   },
   finalCtas: [
-    { label: "Request an Architecture Sprint", href: "/book-a-demo" },
+    { label: "Request an Architecture Sprint", href: "/contact" },
   ],
 };

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { ViewTransition } from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
+import { ElevenLabsConvai } from "@/components/ElevenLabsConvai";
 import "./globals.css";
 
 const inter = Inter({
@@ -75,6 +76,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ViewTransition>{children}</ViewTransition>
+        <ElevenLabsConvai />
       </body>
     </html>
   );

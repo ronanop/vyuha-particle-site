@@ -32,7 +32,7 @@ export function Hero() {
         </p>
         <div data-hero-in className="mt-10 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <FluidButton text="Discover Platform" href="#command" className="w-full sm:w-auto" />
-          <FluidButton text="Request Architecture Sprint" href="#demo" className="w-full sm:w-auto" />
+          <FluidButton text="Request Architecture Sprint" href="/contact" className="w-full sm:w-auto" />
         </div>
       </div>
     </SectionFrame>

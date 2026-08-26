@@ -38,7 +38,7 @@ export const homeContent: HomeContent = {
   lead: "One platform. Infinite autonomous outcomes. Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders to provide deep enterprise context to AI under uncompromising governance.",
   primaryCtas: [
     { label: "Discover Platform", href: "/platform" },
-    { label: "Request Architecture Sprint", href: "/book-a-demo" },
+    { label: "Request Architecture Sprint", href: "/contact" },
   ],
   foundations: [
     {
