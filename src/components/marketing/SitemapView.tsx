@@ -60,7 +60,7 @@ export function SitemapView() {
             Sitemap
           </h1>
           <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-white/60 md:text-base">
-            Every public page on Vyuha.ai — {pageCount} routes, grouped the same
+            Every public page on Vyuha.ai | {pageCount} routes, grouped the same
             way as the site.
           </p>
         </div>

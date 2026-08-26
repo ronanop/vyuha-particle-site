@@ -5,7 +5,7 @@ export const platformIntegrations: PlatformProductContent = {
   eyebrow: "Integrations",
   title: "ONE PLATFORM. EVERY SYSTEM.",
   headline:
-    "With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly—no re-architecture, no rip-and-replace.",
+    "With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly, no re-architecture, no rip-and-replace.",
   body: [
     "This isn't about merely wiring tools together. It's about binding fragmented silos into a context-aware fabric that enables autonomous agents to reason and act across the enterprise stack.",
   ],

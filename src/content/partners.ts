@@ -62,10 +62,10 @@ export const partnersPage: PartnersContent = {
       name: "Airrived",
       role: "Exclusive Partner for India",
       image: "/partners/airrived.png",
-      lead: "Driving AI-powered innovation and intelligent enterprise solutions — with an intelligence engine that powers the capabilities of Vyuha.AI agents.",
+      lead: "Driving AI-powered innovation and intelligent enterprise solutions, with an intelligence engine that powers the capabilities of Vyuha.AI agents.",
       paragraphs: [
         "Airrived is Vyuha.AI’s exclusive partner for India, anchoring our regional go-to-market with deep technology collaboration.",
-        "At the center of that collaboration is the Airrived Engine — the intelligence layer that powers how Vyuha.AI agents reason, orchestrate, and execute across enterprise workflows.",
+        "At the center of that collaboration is the Airrived Engine: The intelligence layer that powers how Vyuha.AI agents reason, orchestrate, and execute across enterprise workflows.",
         "Together we help organizations in India adopt sovereign, production-ready AI: combining human expertise with intelligent systems so teams can innovate faster, decide with more context, and execute at scale.",
       ],
       focus: [
@@ -82,7 +82,7 @@ export const partnersPage: PartnersContent = {
       imageFit: "contain",
       lead: "Our Dell Technologies partnership is a key lever for Vyuha Box, bringing enterprise-grade infrastructure and technology to Vyuha.AI deployments.",
       paragraphs: [
-        "Dell Technologies is an OEM Solutions Partner for Vyuha.AI — a critical enabler of how we deliver sovereign AI where enterprises need it most.",
+        "Dell Technologies is an OEM Solutions Partner for Vyuha.ai | a critical enabler of how we deliver sovereign AI where enterprises need it most.",
         "This partnership is a key lever for Vyuha Box: pairing Vyuha’s intelligent orchestration with Dell’s enterprise-grade infrastructure so deployments can run with the reliability, performance, and operational standards large organizations expect.",
         "From on-premise and air-gapped environments to production-scale appliance deployments, Dell helps ensure Vyuha.AI reaches the enterprise on infrastructure built for mission-critical workloads.",
       ],
@@ -100,7 +100,7 @@ export const partnersPage: PartnersContent = {
       imageFit: "contain",
       lead: "The data platform powering connected intelligence, bringing together technology, expertise and innovation to accelerate enterprise AI adoption.",
       paragraphs: [
-        "Slash Curate is Vyuha.AI’s Ecosystem & Innovation Partner — focused on the data foundation that connected intelligence requires.",
+        "Slash Curate is Vyuha.AI’s Ecosystem & Innovation Partner, focused on the data foundation that connected intelligence requires.",
         "As a data platform, Slash Curate helps bring together technology, expertise, and innovation so enterprises can move beyond isolated AI pilots into systems that connect, reason, and act with shared context.",
         "Through this partnership we accelerate enterprise AI adoption: linking data readiness with intelligent orchestration so organizations can scale real-world business impact, not just experiments.",
       ],

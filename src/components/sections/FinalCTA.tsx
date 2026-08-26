@@ -11,7 +11,7 @@ export function FinalCTA() {
         Take back control with sovereign AI.
       </h2>
       <p className="mt-8 max-w-md text-[17px] leading-relaxed text-white/60 md:text-[18px]">
-        Own, lead, and govern your AI assets and operational workflows—under
+        Own, lead, and govern your AI assets and operational workflows, under
         your perimeter, with uncompromising governance.
       </p>
       <div className="mt-10 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">

@@ -3,7 +3,7 @@ import { PlatformProductView } from "@/components/marketing/platform/PlatformVie
 import { platformInABox } from "@/content/platform/inABox";
 
 export const metadata: Metadata = {
-  title: "Vyuha In a BOX — Vyuha.ai",
+  title: "Vyuha In a BOX | Vyuha.ai",
   description: platformInABox.headline,
 };
 

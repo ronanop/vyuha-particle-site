@@ -72,7 +72,7 @@ function GlassCard({
 
 // Turns a list of cards into a scroll-driven 3D stacked deck: each card is
 // sticky, so as you scroll they pile up under a slight perspective tilt, with
-// deeper cards scaled down and dimmed for depth. Pure CSS — no scroll JS.
+// deeper cards scaled down and dimmed for depth. Pure CSS, no scroll JS.
 function CardStack({ children }: { children: ReactNode }) {
   const items = Children.toArray(children);
   const n = items.length;

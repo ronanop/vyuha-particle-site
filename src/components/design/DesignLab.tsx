@@ -147,15 +147,15 @@ export function DesignLab() {
         <DesignSection
           id="typography"
           title="Typography"
-          description="Space Grotesk for display. Inter for body. Keep marketing copy sparse — one headline, one supporting line per section."
+          description="Space Grotesk for display. Inter for body. Keep marketing copy sparse, one headline, one supporting line per section."
         >
           <div className="space-y-8">
-            <PreviewFrame label="Display — Space Grotesk">
+            <PreviewFrame label="Display: Space Grotesk">
               <p className="font-display text-[clamp(2rem,5vw,3.5rem)] font-medium leading-[1.05] tracking-tight">
                 AI that understands your enterprise
               </p>
             </PreviewFrame>
-            <PreviewFrame label="Body — Inter">
+            <PreviewFrame label="Body: Inter">
               <p className="max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
                 Connect knowledge, systems, workflows and teams through one
                 intelligent layer. Keep paragraphs short on the live site.
@@ -175,7 +175,7 @@ export function DesignLab() {
         <DesignSection
           id="buttons"
           title="FluidButton"
-          description="Primary CTA from FluidButton.tsx — rising fill, dual-label slide. Use size sm in the nav; md for section CTAs."
+          description="Primary CTA from FluidButton.tsx, rising fill, dual-label slide. Use size sm in the nav; md for section CTAs."
         >
           <div className="flex flex-wrap items-center gap-4">
             <FluidButton text="Book a Demo" href="#buttons" size="md" />

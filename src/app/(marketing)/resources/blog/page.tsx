@@ -3,7 +3,7 @@ import { MarketingPageView } from "@/components/marketing/MarketingPageView";
 import { resourcesBlog } from "@/content/resources/blog";
 
 export const metadata: Metadata = {
-  title: "Blog / Insights — Vyuha.ai",
+  title: "Blog / Insights | Vyuha.ai",
   description: resourcesBlog.body[0],
 };
 

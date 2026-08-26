@@ -15,7 +15,7 @@ const pillars = [
     subtitle: "Supercharging human experience into elite orchestration.",
     feature: "Workforce Amplification Engine",
     intro:
-      "Vyuha does not replace your workforce—it upgrades practitioners into elite orchestrators with autonomous agents, HITL gates, and multi-agent collaboration.",
+      "Vyuha does not replace your workforce, it upgrades practitioners into elite orchestrators with autonomous agents, HITL gates, and multi-agent collaboration.",
   },
   {
     num: "02",
@@ -24,7 +24,7 @@ const pillars = [
     subtitle: "Moving beyond hyperscaler monopolies.",
     feature: "App Store & No-Code Orchestrator",
     intro:
-      "Production-grade agentic apps, no-code composition, and intelligent task routing—without massive research teams or prohibitive cloud budgets.",
+      "Production-grade agentic apps, no-code composition, and intelligent task routing, without massive research teams or prohibitive cloud budgets.",
   },
   {
     num: "03",
@@ -82,7 +82,7 @@ export function Capabilities() {
       trigger = null;
       triggerRef.current = null;
       // Pinning four viewports on a phone fights native scroll and
-      // native scroll — keep the wheel tappable instead.
+      // native scroll, keep the wheel tappable instead.
       if (!mq.matches) return;
 
       trigger = ScrollTrigger.create({

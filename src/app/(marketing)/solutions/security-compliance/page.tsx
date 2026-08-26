@@ -3,7 +3,7 @@ import { MarketingPageView } from "@/components/marketing/MarketingPageView";
 import { securityCompliance } from "@/content/solutions/securityCompliance";
 
 export const metadata: Metadata = {
-  title: "Security & Compliance — Vyuha.ai",
+  title: "Security & Compliance | Vyuha.ai",
   description: securityCompliance.body[0],
 };
 

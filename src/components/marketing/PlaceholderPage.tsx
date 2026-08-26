@@ -4,7 +4,7 @@ import type { SiteNode } from "@/lib/sitemap";
 type PlaceholderPageProps = {
   title: string;
   path: string;
-  /** Optional child links for hub pages — structure only, no copy. */
+  /** Optional child links for hub pages, structure only, no copy. */
   childrenNodes?: SiteNode[];
 };
 

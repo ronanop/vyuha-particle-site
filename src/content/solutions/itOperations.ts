@@ -5,8 +5,8 @@ export const itOperations: MarketingPageContent = {
   eyebrow: "IT Operations",
   title: "The IT Mandate Has Outgrown the Model",
   body: [
-    "IT exists to operate reliably, transform continuously, and enable the business at scale. Yet the mandate has outgrown the model. As environments become more dynamic and interconnected, IT is expected to deliver always-on reliability, continuous change, and frictionless enablement — without additional headcount. Script-based automation and static workflows were built for a simpler era; they fracture as systems evolve, leaving IT teams reacting instead of leading.",
-    "Vyuha reimagines IT operations with sovereign agentic intelligence — reasoning agents that think, learn, and act across systems, entirely within your own infrastructure boundary.",
+    "IT exists to operate reliably, transform continuously, and enable the business at scale. Yet the mandate has outgrown the model. As environments become more dynamic and interconnected, IT is expected to deliver always-on reliability, continuous change, and frictionless enablement, without additional headcount. Script-based automation and static workflows were built for a simpler era; they fracture as systems evolve, leaving IT teams reacting instead of leading.",
+    "Vyuha reimagines IT operations with sovereign agentic intelligence, reasoning agents that think, learn, and act across systems, entirely within your own infrastructure boundary.",
   ],
   primaryCtas: [
     { label: "Request Architecture Demo", href: "/book-a-demo" },
@@ -22,9 +22,9 @@ export const itOperations: MarketingPageContent = {
         {
           title: "Autonomous IT Resolution",
           headline: "Resolve Issues Faster, Often Without Human Intervention",
-          body: "Vyuha agents classify, prioritize, and resolve incidents using historical patterns and live telemetry — resolving common L1/L2 tickets end-to-end (VPN failures, access provisioning, server memory spikes) rather than just routing them faster.",
+          body: "Vyuha agents classify, prioritize, and resolve incidents using historical patterns and live telemetry, resolving common L1/L2 tickets end-to-end (VPN failures, access provisioning, server memory spikes) rather than just routing them faster.",
           items: [
-            "Achieve 80–90% reduction in operational effort across incident workflows",
+            "Achieve 80-90% reduction in operational effort across incident workflows",
             "Speed MTTR without extra headcount",
             "Reduce ticket volume and triage",
           ],
@@ -52,7 +52,7 @@ export const itOperations: MarketingPageContent = {
         {
           title: "Enterprise Automation",
           headline: "Autonomous Execution Across Systems",
-          body: "Vyuha agents reason over context, coordinate across platforms, and execute workflows autonomously — without brittle scripts or manual orchestration.",
+          body: "Vyuha agents reason over context, coordinate across platforms, and execute workflows autonomously, without brittle scripts or manual orchestration.",
           items: [
             "Automate complex, multi-step workflows across IT, security, and enterprise systems",
             "Replace static rules and scripts with adaptive, agent-driven execution",
@@ -62,7 +62,7 @@ export const itOperations: MarketingPageContent = {
         {
           title: "Conversational IT Operations",
           headline: "Talk to Your Systems Like a Human Expert",
-          body: "Converse with machine data across Snowflake, Slack, Microsoft Teams, ServiceNow, SharePoint, and more — all without a query ever leaving your perimeter.",
+          body: "Converse with machine data across Snowflake, Slack, Microsoft Teams, ServiceNow, SharePoint, and more, all without a query ever leaving your perimeter.",
           items: [
             "Get quick insight without switching tools",
             "Natural language access to operational data",
@@ -72,9 +72,9 @@ export const itOperations: MarketingPageContent = {
       ],
     },
     {
-      title: "Vyuha — The Autonomous Operating Standard for Enterprise IT",
+      title: "Vyuha: The Autonomous Operating Standard for Enterprise IT",
       items: [
-        "No-code platform designed for practitioners — harness the power of AI without hiring AI talent.",
+        "No-code platform designed for practitioners, harness the power of AI without hiring AI talent.",
         "Leverage prebuilt agents with immediate ROI or create custom agents and agentic apps with no-code composition and zero engineering effort.",
         "Replace multiple tools and legacy RPA with a single, unified, sovereign platform.",
         "Reasoning-driven automation, not static scripts.",
@@ -85,9 +85,9 @@ export const itOperations: MarketingPageContent = {
       title: "Measurable Business Impact",
       items: [
         "Up to 60x productivity gains across IT",
-        "80–90% reduction in operational effort",
+        "80-90% reduction in operational effort",
         "Consolidate and replace fragmented IT automation tools",
-        "2 FTE — offset the workload equivalent of two full-time hires within six months",
+        "2 FTE: offset the workload equivalent of two full-time hires within six months",
       ],
     },
   ],

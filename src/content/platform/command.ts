@@ -16,7 +16,7 @@ export const platformCommand: PlatformProductContent = {
     {
       title: "The Operating Engine for Controlled Cloud Intelligence",
       paragraphs: [
-        "Vyuha.ONE transforms advanced AI into real-world operational velocity—enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
+        "Vyuha.ONE transforms advanced AI into real-world operational velocity, enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
         "No complexity. No specialized AI research team required. Just unified control within your private cloud boundary (AWS, Azure, GCP, or hybrid VPCs).",
       ],
       cta: { label: "Schedule Control Plane Demo", href: "/book-a-demo" },

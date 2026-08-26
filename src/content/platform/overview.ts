@@ -3,15 +3,15 @@ import type { PlatformOverviewContent } from "@/content/platform/types";
 export const platformOverview: PlatformOverviewContent = {
   path: "/platform",
   eyebrow: "Powered by Airrived Engine | Democratizing AI in India",
-  title: "Vyuha — The Enterprise Agentic Platform",
+  title: "Vyuha: The Enterprise Agentic Platform",
   displayTitle: ["The Enterprise", "Agentic Platform."],
   leitmotif: "One command plane. Infinite autonomous execution.",
   subtitle:
     "One command plane. Infinite autonomous execution. Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders.",
   quote:
-    "Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders — multi-agent workflows with total perimeter control.",
+    "Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders, multi-agent workflows with total perimeter control.",
   body: [
-    "Fine-tune models on local telemetry, deploy reasoning agents, and orchestrate your stack. No research team required — unified control, entirely inside your private boundary.",
+    "Fine-tune models on local telemetry, deploy reasoning agents, and orchestrate your stack. No research team required, unified control, entirely inside your private boundary.",
   ],
   engineName: "Airrived Engine",
   primaryCtas: [
@@ -30,12 +30,12 @@ export const platformOverview: PlatformOverviewContent = {
     {
       index: "01",
       title: "Deploy Anywhere",
-      body: "Build AI YOUR way, with YOUR data, aligned with your industry-specific guardrails. Create and launch autonomous agents without engineering roadblocks—powered by a no-code visual orchestrator, robust enterprise connectors, and secure edge-deployment via Vyuha In a BOX.",
+      body: "Build AI YOUR way, with YOUR data, aligned with your industry-specific guardrails. Create and launch autonomous agents without engineering roadblocks, powered by a no-code visual orchestrator, robust enterprise connectors, and secure edge-deployment via Vyuha In a BOX.",
     },
     {
       index: "02",
       title: "Measurable Impact",
-      body: "Experience Exponential Impact & FinOps Efficiency — Achieve massive operational returns. Reduce tool sprawl, eliminate unnecessary cloud API burn through intelligent task routing, and achieve up to a 60x boost in operational velocity.",
+      body: "Experience Exponential Impact & FinOps Efficiency. Achieve massive operational returns. Reduce tool sprawl, eliminate unnecessary cloud API burn through intelligent task routing, and achieve up to a 60x boost in operational velocity.",
     },
     {
       index: "03",
@@ -62,7 +62,7 @@ export const platformOverview: PlatformOverviewContent = {
     {
       title: "Integrations",
       headline: "ONE PLATFORM. EVERY SYSTEM.",
-      body: "With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly—no re-architecture, no rip-and-replace.",
+      body: "With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly, no re-architecture, no rip-and-replace.",
       href: "/platform/integrations",
       cta: "Explore Integrations",
     },
@@ -71,7 +71,7 @@ export const platformOverview: PlatformOverviewContent = {
   integrationStrategy: [
     {
       index: "01",
-      title: "Where Insight Meets Execution — Instantly",
+      title: "Where Insight Meets Execution: Instantly",
       body: "Vyuha integrates seamlessly across your enterprise technology stack, including Security and IT tools, Collaboration platforms, Knowledge bases and data lakes, and Model and vector stores. The platform provides the reasoning and automation layer that connects insight to execution, enabling full-blown autonomous systems rather than static workflows.",
     },
     {

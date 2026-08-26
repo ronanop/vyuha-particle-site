@@ -3,7 +3,7 @@ import { MarketingPageView } from "@/components/marketing/MarketingPageView";
 import { industryUseCases } from "@/content/solutions/industryUseCases";
 
 export const metadata: Metadata = {
-  title: "Industry-Wise Use Cases — Vyuha.ai",
+  title: "Industry-Wise Use Cases | Vyuha.ai",
   description: industryUseCases.body[0],
 };
 

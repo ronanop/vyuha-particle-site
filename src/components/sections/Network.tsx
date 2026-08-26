@@ -12,7 +12,7 @@ export function Network() {
           Make every team AI-capable.
         </h2>
         <p className="mt-10 max-w-xl text-[18px] leading-relaxed text-white/60 md:text-[20px]">
-          Particles form the words the organization needs to see — intelligence
+          Particles form the words the organization needs to see, intelligence
           that reaches beyond a single team or tool.
         </p>
         <div className="sr-only">

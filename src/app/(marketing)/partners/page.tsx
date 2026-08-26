@@ -3,7 +3,7 @@ import { PartnersOverview } from "@/components/marketing/partners/PartnersOvervi
 import { partnersPage } from "@/content/partners";
 
 export const metadata: Metadata = {
-  title: "Partners — Vyuha.ai",
+  title: "Partners | Vyuha.ai",
   description: partnersPage.body[0],
 };
 

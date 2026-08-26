@@ -413,7 +413,7 @@ export function FounderCarousel({ founders }: { founders: readonly Founder[] }) 
 
   return (
     <div className="flex w-full flex-col items-center">
-      {/* Mobile / tablet — resting positions avoid CSS transforms so GSAP can morph cleanly */}
+      {/* Mobile / tablet, resting positions avoid CSS transforms so GSAP can morph cleanly */}
       <div className="flex w-full flex-col items-center lg:hidden">
         <div className="relative w-full max-w-[min(100%,420px)] overflow-hidden px-2">
           <div className="relative mx-auto aspect-[3/4] w-[68%] max-w-[260px]">

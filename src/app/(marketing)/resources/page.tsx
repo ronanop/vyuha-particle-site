@@ -4,7 +4,7 @@ import { findSiteNode } from "@/lib/sitemap";
 
 const node = findSiteNode("/resources")!;
 
-export const metadata: Metadata = { title: `${node.title} — Vyuha.ai` };
+export const metadata: Metadata = { title: `${node.title} | Vyuha.ai` };
 
 export default function ResourcesPage() {
   return (

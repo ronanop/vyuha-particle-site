@@ -5,7 +5,7 @@ export const companyAbout: CompanyContent = {
   eyebrow: "COMPANY",
   displayTitle: ["The Idea Behind", "Vyuha"],
   body: [
-    "The name Vyuha comes from the idea of a strategic formation: multiple elements working together toward a common objective. We built Vyuha.ai on that exact principle—bring isolated data, software tools, and human expertise together into a single, synchronized workflow.",
+    "The name Vyuha comes from the idea of a strategic formation: multiple elements working together toward a common objective. We built Vyuha.ai on that exact principle: bring isolated data, software tools, and human expertise together into a single, synchronized workflow.",
   ],
   primaryCtas: [
     { label: "Request an Architecture Sprint", href: "/contact" },
@@ -15,7 +15,7 @@ export const companyAbout: CompanyContent = {
     pillars: [
       {
         title: "Turn Teams into Builders",
-        body: "Transform frontline staff into active AI creators—zero specialist hiring needed.",
+        body: "Transform frontline staff into active AI creators, zero specialist hiring needed.",
       },
       {
         title: "Lock Down Full Sovereignty",
@@ -36,8 +36,8 @@ export const companyAbout: CompanyContent = {
     paragraphs: [
       "AI belongs in the hands of your workforce, not outside it.",
       "It will be defined by how effectively intelligence can understand context, collaborate across systems, and act within the boundaries of the organization.",
-      "That is why Vyuha is being built as an intelligent operating layer—one that brings together people, data, models, agents, applications, and workflows.",
-      "Success with AI isn't about isolated tools; it is about how seamless intelligence partners with people across everyday systems. Vyuha serves as the intelligent foundation that brings your talent, data, autonomous agents, and critical workflows together—putting trusted AI directly into the hands of your team.",
+      "That is why Vyuha is being built as an intelligent operating layer, one that brings together people, data, models, agents, applications, and workflows.",
+      "Success with AI isn't about isolated tools; it is about how seamless intelligence partners with people across everyday systems. Vyuha serves as the intelligent foundation that brings your talent, data, autonomous agents, and critical workflows together, putting trusted AI directly into the hands of your team.",
     ],
     closer:
       "IT'S AI THAT Works your way, with YOUR data, aligned with your industry-specific guardrails.",
@@ -55,12 +55,12 @@ export const companyAbout: CompanyContent = {
         quote: "“AI\u2003for everyone, not just AI experts.”",
         paragraphs: [
           "We built Vyuha with a simple belief: every organization should be able to harness the power of AI.",
-          "The people closest to a business understand its challenges best. They should be able to use intelligence, build it, and put it to work—without waiting for a specialized AI team.",
+          "The people closest to a business understand its challenges best. They should be able to use intelligence, build it, and put it to work, without waiting for a specialized AI team.",
           "Vyuha is our effort to make that possible: bringing powerful, enterprise-grade intelligence closer to the people to solve problems that matter.",
         ],
-        signoff: ["— Prarthana Gupta", "Founder, Vyuha.ai"],
+        signoff: ["Prarthana Gupta", "Founder, Vyuha.ai"],
         ctaLabel: "Connect",
-        ctaHref: "/book-a-demo",
+        ctaHref: "https://www.linkedin.com/in/prarthana-gupta-112510a5/",
       },
       {
         name: "SHRADDHA GUPTA",
@@ -72,12 +72,12 @@ export const companyAbout: CompanyContent = {
         quote: "“The future of AI is not about working alone. It is about working together.”",
         paragraphs: [
           "Enterprise problems rarely belong to one system, one team, or one function. They require context from across the organization and the ability to connect that context into meaningful action.",
-          "That is what we are building with Vyuha—a way for AI, agents, people, data, and enterprise systems to work together.",
+          "That is what we are building with Vyuha, a way for AI, agents, people, data, and enterprise systems to work together.",
           "Our focus is not simply on creating smarter AI, but on creating intelligence that can work within the complexity of the real enterprise.",
         ],
-        signoff: ["— Shraddha Gupta", "Co-Founder, Vyuha.ai"],
+        signoff: ["Shraddha Gupta", "Co-Founder, Vyuha.ai"],
         ctaLabel: "Connect",
-        ctaHref: "/book-a-demo",
+        ctaHref: "https://www.linkedin.com/in/shraddha--gupta/",
       },
       {
         name: "LATA SINGH",
@@ -89,12 +89,44 @@ export const companyAbout: CompanyContent = {
         quote: "“Enterprise AI must create capability, not dependency.”",
         paragraphs: [
           "The opportunity with AI is much bigger than automation. It is about giving organizations the ability to continuously understand, adapt, and improve how they operate.",
-          "At Vyuha.ai we are building with the perspective—bringing intelligence into the enterprise while keeping governance, ownership, and control at its core.",
+          "At Vyuha.ai we are building with the perspective, bringing intelligence into the enterprise while keeping governance, ownership, and control at its core.",
           "The real measure of success is not how many AI agents an organization deploys, it is how efficiently the organization scales.",
         ],
-        signoff: ["— Lata Singh", "Strategic Advisor, Vyuha.ai"],
+        signoff: ["Lata Singh", "Strategic Advisor, Vyuha.ai"],
         ctaLabel: "Connect",
-        ctaHref: "/book-a-demo",
+        ctaHref: "https://www.linkedin.com/in/latasingh/",
+      },
+      {
+        name: "DEEKSHA SHARMA",
+        role: "SENIOR SOLUTION SPECIALIST",
+        handle: "@deeksha",
+        image: "/company/leadership/deeksha-sharma.png",
+        accentFrom: "#ecfeff",
+        accentTo: "#0e7490",
+        quote: "“The best AI solutions start with understanding the problem.”",
+        paragraphs: [
+          "Every enterprise is unique. Different systems, processes, and challenges require niche solutions that are designed around business outcomes rather than technology alone.",
+          "At Vyuha, our focus is on helping organizations identify where intelligence can create the greatest impact and translating that into practical, measurable results. The goal is simple: make AI accessible, relevant, and valuable for every team.",
+        ],
+        signoff: ["Deeksha Sharma", "Senior Solution Specialist, Vyuha.ai"],
+        ctaLabel: "Connect",
+        ctaHref: "https://www.linkedin.com/in/deeksha-sharma-450a33105/",
+      },
+      {
+        name: "NAVIN NAIR",
+        role: "VP, PRODUCT ENGINEERING",
+        handle: "@navin",
+        image: "/company/leadership/navin-nair.png",
+        accentFrom: "#f0fdfa",
+        accentTo: "#115e59",
+        quote: "“Great AI is only valuable when it works in the real world.”",
+        paragraphs: [
+          "Building enterprise AI is not just about intelligence, it is about reliability, scalability, and execution. Organizations need systems that can integrate seamlessly with their existing environments while remaining secure, governed, and adaptable.",
+          "At Vyuha, we focus on transforming complex AI capabilities into practical engineering solutions that enterprises can seamlessly deploy, trust, and scale with confidence.",
+        ],
+        signoff: ["Navin Nair", "VP, Product Engineering, Vyuha.ai"],
+        ctaLabel: "Connect",
+        ctaHref: "https://www.linkedin.com/in/navin-nair01/",
       },
       {
         name: "ADHYUTH",
@@ -107,13 +139,13 @@ export const companyAbout: CompanyContent = {
         paragraphs: [
           "Enterprises don't need more AI experiments. They need solutions that work with their existing systems, solve real operational problems, and deliver measurable outcomes.",
           "That is where Vyuha comes in.",
-          "We are focused on helping organizations move from identifying an AI opportunity to put intelligent systems to work—securely, practically, and at enterprise scale.",
+          "We are focused on helping organizations move from identifying an AI opportunity to put intelligent systems to work, securely, practically, and at enterprise scale.",
           "More importantly, we put the power of AI directly into the hands of your frontline talent. Instead of relying on scarce specialists, Vyuha empowers your domain experts and everyday operators to design, build, and govern production-ready agents tailored to their own workflows.",
           "Our goal is simple: make AI useful, make it accessible, and make it work.",
         ],
-        signoff: ["— Adhyuth", "Chief Business Officer, Vyuha.ai"],
+        signoff: ["Adhyuth", "Chief Business Officer, Vyuha.ai"],
         ctaLabel: "Connect",
-        ctaHref: "/book-a-demo",
+        ctaHref: "https://www.linkedin.com/in/adhyuth-ramadyani/",
       },
     ],
   },

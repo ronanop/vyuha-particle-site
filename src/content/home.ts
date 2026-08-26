@@ -43,12 +43,12 @@ export const homeContent: HomeContent = {
   foundations: [
     {
       title: "The Foundation for Agentic Intelligence",
-      body: "Unlock capabilities that were once restricted to hyperscalers. Vyuha empowers your existing teams to provide context to AI—fine-tuning models on proprietary data, building deep-reasoning agents, and intelligently orchestrating workflows at scale.",
+      body: "Unlock capabilities that were once restricted to hyperscalers. Vyuha empowers your existing teams to provide context to AI, fine-tuning models on proprietary data, building deep-reasoning agents, and intelligently orchestrating workflows at scale.",
       cta: { label: "Explore AI In a BOX", href: "/platform/in-a-box" },
     },
     {
       title: "Architected for Builders and Operators",
-      body: "Built to scale with you—from instantly deploying pre-built apps to orchestrating custom workflows. We are democratizing AI in INDIA, empowering your teams to drive massive productivity without ever compromising your data perimeter.",
+      body: "Built to scale with you, from instantly deploying pre-built apps to orchestrating custom workflows. We are democratizing AI in INDIA, empowering your teams to drive massive productivity without ever compromising your data perimeter.",
       cta: { label: "Read More", href: "/company" },
     },
     {
@@ -67,7 +67,7 @@ export const homeContent: HomeContent = {
     "Enterprise-Controlled Intelligence",
   ],
   operatingBody: [
-    "Vyuha transforms advanced AI into real-world operational velocity—enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
+    "Vyuha transforms advanced AI into real-world operational velocity, enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
     "No complexity. No specialized AI research team required. Just unified control, delivered entirely within your own private boundary.",
   ],
   operatingCta: { label: "Schedule Platform Demo", href: "/book-a-demo" },

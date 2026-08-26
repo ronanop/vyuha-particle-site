@@ -43,7 +43,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: resolveSiteUrl(),
-  title: "Vyuha.ai — AI that understands your enterprise",
+  title: "Vyuha.ai | AI that understands your enterprise",
   description:
     "Connect knowledge, systems, workflows and teams through one intelligent layer.",
 };

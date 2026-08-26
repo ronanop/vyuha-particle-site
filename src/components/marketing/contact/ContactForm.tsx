@@ -50,7 +50,7 @@ export function ContactForm({ content }: { content: ContactContent }) {
     const body = [
       `Name: ${values.name}`,
       `Email: ${values.email}`,
-      `Phone: ${values.phone || "—"}`,
+      `Phone: ${values.phone || "-"}`,
       "",
       values.message,
     ].join("\n");

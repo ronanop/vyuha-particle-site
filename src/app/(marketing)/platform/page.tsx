@@ -3,7 +3,7 @@ import { PlatformOverviewView } from "@/components/marketing/platform/PlatformVi
 import { platformOverview } from "@/content/platform/overview";
 
 export const metadata: Metadata = {
-  title: "Platform — Vyuha.ai",
+  title: "Platform | Vyuha.ai",
   description:
     "Vyuha is the enterprise agentic platform: one command plane for Cybersecurity, IT, FinOps, and Business Operations leaders to orchestrate multi-agent workflows with total perimeter control.",
 };

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Infinite image tunnel — ported from Framer:
+ * Infinite image tunnel, ported from Framer:
  * https://framer.com/m/Infinite-scroll-F3bukW.js@RFzWw3xnhlB4MeO81nW3
  *
  * Auto-driven (not scroll-coupled) and ticked on the same GSAP clock as
@@ -386,7 +386,7 @@ export default function InfiniteScrollTunnel({
         });
         scene.remove(segment);
       });
-      // Keep textures in module cache — do not dispose on unmount.
+      // Keep textures in module cache, do not dispose on unmount.
       renderer?.dispose();
     };
   }, [images]);

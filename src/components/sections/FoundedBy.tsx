@@ -36,7 +36,7 @@ export function FoundedBy() {
           </h2>
           <p className="mt-6 text-[16px] leading-relaxed text-white/60 sm:mt-8 sm:text-[17px] md:text-[18px]">
             Vyuha is led by founders committed to putting agentic intelligence
-            under enterprise perimeter control—with governance Indian
+            under enterprise perimeter control, with governance Indian
             institutions can trust.
           </p>
         </div>

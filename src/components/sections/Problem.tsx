@@ -11,7 +11,7 @@ const perimeterPoints = [
   },
   {
     title: "Immunity from External Logging",
-    body: "Your enterprise IP remains yours—never used to train public foundation models.",
+    body: "Your enterprise IP remains yours, never used to train public foundation models.",
   },
 ];
 
@@ -137,7 +137,7 @@ export function Problem() {
         </p>
         <p className="mx-auto mt-8 max-w-xl text-[17px] leading-relaxed text-white/60 md:text-[18px]">
           Vyuha absorbs the function of brittle SOAR &amp; legacy RPA, narrow
-          agentic point solutions, and generic agent builders—simplifying the
+          agentic point solutions, and generic agent builders, simplifying the
           stack and accelerating innovation.
         </p>
       </SectionFrame>

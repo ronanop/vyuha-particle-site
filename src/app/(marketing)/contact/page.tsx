@@ -3,7 +3,7 @@ import { ContactOverviewView } from "@/components/marketing/contact/ContactOverv
 import { contactPage } from "@/content/contact";
 
 export const metadata: Metadata = {
-  title: "Contact — Vyuha.ai",
+  title: "Contact | Vyuha.ai",
   description: "Contact Vyuha.ai by email, phone, or the form on this page.",
 };
 

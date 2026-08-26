@@ -5,19 +5,19 @@ const layers = [
     num: "01",
     title: "App Store",
     eyebrow: "Instant Value. Enterprise-Ready.",
-    body: "A curated marketplace of pre-built, production-grade agentic applications—ready to deploy without months of custom engineering. Launch sovereign agentic apps in seconds across critical enterprise functions like Security Operations, Threat Intel Operationalization, Identity Management, IT service workflows, and FinOps automation. Every app ships with policy controls, auditability, and private-boundary execution so teams get instant value without compromising sovereignty.",
+    body: "A curated marketplace of pre-built, production-grade agentic applications, ready to deploy without months of custom engineering. Launch sovereign agentic apps in seconds across critical enterprise functions like Security Operations, Threat Intel Operationalization, Identity Management, IT service workflows, and FinOps automation. Every app ships with policy controls, auditability, and private-boundary execution so teams get instant value without compromising sovereignty.",
   },
   {
     num: "02",
     title: "Agents",
     eyebrow: "The Building Blocks of Agentic Intelligence.",
-    body: "Composable autonomous building blocks that combine context-aware reasoning, enterprise context from proprietary data and tools, and policy-governed action. Assemble specialized agents for investigation, remediation, orchestration, and decision support—then reuse them across domains. Each agent operates with clear permissions, continuous situational awareness, and governed outcomes so autonomy scales safely inside your command plane.",
+    body: "Composable autonomous building blocks that combine context-aware reasoning, enterprise context from proprietary data and tools, and policy-governed action. Assemble specialized agents for investigation, remediation, orchestration, and decision support, then reuse them across domains. Each agent operates with clear permissions, continuous situational awareness, and governed outcomes so autonomy scales safely inside your command plane.",
   },
   {
     num: "03",
     title: "AI Tools",
     eyebrow: "Precision Control for Advanced Teams.",
-    body: "Create Domain-Specific Language Models tailored to your business language, workflows, and risk posture—then build deep-reasoning agents that collaborate through the Agent-to-Agent protocol. Give advanced teams fine-grained control over model behavior, tool access, evaluation, and runtime policy. Move from generic assistants to purpose-built intelligence that understands your environment and executes with enterprise-grade precision.",
+    body: "Create Domain-Specific Language Models tailored to your business language, workflows, and risk posture, then build deep-reasoning agents that collaborate through the Agent-to-Agent protocol. Give advanced teams fine-grained control over model behavior, tool access, evaluation, and runtime policy. Move from generic assistants to purpose-built intelligence that understands your environment and executes with enterprise-grade precision.",
   },
 ];
 

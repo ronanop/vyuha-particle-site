@@ -5,7 +5,7 @@ export const businessOperations: MarketingPageContent = {
   eyebrow: "Business Operations & FinOps",
   title: "From Fragmented Reporting to Coordinated, Governed Execution",
   body: [
-    "Cost, compliance, and operational reporting is stitched together manually from multiple systems, arriving too late to influence the decisions it should inform. Business Operations and FinOps leaders need a single reasoning layer across finance, security, and operations — not another dashboard that reports on yesterday's numbers.",
+    "Cost, compliance, and operational reporting is stitched together manually from multiple systems, arriving too late to influence the decisions it should inform. Business Operations and FinOps leaders need a single reasoning layer across finance, security, and operations, not another dashboard that reports on yesterday's numbers.",
     "Vyuha reimagines Business Operations with sovereign agentic intelligence, composing reporting, reconciliation, and approval workflows that run continuously and stay entirely within the enterprise's own perimeter.",
   ],
   primaryCtas: [
@@ -19,7 +19,7 @@ export const businessOperations: MarketingPageContent = {
         {
           title: "Unified Reporting & Reconciliation",
           headline: "One View Across Finance, Security, and Operations",
-          body: "Vyuha composes reporting and reconciliation agents that pull structured and unstructured data from finance, security, and operations systems into a single, always-current view — replacing manual, end-of-period stitching with continuous reconciliation.",
+          body: "Vyuha composes reporting and reconciliation agents that pull structured and unstructured data from finance, security, and operations systems into a single, always-current view, replacing manual, end-of-period stitching with continuous reconciliation.",
         },
         {
           title: "Governed Autonomous Approvals",
@@ -29,7 +29,7 @@ export const businessOperations: MarketingPageContent = {
         {
           title: "Workforce Elevation for Operations Teams",
           headline: "Every Practitioner Becomes an Orchestrator",
-          body: "A no-code visual builder elevates existing operators into orchestrators — no dedicated AI or data engineering team required — so Business Operations and FinOps teams can compose and adapt workflows themselves.",
+          body: "A no-code visual builder elevates existing operators into orchestrators, no dedicated AI or data engineering team required, so Business Operations and FinOps teams can compose and adapt workflows themselves.",
         },
       ],
     },

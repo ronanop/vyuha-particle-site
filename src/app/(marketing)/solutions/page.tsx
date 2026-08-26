@@ -7,7 +7,7 @@ import {
 } from "@/lib/marketing/hero-prefetch";
 
 export const metadata: Metadata = {
-  title: "Solutions — Vyuha.ai",
+  title: "Solutions | Vyuha.ai",
   description: solutionsOverview.body[0],
 };
 

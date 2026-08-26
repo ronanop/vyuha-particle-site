@@ -3,7 +3,7 @@ import { PlatformProductView } from "@/components/marketing/platform/PlatformVie
 import { platformIntegrations } from "@/content/platform/integrations";
 
 export const metadata: Metadata = {
-  title: "Integrations — Vyuha.ai",
+  title: "Integrations | Vyuha.ai",
   description: platformIntegrations.headline,
 };
 

@@ -90,6 +90,9 @@ export function LeaderProfileCard({ person }: LeaderProfileCardProps) {
 
           <Link
             href={ctaHref}
+            {...(ctaHref.startsWith("http")
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
             className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-[13px] font-semibold tracking-tight text-[#0a0a0a] shadow-md transition-transform hover:scale-[1.03] active:scale-[0.98]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -32,7 +32,7 @@ export const platformInABox: PlatformProductContent = {
         },
         {
           title: "Immunity from External Logging",
-          body: "Enterprise IP remains yours—never transmitted externally or used to train public models.",
+          body: "Enterprise IP remains yours, never transmitted externally or used to train public models.",
         },
       ],
     },
@@ -66,7 +66,7 @@ export const platformInABox: PlatformProductContent = {
         },
         {
           title: "Identical OS Capabilities",
-          body: "Feature parity with Vyuha.ONE—including App Store, Composable Agents, A2A Mesh, and No-Code Orchestrator—delivered offline.",
+          body: "Feature parity with Vyuha.ONE, including App Store, Composable Agents, A2A Mesh, and No-Code Orchestrator, delivered offline.",
         },
       ],
     },
@@ -87,7 +87,7 @@ export const platformInABox: PlatformProductContent = {
   ],
   finalHeadline: "Command Self-Governed AI Inside Your Physical Perimeter",
   finalBody:
-    "Vyuha In a BOX provides infrastructure control, air-gapped security, and hardware-accelerated performance—enabling autonomous AI without data leaving your facility.",
+    "Vyuha In a BOX provides infrastructure control, air-gapped security, and hardware-accelerated performance, enabling autonomous AI without data leaving your facility.",
   finalCtas: [
     { label: "Request On-Premise Demo", href: "/book-a-demo" },
     { label: "Contact Infrastructure Team", href: "/contact" },
