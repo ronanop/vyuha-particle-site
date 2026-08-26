@@ -27,8 +27,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.75rem max(2rem, env(safe-area-inset-right)) 1.75rem
-    max(2rem, env(safe-area-inset-left));
+  padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right))
+    1.25rem max(1.25rem, env(safe-area-inset-left));
   background: transparent;
   pointer-events: none;
   z-index: 20;
@@ -84,7 +84,11 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.3rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.35rem 0.25rem;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -171,7 +175,10 @@
   -webkit-backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
-  padding: 6em 2em 2em 2em;
+  padding: max(5.5rem, calc(env(safe-area-inset-top) + 4.5rem))
+    max(1.5rem, env(safe-area-inset-right))
+    max(2rem, env(safe-area-inset-bottom))
+    max(1.5rem, env(safe-area-inset-left));
   overflow-y: auto;
   z-index: 10;
   pointer-events: none;
@@ -315,13 +322,14 @@
   line-height: 1.15;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
   transition:
     background 0.25s,
     color 0.25s;
   display: inline-block;
   text-decoration: none;
   padding-right: 2.2em;
+  max-width: 100%;
 }
 
 .staggered-menu-panel .sm-socials-list .sm-socials-link {
@@ -394,14 +402,23 @@
     width: 100%;
     left: 0;
     right: 0;
+    padding: max(5rem, calc(env(safe-area-inset-top) + 4rem))
+      max(1.25rem, env(safe-area-inset-right))
+      max(1.5rem, env(safe-area-inset-bottom))
+      max(1.25rem, env(safe-area-inset-left));
   }
 
   .staggered-menu-wrapper[data-open] .sm-logo-img {
     filter: invert(100%);
   }
 
+  .sm-logo-img {
+    height: 28px;
+  }
+
   .sm-panel-item {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     letter-spacing: -0.03em;
+    padding-block: 0.2rem;
   }
 }

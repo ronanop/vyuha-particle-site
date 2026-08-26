@@ -6,17 +6,26 @@ import { prefersReducedMotion } from "@/lib/utils/motion";
 
 const LightTunnel = dynamic(() => import("./LightTunnel"), { ssr: false });
 
+type PlatformHeroTunnelProps = {
+  onReady?: () => void;
+};
+
 /**
  * Fibre-optic tunnel behind marketing heroes.
  */
-export function PlatformHeroTunnel() {
+export function PlatformHeroTunnel({ onReady }: PlatformHeroTunnelProps) {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion()) {
+      onReady?.();
+      return;
+    }
     const probe = document.createElement("canvas");
-    setEnabled(Boolean(probe.getContext("webgl2")));
-  }, []);
+    const ok = Boolean(probe.getContext("webgl2"));
+    setEnabled(ok);
+    if (!ok) onReady?.();
+  }, [onReady]);
 
   if (!enabled) return null;
 
@@ -51,6 +60,7 @@ export function PlatformHeroTunnel() {
       mouseInteraction
       mouseStrength={0.08}
       className="h-full w-full"
+      onReady={onReady}
     />
   );
 }

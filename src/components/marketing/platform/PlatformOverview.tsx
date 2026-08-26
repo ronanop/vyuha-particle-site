@@ -1,22 +1,31 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FluidButton } from "@/components/FluidButton";
 import BlurText from "@/components/marketing/platform/BlurText";
+import FoldText from "@/components/marketing/platform/FoldText";
 import { SolutionCtas } from "@/components/marketing/solutions/SolutionChrome";
 import { PlatformHeroTunnel } from "@/components/marketing/platform/PlatformHeroTunnel";
 import WarpText from "@/components/marketing/platform/WarpText";
 import DecryptedText from "@/components/marketing/platform/DecryptedText";
 import { TypewriterText } from "@/components/marketing/platform/TypewriterText";
 import TiltedCard from "@/components/TiltedCard";
-import { PlatformWhyScanner } from "@/components/marketing/platform/PlatformWhyScanner";
 import { ScrambleText } from "@/components/marketing/platform/ScrambleText";
 import { PlatformWaysSlider } from "@/components/marketing/platform/PlatformWaysSlider";
+import { TransitionLink } from "@/components/ui/TransitionLink";
 import type { PlatformOverviewContent } from "@/content/platform/types";
+
+const PlatformWhyScanner = dynamic(
+  () =>
+    import("@/components/marketing/platform/PlatformWhyScanner").then(
+      (m) => m.PlatformWhyScanner,
+    ),
+  { ssr: false },
+);
 
 export function PlatformOverviewView({
   content,
@@ -24,6 +33,15 @@ export function PlatformOverviewView({
   content: PlatformOverviewContent;
 }) {
   const rootRef = useRef<HTMLElement>(null);
+  const heroReadyRef = useRef(false);
+  const [heroReady, setHeroReady] = useState(false);
+
+  const markHeroReady = useCallback(() => {
+    if (heroReadyRef.current) return;
+    heroReadyRef.current = true;
+    rootRef.current?.classList.add("hero-ready");
+    setHeroReady(true);
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -31,11 +49,11 @@ export function PlatformOverviewView({
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      root.classList.add("hero-ready");
+      markHeroReady();
       return;
     }
 
-    const readyTimer = setTimeout(() => root.classList.add("hero-ready"), 350);
+    const readyTimer = setTimeout(markHeroReady, 900);
 
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
@@ -80,7 +98,10 @@ export function PlatformOverviewView({
       clearTimeout(readyTimer);
       ctx.revert();
     };
-  }, []);
+  }, [markHeroReady]);
+
+  const titleText = content.displayTitle.join("\n");
+  const bodyText = content.body.join("\n\n");
 
   return (
     <article ref={rootRef} className="platform-page">
@@ -93,38 +114,119 @@ export function PlatformOverviewView({
 
       <header className="relative overflow-hidden border-b border-white/10">
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-          <PlatformHeroTunnel />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,#0b1f4d_0%,#050505_55%,#000_100%)]" />
+          <PlatformHeroTunnel onReady={markHeroReady} />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.55)_55%,#000_100%)]" />
         </div>
         <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] items-center justify-center px-6 pt-28 pb-10 md:px-10 md:pt-32 lg:pb-6">
           <div className="mx-auto w-full max-w-5xl text-center">
-            <h1
-              data-hero-in
-              className="font-display text-[clamp(2.6rem,7vw,6.25rem)] font-medium leading-[0.9] tracking-[-0.045em] text-white"
-            >
-              <span className="block">{content.displayTitle[0]}</span>
-              <span className="block">{content.displayTitle[1]}</span>
+            <h1 className="font-display text-[clamp(2.6rem,7vw,6.25rem)] font-medium leading-[0.9] tracking-[-0.045em] text-white">
+              {heroReady ? (
+                <FoldText
+                  text={titleText}
+                  splitBy="line"
+                  hinge="top"
+                  trigger="mount"
+                  duration={0.7}
+                  stagger={0.12}
+                  ease="power3.out"
+                  perspective={900}
+                  creaseShading={0.45}
+                  fontSize="clamp(2.6rem, 7vw, 6.25rem)"
+                  fontWeight={500}
+                  color="#ffffff"
+                  className="font-display w-full"
+                  style={{ letterSpacing: "-0.045em", lineHeight: 0.9 }}
+                />
+              ) : (
+                <span className="invisible block" aria-hidden>
+                  {content.displayTitle.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </span>
+              )}
             </h1>
-            <p
-              data-hero-in
-              className="mt-6 font-display text-lg font-medium tracking-[-0.02em] text-white/75 [animation-delay:160ms] md:text-xl"
-            >
-              {content.leitmotif}
-            </p>
-            <blockquote
-              data-hero-in
-              className="mx-auto mt-8 max-w-4xl border-t border-kintsugi pt-5 text-[16px] leading-relaxed text-white/65 [animation-delay:240ms] md:text-[17px]"
-            >
-              {content.quote}
-            </blockquote>
-            <div
-              data-hero-in
-              className="mx-auto mt-6 max-w-4xl space-y-4 text-[16px] leading-relaxed text-white/55 [animation-delay:300ms] md:text-[17px]"
-            >
-              {content.body.map((paragraph) => (
-                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
-              ))}
+
+            <div className="mt-6">
+              {heroReady ? (
+                <FoldText
+                  text={content.leitmotif}
+                  splitBy="word"
+                  hinge="top"
+                  trigger="mount"
+                  delay={0.35}
+                  duration={0.55}
+                  stagger={0.05}
+                  ease="power3.out"
+                  perspective={700}
+                  creaseShading={0.4}
+                  fontSize="clamp(1.125rem, 2vw, 1.25rem)"
+                  fontWeight={500}
+                  color="rgba(255,255,255,0.75)"
+                  className="font-display"
+                  style={{ letterSpacing: "-0.02em", lineHeight: 1.3 }}
+                />
+              ) : (
+                <p className="invisible font-display text-lg font-medium md:text-xl" aria-hidden>
+                  {content.leitmotif}
+                </p>
+              )}
             </div>
+
+            <blockquote className="mx-auto mt-8 max-w-4xl border-t border-kintsugi pt-5">
+              {heroReady ? (
+                <FoldText
+                  text={content.quote}
+                  splitBy="word"
+                  hinge="top"
+                  trigger="mount"
+                  delay={0.55}
+                  duration={0.5}
+                  stagger={0.028}
+                  ease="power3.out"
+                  perspective={650}
+                  creaseShading={0.35}
+                  fontSize="clamp(1rem, 1.4vw, 1.0625rem)"
+                  fontWeight={400}
+                  color="rgba(255,255,255,0.65)"
+                  style={{ letterSpacing: "0", lineHeight: 1.65 }}
+                />
+              ) : (
+                <p className="invisible text-[16px] leading-relaxed md:text-[17px]" aria-hidden>
+                  {content.quote}
+                </p>
+              )}
+            </blockquote>
+
+            <div className="mx-auto mt-6 max-w-4xl">
+              {heroReady ? (
+                <FoldText
+                  text={bodyText}
+                  splitBy="word"
+                  hinge="top"
+                  trigger="mount"
+                  delay={0.75}
+                  duration={0.48}
+                  stagger={0.022}
+                  ease="power3.out"
+                  perspective={650}
+                  creaseShading={0.3}
+                  fontSize="clamp(1rem, 1.4vw, 1.0625rem)"
+                  fontWeight={400}
+                  color="rgba(255,255,255,0.55)"
+                  style={{ letterSpacing: "0", lineHeight: 1.65 }}
+                />
+              ) : (
+                <div className="invisible space-y-4 text-[16px] leading-relaxed md:text-[17px]" aria-hidden>
+                  {content.body.map((paragraph) => (
+                    <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div
               data-hero-in
               className="mt-10 flex flex-wrap items-center justify-center gap-4 [animation-delay:380ms]"
@@ -134,12 +236,12 @@ export function PlatformOverviewView({
                 href={content.primaryCtas[0].href}
               />
               {content.primaryCtas[1] ? (
-                <Link
+                <TransitionLink
                   href={content.primaryCtas[1].href}
                   className="inline-flex min-h-11 items-center text-[13px] tracking-wide text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline"
                 >
                   {content.primaryCtas[1].label}
-                </Link>
+                </TransitionLink>
               ) : null}
             </div>
             <nav
@@ -159,13 +261,13 @@ export function PlatformOverviewView({
           </div>
         </div>
 
-        <dl className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 divide-y divide-white/10 border-t border-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <dl className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 divide-y divide-white/10 border-t border-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
           {content.stats.map((stat, i) => (
             <div key={stat.label} className="px-6 py-7 md:px-10">
               <dt className="sr-only">{stat.label}</dt>
               <dd
                 aria-label={stat.value}
-                className="font-display text-[clamp(2rem,4vw,3.25rem)] font-medium leading-none tracking-[-0.04em] text-white"
+                className="font-display text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-none tracking-[-0.04em] text-white"
               >
                 <ScrambleText
                   text={stat.value}
@@ -492,7 +594,7 @@ export function PlatformOverviewView({
           <div>
             <h2 className="font-display text-[clamp(1.95rem,3.6vw,3.15rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white">
               <span className="block">The Operating Engine</span>
-              <span className="block whitespace-nowrap">for Enterprise-Controlled</span>
+              <span className="block md:whitespace-nowrap">for Enterprise-Controlled</span>
               <span className="block">Intelligence</span>
             </h2>
             {content.finalBody ? (

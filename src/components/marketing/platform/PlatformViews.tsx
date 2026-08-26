@@ -54,45 +54,80 @@ function ProductTable({ section }: { section: PlatformProductSection }) {
   const [firstHeader, ...restHeaders] = section.table.headers;
 
   return (
-    <div className="overflow-x-auto border border-white/12">
-      <table className="w-full min-w-[40rem] border-collapse text-left text-[14px] leading-relaxed md:text-[15px]">
-        <caption className="sr-only">{section.title}</caption>
-        <thead>
-          <tr className="border-b border-white/12 bg-white/[0.04]">
-            <th scope="col" className="px-4 py-3 font-display font-medium tracking-[-0.02em] text-white md:px-5">
-              {firstHeader}
-            </th>
-            {restHeaders.map((header) => (
+    <>
+      {/* Mobile: stacked cards */}
+      <ul className="space-y-4 md:hidden">
+        {section.table.rows.map((row) => (
+          <li
+            key={row.join("-")}
+            className="border border-white/12 bg-white/[0.04] p-5 backdrop-blur-xl"
+          >
+            <p className="font-display text-[15px] font-medium tracking-[-0.02em] text-white">
+              {row[0]}
+            </p>
+            <dl className="mt-4 space-y-3">
+              {restHeaders.map((header, i) => (
+                <div key={header}>
+                  <dt className="font-display text-[11px] uppercase tracking-[0.18em] text-cyan-300/90">
+                    {header}
+                  </dt>
+                  <dd className="mt-1 text-[14px] leading-relaxed text-white/60">
+                    {row[i + 1]}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </li>
+        ))}
+      </ul>
+
+      {/* md+: scrollable table */}
+      <div className="hidden overflow-x-auto border border-white/12 md:block">
+        <table className="w-full min-w-[40rem] border-collapse text-left text-[14px] leading-relaxed md:text-[15px]">
+          <caption className="sr-only">{section.title}</caption>
+          <thead>
+            <tr className="border-b border-white/12 bg-white/[0.04]">
               <th
-                key={header}
                 scope="col"
-                className="px-4 py-3 font-display font-medium tracking-[-0.02em] text-cyan-300 md:px-5"
+                className="px-4 py-3 font-display font-medium tracking-[-0.02em] text-white md:px-5"
               >
-                {header}
+                {firstHeader}
               </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {section.table.rows.map((row) => (
-            <tr key={row.join("-")} className="border-b border-white/8 last:border-b-0">
-              {row.map((cell, i) => (
-                <td
-                  key={`${row[0]}-${i}`}
-                  className={
-                    i === 0
-                      ? "px-4 py-3 font-medium text-white/85 md:px-5"
-                      : "px-4 py-3 text-white/60 md:px-5"
-                  }
+              {restHeaders.map((header) => (
+                <th
+                  key={header}
+                  scope="col"
+                  className="px-4 py-3 font-display font-medium tracking-[-0.02em] text-cyan-300 md:px-5"
                 >
-                  {cell}
-                </td>
+                  {header}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {section.table.rows.map((row) => (
+              <tr
+                key={row.join("-")}
+                className="border-b border-white/8 last:border-b-0"
+              >
+                {row.map((cell, i) => (
+                  <td
+                    key={`${row[0]}-${i}`}
+                    className={
+                      i === 0
+                        ? "px-4 py-3 font-medium text-white/85 md:px-5"
+                        : "px-4 py-3 text-white/60 md:px-5"
+                    }
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

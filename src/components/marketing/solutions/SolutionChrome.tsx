@@ -1,22 +1,22 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { FluidButton } from "@/components/FluidButton";
+import { TransitionLink } from "@/components/ui/TransitionLink";
 import type { SolutionCta } from "@/content/solutions/types";
 
 export function SolutionCtas({ ctas }: { ctas: SolutionCta[] }) {
   if (ctas.length === 0) return null;
   const [primary, ...rest] = ctas;
   return (
-    <div className="flex flex-wrap items-center gap-3 md:gap-4">
+    <div className="flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center md:gap-4">
       <FluidButton text={primary.label} href={primary.href} size="md" />
       {rest.map((cta) => (
-        <Link
+        <TransitionLink
           key={cta.href + cta.label}
           href={cta.href}
-          className="text-[13px] tracking-wide text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline"
+          className="min-h-11 inline-flex items-center text-[13px] tracking-wide text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline"
         >
           {cta.label}
-        </Link>
+        </TransitionLink>
       ))}
     </div>
   );

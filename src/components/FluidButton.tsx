@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState, type CSSProperties, type MouseEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
+import { getNavTransitionTypes } from "@/lib/nav-transition";
 
 /**
  * Port of Framer Fluid Button
@@ -32,6 +34,10 @@ export type FluidButtonProps = {
   "aria-label"?: string;
 };
 
+function isInternalHref(href: string) {
+  return href.startsWith("/") && !href.startsWith("//");
+}
+
 export function FluidButton({
   text,
   href,
@@ -53,6 +59,8 @@ export function FluidButton({
 }: FluidButtonProps) {
   const [hovered, setHovered] = useState(false);
   const reduceMotion = useReducedMotion();
+  const router = useRouter();
+  const pathname = usePathname() || "/";
   const duration = reduceMotion ? 0 : 0.5;
   const transition = { duration, ease: EASE };
 
@@ -60,8 +68,7 @@ export function FluidButton({
     size === "sm"
       ? "px-4 py-3 md:px-[22px] md:py-3"
       : "px-5 py-3.5 sm:px-10 sm:py-[18px]";
-  const fontSize =
-    size === "sm" ? "0.8125rem" : "calc(1rem * 1.05)";
+  const fontSize = size === "sm" ? "0.8125rem" : "calc(1rem * 1.05)";
 
   const sharedStyle: CSSProperties = {
     borderBottomLeftRadius: 100,
@@ -79,7 +86,6 @@ export function FluidButton({
 
   const content = (
     <>
-      {/* Rising fill overlay */}
       <motion.span
         aria-hidden
         className="pointer-events-none absolute inset-x-0 z-0"
@@ -98,7 +104,6 @@ export function FluidButton({
         style={{ backgroundColor: overlayColor }}
       />
 
-      {/* Dual label stack — slide by one line (−50% of two-line stack) */}
       <span
         className="relative z-[1] block overflow-hidden"
         style={{ height: "1em", fontSize, textShadow: "none" }}
@@ -152,6 +157,20 @@ export function FluidButton({
   };
 
   if (href) {
+    const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+      if (disabled) {
+        e.preventDefault();
+        return;
+      }
+      onClick?.();
+      if (!newTab && isInternalHref(href)) {
+        e.preventDefault();
+        router.push(href, {
+          transitionTypes: getNavTransitionTypes(pathname, href),
+        });
+      }
+    };
+
     return (
       <motion.a
         {...motionProps}
@@ -160,7 +179,7 @@ export function FluidButton({
         rel={newTab ? "noopener noreferrer" : undefined}
         aria-label={ariaLabel}
         aria-disabled={disabled || undefined}
-        onClick={disabled ? (e) => e.preventDefault() : onClick}
+        onClick={handleClick}
       >
         {content}
       </motion.a>

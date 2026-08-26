@@ -7,6 +7,7 @@ import { Navigation } from "@/components/Navigation";
 import { HomeView } from "@/components/sections/HomeView";
 import { SiteFooter } from "@/components/SiteFooter";
 import { HeroParticle } from "@/components/hero/HeroParticle";
+import { PageTransition } from "@/components/ui/PageTransition";
 
 export function PageContent() {
   return (
@@ -27,7 +28,9 @@ export function PageContent() {
         <Navigation />
       </ViewTransition>
       <main className="relative z-10">
-        <HomeView />
+        <PageTransition>
+          <HomeView />
+        </PageTransition>
       </main>
       <SiteFooter />
     </SmoothScroll>

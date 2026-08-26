@@ -16,9 +16,9 @@ function HomeCopyBlock({
   const inner =
     align === "center"
       ? "mx-auto w-full max-w-xl px-2 text-center md:max-w-2xl"
-      : "ml-auto w-full max-w-xl pr-2 text-right md:max-w-2xl md:pr-12 lg:pr-20";
+      : "w-full max-w-xl text-left md:ml-auto md:max-w-2xl md:pr-12 md:text-right lg:pr-20";
   return (
-    <section className="relative z-10 py-16 pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] md:py-24 md:px-10">
+    <section className="relative z-10 py-14 pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] md:py-24 md:px-10">
       <div className="mx-auto w-full max-w-[1400px]">
         <div className={inner}>{children}</div>
       </div>
@@ -86,9 +86,9 @@ function CardStack({ children }: { children: ReactNode }) {
               key={i}
               className="sticky"
               style={{
-                top: `calc(6.5rem + ${i * 1.6}rem)`,
+                top: `calc(5.25rem + ${i * 1.15}rem)`,
                 zIndex: i + 1,
-                marginBottom: i === n - 1 ? 0 : "1.25rem",
+                marginBottom: i === n - 1 ? 0 : "1rem",
               }}
             >
               <div
@@ -163,14 +163,14 @@ export function HomeView() {
           <h2
             data-earth-dock={i === 0 ? "" : undefined}
             data-earth-morph={i === 1 ? "1" : i === 2 ? "2" : undefined}
-            className="font-display ml-auto max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white"
+            className="font-display max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white md:ml-auto"
           >
             {block.title}
           </h2>
-          <p className="ml-auto mt-6 max-w-lg text-[17px] text-justify leading-relaxed text-white/60">
+          <p className="mt-6 max-w-lg text-[16px] leading-relaxed text-white/60 md:ml-auto md:text-justify md:text-[17px]">
             {block.body}
           </p>
-          <div className="mt-8 flex justify-end">
+          <div className="mt-8 flex justify-start md:justify-end">
             <FluidButton text={block.cta.label} href={block.cta.href} />
           </div>
         </HomeCopyBlock>
@@ -202,7 +202,7 @@ export function HomeView() {
             letterSpacing="-0.035em"
             lineHeight={0.95}
             className="font-display"
-            style={{ height: "clamp(144px, 19.2vw, 264px)" }}
+            style={{ height: "clamp(112px, 28vw, 264px)" }}
           />
         </div>
         <p className="mx-auto mt-3 max-w-2xl text-balance text-[17px] leading-relaxed text-white/60 md:text-[18px]">
@@ -285,7 +285,7 @@ export function HomeView() {
             {content.controlCards.map((card, ci) => (
               <div
                 key={card.title}
-                className="group relative overflow-hidden rounded-[1.75rem] border border-white/[0.12] bg-[#070b12]/90 p-8 shadow-[0_40px_120px_-36px_rgba(0,0,0,0.85)] backdrop-blur-2xl md:p-10 lg:p-12"
+                className="group relative overflow-hidden rounded-[1.75rem] border border-white/[0.12] bg-[#070b12]/90 p-6 shadow-[0_40px_120px_-36px_rgba(0,0,0,0.85)] backdrop-blur-2xl sm:p-8 md:p-10 lg:p-12"
               >
                 {/* Radial glow */}
                 <div

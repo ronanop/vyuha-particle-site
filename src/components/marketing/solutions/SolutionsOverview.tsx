@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FluidButton } from "@/components/FluidButton";
@@ -11,14 +10,48 @@ import TiltedCard from "@/components/TiltedCard";
 import SplitText from "@/components/ui/SplitText";
 import TextType from "@/components/ui/TextType";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
-import { HeroParticle } from "@/components/hero/HeroParticle";
 import { SolutionCtas } from "@/components/marketing/solutions/SolutionChrome";
+import { TransitionLink } from "@/components/ui/TransitionLink";
 import type { SolutionsOverviewContent } from "@/content/solutions/types";
+import { SOLUTIONS_TUNNEL_POSTER } from "@/lib/marketing/hero-prefetch";
 
 const InfiniteScrollTunnel = dynamic(
   () => import("@/components/marketing/solutions/InfiniteScrollTunnel"),
   { ssr: false },
 );
+
+const HeroParticle = dynamic(
+  () =>
+    import("@/components/hero/HeroParticle").then((m) => m.HeroParticle),
+  { ssr: false },
+);
+
+function LazyHeroParticle() {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    const el = hostRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setActive(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px", threshold: 0 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={hostRef} className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+      {active ? <HeroParticle lockHero /> : null}
+    </div>
+  );
+}
 
 function EarthQuoteHeading({ quote }: { quote: string }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -94,6 +127,13 @@ export function SolutionsOverviewView({
 }) {
   const [sovereignWord, ...sovereignRest] = content.displayTitle[0].split(" ");
   const rootRef = useRef<HTMLElement>(null);
+  const heroReadyRef = useRef(false);
+
+  const markHeroReady = useCallback(() => {
+    if (heroReadyRef.current) return;
+    heroReadyRef.current = true;
+    rootRef.current?.classList.add("hero-ready");
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -101,11 +141,12 @@ export function SolutionsOverviewView({
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      root.classList.add("hero-ready");
+      markHeroReady();
       return;
     }
 
-    const readyTimer = setTimeout(() => root.classList.add("hero-ready"), 350);
+    // Fallback if WebGL never reports ready
+    const readyTimer = setTimeout(markHeroReady, 1200);
 
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
@@ -128,7 +169,7 @@ export function SolutionsOverviewView({
       clearTimeout(readyTimer);
       ctx.revert();
     };
-  }, []);
+  }, [markHeroReady]);
 
   return (
     <article ref={rootRef} className="solutions-page">
@@ -144,14 +185,21 @@ export function SolutionsOverviewView({
           className="pointer-events-none absolute inset-0 z-0 [contain:paint]"
           aria-hidden
         >
-          <InfiniteScrollTunnel className="absolute inset-0 h-full w-full" />
+          <div
+            className="absolute inset-0 bg-[#050505] bg-cover bg-center"
+            style={{ backgroundImage: `url(${SOLUTIONS_TUNNEL_POSTER})` }}
+          />
+          <InfiniteScrollTunnel
+            className="absolute inset-0 h-full w-full"
+            onReady={markHeroReady}
+          />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0.32)_50%,rgba(0,0,0,0.78)_100%)]" />
         </div>
         <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] flex-col items-center justify-center px-6 pt-28 pb-16 md:px-10 md:pt-32 md:pb-16">
           <div className="hero-copy w-full min-w-0 max-w-xl text-center md:max-w-2xl">
             <h1
               data-hero-in
-              className="isolate overflow-visible font-display text-[clamp(2.99rem,8.05vw,7.1875rem)] font-medium leading-none tracking-[-0.045em] text-white"
+              className="isolate overflow-visible font-display text-[clamp(2.4rem,8.05vw,7.1875rem)] font-medium leading-none tracking-[-0.045em] text-white"
             >
               <span className="relative z-20 block overflow-visible pb-[0.22em] leading-[1.12]">
                 <span className="hero-tricolor align-baseline">{sovereignWord}</span>
@@ -163,7 +211,7 @@ export function SolutionsOverviewView({
             </h1>
             <p
               data-hero-in
-              className="relative left-1/2 mt-6 w-[min(92vw,70rem)] max-w-none -translate-x-1/2 whitespace-nowrap font-display text-[clamp(0.8rem,calc((100vw-4rem)/44),1.5rem)] font-bold tracking-[-0.02em] text-white/90 [animation-delay:160ms]"
+              className="relative mx-auto mt-6 max-w-2xl text-balance font-display text-[clamp(0.95rem,2.8vw,1.5rem)] font-bold tracking-[-0.02em] text-white/90 [animation-delay:160ms] md:whitespace-nowrap"
             >
               {content.leitmotif}
             </p>
@@ -177,7 +225,7 @@ export function SolutionsOverviewView({
             </div>
             <div
               data-hero-in
-              className="mt-10 flex flex-wrap items-center justify-center gap-4 [animation-delay:380ms]"
+              className="mt-10 flex flex-col items-center justify-center gap-4 [animation-delay:380ms] sm:flex-row sm:flex-wrap"
             >
               <FluidButton
                 text={content.primaryCtas[0].label}
@@ -200,9 +248,7 @@ export function SolutionsOverviewView({
               "radial-gradient(ellipse at 50% 40%, #0a1a1f 0%, #000000 55%, #050505 100%)",
           }}
         />
-        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-          <HeroParticle lockHero />
-        </div>
+        <LazyHeroParticle />
         <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] items-center justify-start px-6 md:px-10">
           <EarthQuoteHeading quote={content.quote} />
         </div>
@@ -217,9 +263,9 @@ export function SolutionsOverviewView({
             <SplitText
               tag="h2"
               text={content.functionsTitle}
-              className="whitespace-nowrap font-display text-[clamp(0.95rem,calc((100vw-3rem)/24),3.25rem)] font-medium leading-none tracking-[-0.035em] text-white"
+              className="font-display text-[clamp(1.65rem,4.5vw,3.25rem)] font-medium leading-[1.05] tracking-[-0.035em] text-white"
               textAlign="left"
-              whiteSpace="nowrap"
+              whiteSpace="normal"
               splitType="chars"
               delay={28}
               duration={0.7}
@@ -235,7 +281,7 @@ export function SolutionsOverviewView({
           </div>
 
           <ScrollStack
-            className="mt-10"
+            className="mt-10 min-w-0"
             useWindowScroll
             itemDistance={120}
             itemStackDistance={28}
@@ -248,27 +294,27 @@ export function SolutionsOverviewView({
             {content.functions.map((item) => (
               <ScrollStackItem
                 key={item.href}
-                itemClassName="overflow-hidden border border-white/12 bg-[#0a1018]/90 p-7 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.85)] backdrop-blur-xl md:p-10"
+                itemClassName="min-w-0 overflow-hidden border border-white/12 bg-[#0a1018]/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.85)] backdrop-blur-xl sm:p-7 md:p-10"
               >
-                <div className="grid gap-6 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
-                  <div>
+                <div className="grid min-w-0 gap-5 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
+                  <div className="min-w-0">
                     <p className="font-display text-[12px] uppercase tracking-[0.2em] text-cyan-300">
                       {item.way}
                     </p>
-                    <p className="mt-3 font-display text-[clamp(3rem,6vw,5rem)] font-medium leading-none tracking-[-0.06em] text-white/18">
+                    <p className="mt-3 font-display text-[clamp(2.5rem,6vw,5rem)] font-medium leading-none tracking-[-0.06em] text-white/18">
                       {item.index}
                     </p>
-                    <h3 className="mt-3 font-display text-[clamp(1.85rem,3.4vw,3rem)] font-medium leading-[1.02] tracking-[-0.035em] text-white">
-                      <Link href={item.href} className="transition-colors hover:text-cyan-300">
+                    <h3 className="mt-3 font-display text-[clamp(1.65rem,3.4vw,3rem)] font-medium leading-[1.02] tracking-[-0.035em] text-white">
+                      <TransitionLink href={item.href} className="transition-colors hover:text-cyan-300">
                         {item.title}
-                      </Link>
+                      </TransitionLink>
                     </h3>
                   </div>
-                  <div className="flex flex-col justify-center">
-                    <p className="font-display text-[17px] font-medium leading-snug tracking-[-0.02em] text-white/88 md:text-[19px]">
+                  <div className="flex min-w-0 flex-col justify-center">
+                    <p className="font-display text-[16px] font-medium leading-snug tracking-[-0.02em] text-white/88 md:text-[19px]">
                       {item.headline}
                     </p>
-                    <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-white/55 md:text-[17px]">
+                    <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/55 md:text-[17px]">
                       {item.body}
                     </p>
                     <div className="mt-8">
@@ -407,7 +453,7 @@ export function SolutionsOverviewView({
                   alt=""
                   width={180}
                   height={180}
-                  className="ml-auto h-[180px] w-[180px] shrink-0 object-contain"
+                  className="ml-auto h-24 w-24 shrink-0 object-contain sm:h-32 sm:w-32 md:h-[180px] md:w-[180px]"
                 />
                 <h3 className="mt-5 font-display text-[clamp(1.5rem,2.4vw,2.1rem)] font-medium tracking-[-0.03em] text-white">
                   {industry.title}
@@ -423,7 +469,7 @@ export function SolutionsOverviewView({
           </ul>
 
           <div data-reveal className="mt-10">
-            <span className="inline-block origin-left scale-[1.3]">
+            <span className="inline-block origin-left scale-100 md:scale-[1.3]">
               <FluidButton
                 text={content.industriesCta.label}
                 href={content.industriesCta.href}

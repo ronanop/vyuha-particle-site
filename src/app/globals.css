@@ -252,44 +252,92 @@ body {
 
 /* ── View Transitions (page morph) ── */
 
+:root {
+  --vt-exit: 180ms;
+  --vt-enter: 280ms;
+  --vt-move: 420ms;
+}
+
 @keyframes vt-slide {
   from {
-    translate: var(--slide-offset);
+    translate: var(--slide-offset, 48px);
+  }
+  to {
+    translate: 0;
   }
 }
 
 @keyframes vt-fade {
   from {
     opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
+@keyframes vt-fade-soft {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Default / untitled navigations — soft crossfade */
+::view-transition-old(.page-fade) {
+  animation: var(--vt-exit) ease-in both vt-fade-soft reverse;
+}
+::view-transition-new(.page-fade) {
+  animation: var(--vt-enter) ease-out calc(var(--vt-exit) * 0.35) both vt-fade;
+}
+
+/* Forward — old exits left, new enters from right */
 ::view-transition-old(.nav-forward) {
-  --slide-offset: -60px;
-  animation: 280ms ease-in-out both vt-slide reverse, 280ms ease-in-out both vt-fade reverse;
+  --slide-offset: -48px;
+  animation:
+    var(--vt-exit) ease-in both vt-fade-soft reverse,
+    var(--vt-move) ease-in-out both vt-slide reverse;
 }
-
 ::view-transition-new(.nav-forward) {
-  --slide-offset: 60px;
-  animation: 280ms ease-in-out both vt-slide, 280ms ease-in-out both vt-fade;
+  --slide-offset: 48px;
+  animation:
+    var(--vt-enter) ease-out var(--vt-exit) both vt-fade,
+    var(--vt-move) ease-in-out both vt-slide;
 }
 
+/* Back — reverse direction */
 ::view-transition-old(.nav-back) {
-  --slide-offset: 60px;
-  animation: 280ms ease-in-out both vt-slide reverse, 280ms ease-in-out both vt-fade reverse;
+  --slide-offset: 48px;
+  animation:
+    var(--vt-exit) ease-in both vt-fade-soft reverse,
+    var(--vt-move) ease-in-out both vt-slide reverse;
 }
-
 ::view-transition-new(.nav-back) {
-  --slide-offset: -60px;
-  animation: 280ms ease-in-out both vt-slide, 280ms ease-in-out both vt-fade;
+  --slide-offset: -48px;
+  animation:
+    var(--vt-enter) ease-out var(--vt-exit) both vt-fade,
+    var(--vt-move) ease-in-out both vt-slide;
 }
 
 ::view-transition {
   pointer-events: none;
 }
 
+/* Keep nav chrome anchored while page content slides */
 ::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
   background: transparent;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -307,5 +355,12 @@ body {
     animation: none;
     opacity: 1;
     transform: none;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }

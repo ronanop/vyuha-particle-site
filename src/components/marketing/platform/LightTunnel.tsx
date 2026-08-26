@@ -34,6 +34,7 @@ export type LightTunnelProps = {
   mouseInteraction?: boolean;
   mouseStrength?: number;
   className?: string;
+  onReady?: () => void;
 };
 
 type TunnelCtx = {
@@ -178,7 +179,7 @@ void main() {
 
 type UniformMap = Program["uniforms"];
 
-function writeUniforms(u: UniformMap, props: Required<Omit<LightTunnelProps, "className">>) {
+function writeUniforms(u: UniformMap, props: Required<Omit<LightTunnelProps, "className" | "onReady">>) {
   u.uSpeed.value = props.speed;
   u.uFlowDir.value = props.flowDirection === "outward" ? -1.0 : 1.0;
   u.uPulseSpeed.value = props.pulseSpeed;
@@ -250,8 +251,11 @@ export default function LightTunnel({
   mouseInteraction = true,
   mouseStrength = 0.1,
   className = "",
+  onReady,
 }: LightTunnelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
   const mouseEnabledRef = useRef(mouseInteraction);
   const mouseStrengthRef = useRef(mouseStrength);
   const propsRef = useRef({
@@ -461,6 +465,7 @@ export default function LightTunnel({
     document.addEventListener("visibilitychange", onVisibility);
 
     tryStart();
+    onReadyRef.current?.();
 
     return () => {
       tryStop();

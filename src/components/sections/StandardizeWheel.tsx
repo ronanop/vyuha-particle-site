@@ -140,11 +140,11 @@ export function StandardizeWheel({
         ref={pinRef}
         className="flex w-full flex-col items-center justify-center px-6 md:h-svh md:px-10"
       >
-        <div className="grid w-full max-w-[1400px] items-center gap-[2.25rem] lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-[3.6rem]">
-          <div className="relative h-[min(420px,55svh)] select-none overflow-visible md:h-[min(560px,62svh)] lg:h-[min(620px,68svh)]">
+        <div className="grid w-full max-w-[1400px] items-center gap-8 md:gap-[2.25rem] lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-[3.6rem]">
+          <div className="relative h-[min(320px,48svh)] min-w-0 select-none overflow-visible md:h-[min(560px,62svh)] lg:h-[min(620px,68svh)]">
             <div
               aria-hidden
-              className="pointer-events-none absolute -inset-16 bg-[radial-gradient(ellipse_at_30%_50%,rgba(34,211,238,0.16),transparent_58%)]"
+              className="pointer-events-none absolute -inset-8 bg-[radial-gradient(ellipse_at_30%_50%,rgba(34,211,238,0.16),transparent_58%)] md:-inset-16"
             />
             <OptionWheel
               items={cards.map((c) => c.title)}
@@ -155,14 +155,14 @@ export function StandardizeWheel({
               textColor="#4a5568"
               activeColor="#a5f3fc"
               side="left"
-              fontSize={3.2}
-              spacing={1.58}
-              curve={1.2}
-              tilt={14}
-              blur={2}
+              fontSize={isMd ? 3.2 : 1.65}
+              spacing={isMd ? 1.58 : 1.38}
+              curve={isMd ? 1.2 : 0.9}
+              tilt={isMd ? 14 : 8}
+              blur={isMd ? 2 : 0}
               fade={0.38}
               smoothing={200}
-              inset={12}
+              inset={isMd ? 12 : 8}
               loop={false}
               className="font-display"
             />

@@ -19,7 +19,13 @@
 
 .scroll-stack-inner {
   min-height: 100vh;
-  padding: 6vh 0 8vh;
+  padding: 4vh 0 6vh;
+}
+
+@media (min-width: 768px) {
+  .scroll-stack-inner {
+    padding: 6vh 0 8vh;
+  }
 }
 
 .scroll-stack-card {

@@ -8,22 +8,13 @@
  * Lenis so the page scroll never fights a second rAF / scroll lerp.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import * as THREE from "three";
 import { prefersReducedMotion } from "@/lib/utils/motion";
+import { SOLUTIONS_TUNNEL_IMAGES } from "@/lib/marketing/hero-prefetch";
 
-const DEFAULT_IMAGES = [
-  "/solutions/tunnel/pexels-rsapmech-13084563.jpg",
-  "/solutions/tunnel/pexels-cottonbro-6803554.jpg",
-  "/solutions/tunnel/pexels-thales13-38343508.jpg",
-  "/solutions/tunnel/pexels-jakubzerdzicki-33000099.jpg",
-  "/solutions/tunnel/pexels-cookiecutter-17489155.jpg",
-  "/solutions/tunnel/pexels-divinetechygirl-1181316.jpg",
-  "/solutions/tunnel/pexels-pavel-danilyuk-8438993.jpg",
-  "/solutions/tunnel/pexels-yaroslav-shuraev-7688592.jpg",
-  "/solutions/tunnel/pexels-yankrukov-7693743.jpg",
-];
+const DEFAULT_IMAGES = [...SOLUTIONS_TUNNEL_IMAGES];
 
 const TUNNEL_WIDTH = 24;
 const TUNNEL_HEIGHT = 16;
@@ -38,36 +29,71 @@ const LINE_HEX = 0x555555;
 const LINE_OPACITY = 0.32;
 /** Units of tunnel depth advanced per second. */
 const AUTO_SPEED = 8.5;
+/** Textures needed before first paint / onReady. */
+const INITIAL_TEXTURE_COUNT = 3;
 
 type InfiniteScrollTunnelProps = {
   images?: string[];
   className?: string;
+  onReady?: () => void;
 };
 
 type SlabMesh = THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
 
-function loadTexturePool(urls: string[]): Promise<THREE.Texture[]> {
-  const loader = new THREE.TextureLoader();
-  return Promise.all(
-    urls.map(
-      (url) =>
-        new Promise<THREE.Texture>((resolve, reject) => {
-          loader.load(
-            url,
-            (tex) => {
-              tex.minFilter = THREE.LinearFilter;
-              tex.magFilter = THREE.LinearFilter;
-              tex.generateMipmaps = false;
-              tex.colorSpace = THREE.SRGBColorSpace;
-              tex.anisotropy = 1;
-              resolve(tex);
-            },
-            undefined,
-            reject,
-          );
-        }),
-    ),
-  );
+/** Module-level cache so soft navigations reuse decoded GPU textures. */
+const textureCache = new Map<string, Promise<THREE.Texture>>();
+
+function configureTexture(tex: THREE.Texture) {
+  tex.minFilter = THREE.LinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.generateMipmaps = false;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 1;
+  return tex;
+}
+
+function loadTexture(url: string): Promise<THREE.Texture> {
+  const cached = textureCache.get(url);
+  if (cached) return cached;
+
+  const promise = new Promise<THREE.Texture>((resolve, reject) => {
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      url,
+      (tex) => resolve(configureTexture(tex)),
+      undefined,
+      reject,
+    );
+  }).catch((err) => {
+    textureCache.delete(url);
+    throw err;
+  });
+
+  textureCache.set(url, promise);
+  return promise;
+}
+
+async function loadTexturePool(
+  urls: string[],
+  onPartial?: (textures: THREE.Texture[]) => void,
+): Promise<THREE.Texture[]> {
+  const pool: THREE.Texture[] = [];
+  const initial = urls.slice(0, INITIAL_TEXTURE_COUNT);
+  const rest = urls.slice(INITIAL_TEXTURE_COUNT);
+
+  const firstBatch = await Promise.allSettled(initial.map((url) => loadTexture(url)));
+  for (const result of firstBatch) {
+    if (result.status === "fulfilled") pool.push(result.value);
+  }
+  onPartial?.(pool);
+
+  if (rest.length === 0) return pool;
+
+  const secondBatch = await Promise.allSettled(rest.map((url) => loadTexture(url)));
+  for (const result of secondBatch) {
+    if (result.status === "fulfilled") pool.push(result.value);
+  }
+  return pool;
 }
 
 function pickTexture(pool: THREE.Texture[]): THREE.Texture {
@@ -204,15 +230,34 @@ function createSegment(zPos: number, pool: THREE.Texture[]) {
   return group;
 }
 
+function createFallbackTexture(): THREE.Texture {
+  const canvasTex = document.createElement("canvas");
+  canvasTex.width = 2;
+  canvasTex.height = 2;
+  const ctx = canvasTex.getContext("2d");
+  if (ctx) {
+    ctx.fillStyle = "#141414";
+    ctx.fillRect(0, 0, 2, 2);
+  }
+  return configureTexture(new THREE.CanvasTexture(canvasTex));
+}
+
 export default function InfiniteScrollTunnel({
   images = DEFAULT_IMAGES,
   className = "",
+  onReady,
 }: InfiniteScrollTunnelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
+  const [canvasReady, setCanvasReady] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion()) {
+      onReadyRef.current?.();
+      return;
+    }
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
@@ -220,7 +265,6 @@ export default function InfiniteScrollTunnel({
     let disposed = false;
     let isVisible = true;
     let renderer: THREE.WebGLRenderer | null = null;
-    let texturePool: THREE.Texture[] = [];
     let tickerCb: ((time: number, deltaTime: number) => void) | null = null;
     const segments: THREE.Group[] = [];
     const scene = new THREE.Scene();
@@ -245,7 +289,6 @@ export default function InfiniteScrollTunnel({
     const tick = (_time: number, deltaTime: number) => {
       if (disposed || !renderer || !isVisible) return;
 
-      // gsap delta is ms; clamp spikes from tab switches
       const dt = Math.min(deltaTime / 1000, 0.05);
       camera.position.z -= AUTO_SPEED * dt;
 
@@ -274,25 +317,10 @@ export default function InfiniteScrollTunnel({
     };
     window.addEventListener("resize", onResize);
 
-    void (async () => {
-      try {
-        texturePool = await loadTexturePool(images);
-      } catch {
-        texturePool = [];
-      }
-      if (disposed) return;
-
-      if (texturePool.length === 0) {
-        const canvasTex = document.createElement("canvas");
-        canvasTex.width = 2;
-        canvasTex.height = 2;
-        const ctx = canvasTex.getContext("2d");
-        if (ctx) {
-          ctx.fillStyle = "#141414";
-          ctx.fillRect(0, 0, 2, 2);
-        }
-        texturePool = [new THREE.CanvasTexture(canvasTex)];
-      }
+    let sceneBooted = false;
+    const bootScene = (texturePool: THREE.Texture[]) => {
+      if (disposed || sceneBooted || texturePool.length === 0) return;
+      sceneBooted = true;
 
       scene.background = new THREE.Color(BG_HEX);
       scene.fog = new THREE.FogExp2(BG_HEX, 0.04);
@@ -305,7 +333,6 @@ export default function InfiniteScrollTunnel({
         stencil: false,
         depth: true,
       });
-      // Keep GPU light — page scroll shares the frame with Lenis
       renderer.setPixelRatio(1);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       resize();
@@ -319,8 +346,26 @@ export default function InfiniteScrollTunnel({
       tickerCb = (_time: number, deltaTime: number) => {
         tick(_time, deltaTime);
       };
-      // Same clock as Lenis (SmoothScroll uses gsap.ticker)
       gsap.ticker.add(tickerCb);
+      setCanvasReady(true);
+      onReadyRef.current?.();
+    };
+
+    void (async () => {
+      let texturePool: THREE.Texture[] = [];
+      try {
+        texturePool = await loadTexturePool(images, (partial) => {
+          if (partial.length > 0) bootScene(partial);
+        });
+      } catch {
+        texturePool = [];
+      }
+      if (disposed) return;
+
+      if (!sceneBooted) {
+        if (texturePool.length === 0) texturePool = [createFallbackTexture()];
+        bootScene(texturePool);
+      }
     })();
 
     return () => {
@@ -341,7 +386,7 @@ export default function InfiniteScrollTunnel({
         });
         scene.remove(segment);
       });
-      texturePool.forEach((tex) => tex.dispose());
+      // Keep textures in module cache — do not dispose on unmount.
       renderer?.dispose();
     };
   }, [images]);
@@ -353,7 +398,8 @@ export default function InfiniteScrollTunnel({
     >
       <canvas
         ref={canvasRef}
-        className="block h-full w-full [transform:translateZ(0)]"
+        className="block h-full w-full opacity-0 transition-opacity duration-500 [transform:translateZ(0)] data-[ready=true]:opacity-100"
+        data-ready={canvasReady}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -12,6 +12,8 @@ import {
 } from "react";
 import { gsap } from "gsap";
 import { getLenis } from "@/lib/utils/lenis";
+import { prefetchMarketingHero } from "@/lib/marketing/hero-prefetch";
+import { getNavTransitionTypes } from "@/lib/nav-transition";
 import "./StaggeredMenu.css";
 
 export type StaggeredMenuItem = {
@@ -63,6 +65,7 @@ export function StaggeredMenu({
   onMenuClose,
 }: StaggeredMenuProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const openRef = useRef(false);
@@ -372,6 +375,15 @@ export function StaggeredMenu({
     }
   }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
 
+  const warmHeroIntent = useCallback(
+    (href: string) => {
+      if (!href || href === pathname) return;
+      router.prefetch(href);
+      prefetchMarketingHero(href);
+    },
+    [pathname, router],
+  );
+
   const toggleMenu = useCallback(() => {
     const target = !openRef.current;
     openRef.current = target;
@@ -379,6 +391,9 @@ export function StaggeredMenu({
     if (target) {
       onMenuOpen?.();
       playOpen();
+      for (const item of items) {
+        warmHeroIntent(item.link);
+      }
     } else {
       onMenuClose?.();
       playClose();
@@ -386,7 +401,17 @@ export function StaggeredMenu({
     animateIcon(target);
     animateColor(target);
     animateText(target);
-  }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
+  }, [
+    playOpen,
+    playClose,
+    animateIcon,
+    animateColor,
+    animateText,
+    onMenuOpen,
+    onMenuClose,
+    items,
+    warmHeroIntent,
+  ]);
 
   useEffect(() => {
     closeMenu();
@@ -473,7 +498,12 @@ export function StaggeredMenu({
         aria-label="Main navigation header"
         data-scrolled={scrolled || undefined}
       >
-        <Link href="/" className="sm-logo" aria-label="Vyuha.ai">
+        <Link
+          href="/"
+          className="sm-logo"
+          aria-label="Vyuha.ai"
+          transitionTypes={getNavTransitionTypes(pathname || "/", "/")}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logoUrl}
@@ -525,7 +555,14 @@ export function StaggeredMenu({
                     href={it.link}
                     aria-label={it.ariaLabel}
                     data-index={idx + 1}
+                    transitionTypes={getNavTransitionTypes(
+                      pathname || "/",
+                      it.link,
+                    )}
                     onClick={closeMenu}
+                    onMouseEnter={() => warmHeroIntent(it.link)}
+                    onFocus={() => warmHeroIntent(it.link)}
+                    onTouchStart={() => warmHeroIntent(it.link)}
                   >
                     <span className="sm-panel-itemLabel">{it.label}</span>
                   </Link>

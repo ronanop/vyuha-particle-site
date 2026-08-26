@@ -70,9 +70,9 @@ export function LeaderProfileCard({ person }: LeaderProfileCardProps) {
         />
 
         {/* Bottom: name + verified (left), connect CTA (right) */}
-        <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 px-4 pb-4 pt-8">
-          <div className="flex min-w-0 items-center gap-2">
-            <p className="truncate font-display text-[clamp(1.05rem,2.2vw,1.35rem)] font-semibold tracking-[-0.03em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+        <div className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-end justify-between gap-2 px-3 pb-3 pt-8 sm:gap-3 sm:px-4 sm:pb-4">
+          <div className="flex min-w-0 max-w-[65%] items-center gap-2">
+            <p className="truncate font-display text-[clamp(1rem,2.2vw,1.35rem)] font-semibold tracking-[-0.03em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
               {label}
             </p>
             <span

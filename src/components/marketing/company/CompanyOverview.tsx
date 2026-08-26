@@ -125,16 +125,17 @@ export function CompanyOverviewView({ content }: { content: CompanyContent }) {
             </div>
             <div
               data-hero-in
-              className="mt-10 flex flex-wrap items-center justify-start gap-4 [animation-delay:380ms]"
+              className="mt-10 flex flex-col items-stretch gap-3 [animation-delay:380ms] sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
             >
               <FluidButton
                 text={content.primaryCtas[0].label}
                 href={content.primaryCtas[0].href}
+                className="w-full sm:w-auto"
               />
               {content.primaryCtas[1] ? (
                 <Link
                   href={content.primaryCtas[1].href}
-                  className="inline-flex min-h-11 items-center text-[13px] tracking-wide text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline"
+                  className="inline-flex min-h-11 items-center justify-center text-[13px] tracking-wide text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline sm:justify-start"
                 >
                   {content.primaryCtas[1].label}
                 </Link>
@@ -273,13 +274,13 @@ export function CompanyOverviewView({ content }: { content: CompanyContent }) {
           <ul className="mt-16 space-y-16 md:space-y-20">
             {content.leadership.people.map((person) => (
               <li key={person.name} data-reveal className="border-t border-white/10 pt-12 md:pt-16">
-                <article className="grid items-start gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
+                <article className="grid min-w-0 items-start gap-8 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
                   <LeaderProfileCard person={person} />
-                  <div className="flex flex-col justify-center md:min-h-[28rem]">
-                    <blockquote className="mb-8 font-purgatory text-[clamp(1.25rem,2.2vw,1.75rem)] font-normal leading-snug tracking-[-0.01em] text-white/90">
+                  <div className="flex min-w-0 flex-col justify-center md:min-h-[28rem]">
+                    <blockquote className="mb-8 font-purgatory text-[clamp(1.2rem,2.2vw,1.75rem)] font-normal leading-snug tracking-[-0.01em] text-white/90">
                       {person.quote}
                     </blockquote>
-                    <div className="space-y-4 text-[16px] leading-relaxed text-white/55 md:text-[17px]">
+                    <div className="space-y-4 text-[15px] leading-relaxed text-white/55 md:text-[17px]">
                       {person.paragraphs.map((paragraph) => (
                         <p key={paragraph.slice(0, 48)}>{paragraph}</p>
                       ))}

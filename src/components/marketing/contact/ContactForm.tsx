@@ -19,7 +19,7 @@ const empty: FormState = {
 };
 
 const fieldClass =
-  "w-full border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white outline-none transition-[border-color,box-shadow] placeholder:text-white/30 focus:border-cyan-400/50 focus:shadow-[0_0_0_1px_rgba(34,211,238,0.25)]";
+  "min-h-11 w-full border border-white/15 bg-white/[0.04] px-4 py-3.5 text-[16px] text-white outline-none transition-[border-color,box-shadow] placeholder:text-white/30 focus:border-cyan-400/50 focus:shadow-[0_0_0_1px_rgba(34,211,238,0.25)] md:text-[15px]";
 
 export function ContactForm({ content }: { content: ContactContent }) {
   const [values, setValues] = useState<FormState>(empty);
@@ -160,8 +160,8 @@ export function ContactForm({ content }: { content: ContactContent }) {
         </p>
       ) : null}
 
-      <div className="mt-8 flex flex-wrap items-center gap-4">
-        <FluidButton text="Send message" type="submit" size="md" disabled={!canSubmit} />
+      <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+        <FluidButton text="Send message" type="submit" size="md" disabled={!canSubmit} className="w-full sm:w-auto" />
         <p className="text-[13px] text-white/40">Opens {content.email}</p>
       </div>
     </form>
