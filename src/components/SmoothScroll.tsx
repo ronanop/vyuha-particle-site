@@ -52,6 +52,14 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
 
       setLenisInstance(lenis);
 
+      // Match ScrollResetOnLoad: reload / no-hash loads start at top.
+      const nav = performance.getEntriesByType("navigation")[0] as
+        | PerformanceNavigationTiming
+        | undefined;
+      if (nav?.type === "reload" || !window.location.hash) {
+        lenis.scrollTo(0, { immediate: true });
+      }
+
       ScrollTrigger.scrollerProxy(document.documentElement, {
         scrollTop(value) {
           // ScrollTrigger may call this after Lenis teardown (cleanup order).

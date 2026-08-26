@@ -1,23 +1,44 @@
 import type { MetadataRoute } from "next";
 import { flattenSiteMap } from "@/lib/sitemap";
-
-function siteOrigin(): string {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
-  if (explicit) return new URL(explicit).origin;
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  return "http://localhost:3000";
-}
+import { getSiteOrigin } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const origin = siteOrigin();
-  return flattenSiteMap().map((node) => ({
-    url: new URL(node.path, origin).toString(),
-    changeFrequency: node.path === "/" ? "weekly" : "monthly",
-    priority: node.path === "/" ? 1 : node.path.split("/").length <= 2 ? 0.8 : 0.6,
-  }));
+  const origin = getSiteOrigin();
+  const now = new Date();
+
+  const pageEntries = flattenSiteMap().map((node) => {
+    const depth =
+      node.path === "/" ? 1 : node.path.split("/").filter(Boolean).length;
+    return {
+      url: new URL(node.path, origin).toString(),
+      lastModified: now,
+      changeFrequency:
+        node.path === "/" || depth === 1 ? ("weekly" as const) : ("monthly" as const),
+      priority:
+        node.path === "/"
+          ? 1
+          : depth === 1
+            ? 0.9
+            : depth === 2
+              ? 0.8
+              : 0.6,
+    };
+  });
+
+  const aiDiscovery = [
+    {
+      url: new URL("/llms.txt", origin).toString(),
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    },
+    {
+      url: new URL("/llms-full.txt", origin).toString(),
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    },
+  ];
+
+  return [...pageEntries, ...aiDiscovery];
 }

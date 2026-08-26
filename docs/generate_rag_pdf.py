@@ -349,7 +349,7 @@ def build_story():
     story.append(p("Website Content Document", "cover_sub"))
     story.append(p("Complete page-wise & section-wise content for RAG / knowledge base", "cover_sub"))
     story.append(Spacer(1, 12 * mm))
-    story.append(p("Source: Canonical marketing content in frontend/src/content/", "cover_meta"))
+    story.append(p("Source: Canonical marketing content in src/content/", "cover_meta"))
     story.append(p("Structure: One chapter per public page · Sections preserved · All copy included", "cover_meta"))
     story.append(p("Generated for internal RAG ingestion · Vyuha.ai", "cover_meta"))
     story.append(PageBreak())
@@ -373,8 +373,7 @@ def build_story():
         ("   6.1 News & Events", "/resources/news-events"),
         ("   6.2 Blog / Insights", "/resources/blog"),
         ("7. Contact", "/contact"),
-        ("8. Book a Demo", "/book-a-demo"),
-        ("9. Sitemap", "/sitemap"),
+        ("8. Sitemap", "/sitemap"),
     ]
     for label, path in toc:
         style = "toc_sub" if label.startswith(" ") else "toc_item"
@@ -406,12 +405,12 @@ def build_story():
     for block in [
         {
             "title": "The Foundation for Agentic Intelligence",
-            "body": "Unlock capabilities that were once restricted to hyperscalers. Vyuha empowers your existing teams to provide context to AI—fine-tuning models on proprietary data, building deep-reasoning agents, and intelligently orchestrating workflows at scale.",
+            "body": "Unlock capabilities that were once restricted to hyperscalers. Vyuha empowers your existing teams to provide context to AI, fine-tuning models on proprietary data, building deep-reasoning agents, and intelligently orchestrating workflows at scale.",
             "cta": {"label": "Explore AI In a BOX", "href": "/platform/in-a-box"},
         },
         {
             "title": "Architected for Builders and Operators",
-            "body": "Built to scale with you—from instantly deploying pre-built apps to orchestrating custom workflows. We are democratizing AI in INDIA, empowering your teams to drive massive productivity without ever compromising your data perimeter.",
+            "body": "Built to scale with you, from instantly deploying pre-built apps to orchestrating custom workflows. We are democratizing AI in INDIA, empowering your teams to drive massive productivity without ever compromising your data perimeter.",
             "cta": {"label": "Read More", "href": "/company"},
         },
         {
@@ -436,7 +435,7 @@ def build_story():
     story.append(section_title("Section: The Operating Engine for Enterprise-Controlled Intelligence"))
     story.append(
         p(
-            "Vyuha transforms advanced AI into real-world operational velocity—enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
+            "Vyuha transforms advanced AI into real-world operational velocity, enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
             "body",
         )
     )
@@ -446,7 +445,7 @@ def build_story():
             "body",
         )
     )
-    story.extend(ctas([{"label": "Schedule Platform Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Schedule Platform Demo", "href": "/contact"}]))
 
     story.append(section_title("Section: Standardize on Controlled Autonomy"))
     story.append(
@@ -471,7 +470,7 @@ def build_story():
     ]:
         story.extend(add_card(card))
 
-    story.append(section_title("Section: Intelligence on Your Terms — Sovereign, Private, Governed"))
+    story.append(section_title("Section: Intelligence on Your Terms: Sovereign, Private, Governed"))
     story.append(p("Empower, Adapt, & Evolve", "card_title"))
     story.extend(bullets(["Built for Practitioners", "No-Code Composition", "Future-Proof Modularity"]))
     story.append(p("Own, Lead, & Govern", "card_title"))
@@ -487,7 +486,7 @@ def build_story():
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request a Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request a Demo", "href": "/contact"}]))
     story.append(PageBreak())
 
     # =====================================================================
@@ -496,7 +495,7 @@ def build_story():
     story.extend(
         page_header(
             "/platform",
-            "Vyuha — The Enterprise Agentic Platform",
+            "Vyuha: The Enterprise Agentic Platform",
             eyebrow="Powered by Airrived Engine | Democratizing AI in India",
             headline="One command plane. Infinite autonomous execution.",
         )
@@ -510,13 +509,13 @@ def build_story():
     )
     story.append(
         p(
-            "Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders — multi-agent workflows with total perimeter control.",
+            "Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders, multi-agent workflows with total perimeter control.",
             "quote",
         )
     )
     story.append(
         p(
-            "Fine-tune models on local telemetry, deploy reasoning agents, and orchestrate your stack. No research team required — unified control, entirely inside your private boundary.",
+            "Fine-tune models on local telemetry, deploy reasoning agents, and orchestrate your stack. No research team required, unified control, entirely inside your private boundary.",
             "body",
         )
     )
@@ -524,7 +523,7 @@ def build_story():
     story.extend(
         ctas(
             [
-                {"label": "Request Architecture Demo", "href": "/book-a-demo"},
+                {"label": "Request Architecture Demo", "href": "/contact"},
                 {"label": "Explore Vyuha.ai", "href": "/"},
             ]
         )
@@ -551,11 +550,11 @@ def build_story():
     for card in [
         {
             "title": "01 — Deploy Anywhere",
-            "body": "Build AI YOUR way, with YOUR data, aligned with your industry-specific guardrails. Create and launch autonomous agents without engineering roadblocks—powered by a no-code visual orchestrator, robust enterprise connectors, and secure edge-deployment via Vyuha In a BOX.",
+            "body": "Build AI YOUR way, with YOUR data, aligned with your industry-specific guardrails. Create and launch autonomous agents without engineering roadblocks, powered by a no-code visual orchestrator, robust enterprise connectors, and secure edge-deployment via Vyuha In a BOX.",
         },
         {
             "title": "02 — Measurable Impact",
-            "body": "Experience Exponential Impact & FinOps Efficiency — Achieve massive operational returns. Reduce tool sprawl, eliminate unnecessary cloud API burn through intelligent task routing, and achieve up to a 60x boost in operational velocity.",
+            "body": "Experience Exponential Impact & FinOps Efficiency. Achieve massive operational returns. Reduce tool sprawl, eliminate unnecessary cloud API burn through intelligent task routing, and achieve up to a 60x boost in operational velocity.",
         },
         {
             "title": "03 — Achieve 60x Operational Velocity",
@@ -581,7 +580,7 @@ def build_story():
         {
             "title": "Integrations",
             "headline": "ONE PLATFORM. EVERY SYSTEM.",
-            "body": "With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly—no re-architecture, no rip-and-replace.",
+            "body": "With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly, no re-architecture, no rip-and-replace.",
             "cta": {"label": "Explore Integrations", "href": "/platform/integrations"},
         },
     ]:
@@ -591,7 +590,7 @@ def build_story():
     story.append(section_title("Section: Platform Integration & Replacement Strategy"))
     for card in [
         {
-            "title": "01 — Where Insight Meets Execution — Instantly",
+            "title": "01 — Where Insight Meets Execution: Instantly",
             "body": "Vyuha integrates seamlessly across your enterprise technology stack, including Security and IT tools, Collaboration platforms, Knowledge bases and data lakes, and Model and vector stores. The platform provides the reasoning and automation layer that connects insight to execution, enabling full-blown autonomous systems rather than static workflows.",
         },
         {
@@ -643,7 +642,7 @@ def build_story():
     story.extend(
         ctas(
             [
-                {"label": "Schedule Platform Demo", "href": "/book-a-demo"},
+                {"label": "Schedule Platform Demo", "href": "/contact"},
                 {"label": "Explore Vyuha.ai", "href": "/"},
             ]
         )
@@ -670,7 +669,7 @@ def build_story():
     story.extend(
         ctas(
             [
-                {"label": "Request Architecture Demo", "href": "/book-a-demo"},
+                {"label": "Request Architecture Demo", "href": "/contact"},
                 {"label": "Explore Command Plane", "href": "/platform"},
             ]
         )
@@ -679,7 +678,7 @@ def build_story():
     story.append(section_title("Section: The Operating Engine for Controlled Cloud Intelligence"))
     story.append(
         p(
-            "Vyuha.ONE transforms advanced AI into real-world operational velocity—enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
+            "Vyuha.ONE transforms advanced AI into real-world operational velocity, enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
             "body",
         )
     )
@@ -689,7 +688,7 @@ def build_story():
             "body",
         )
     )
-    story.extend(ctas([{"label": "Schedule Control Plane Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Schedule Control Plane Demo", "href": "/contact"}]))
 
     story.append(section_title("Section: Standardize on Controlled Cloud Autonomy"))
     for card in [
@@ -750,7 +749,7 @@ def build_story():
     story.extend(
         ctas(
             [
-                {"label": "Request Architecture Demo", "href": "/book-a-demo"},
+                {"label": "Request Architecture Demo", "href": "/contact"},
                 {"label": "Explore Enterprise Connectors", "href": "/platform/integrations"},
             ]
         )
@@ -777,7 +776,7 @@ def build_story():
     story.extend(
         ctas(
             [
-                {"label": "Schedule On-Premise Demo", "href": "/book-a-demo"},
+                {"label": "Schedule On-Premise Demo", "href": "/contact"},
                 {"label": "Explore Hardware Specifications", "href": "/contact"},
             ]
         )
@@ -795,7 +794,7 @@ def build_story():
     for card in [
         {"title": "Zero External Egress", "body": "Core inference and workflow execution run natively inside your physical network."},
         {"title": "DPDP Act 2023 Alignment", "body": "Built around Indian data residency, data localization, and regulatory requirements."},
-        {"title": "Immunity from External Logging", "body": "Enterprise IP remains yours—never transmitted externally or used to train public models."},
+        {"title": "Immunity from External Logging", "body": "Enterprise IP remains yours, never transmitted externally or used to train public models."},
     ]:
         story.extend(add_card(card))
 
@@ -811,7 +810,7 @@ def build_story():
     for card in [
         {"title": "Zero Latency Inference", "body": "Direct local hardware access for rapid model execution, real-time response, and high-volume data ingestion."},
         {"title": "Total Containment of Proprietary Assets", "body": "Custom DSLMs, agentic playbooks, and historical enterprise telemetry remain on local physical drives."},
-        {"title": "Identical OS Capabilities", "body": "Feature parity with Vyuha.ONE—including App Store, Composable Agents, A2A Mesh, and No-Code Orchestrator—delivered offline."},
+        {"title": "Identical OS Capabilities", "body": "Feature parity with Vyuha.ONE, including App Store, Composable Agents, A2A Mesh, and No-Code Orchestrator, delivered offline."},
     ]:
         story.extend(add_card(card))
 
@@ -846,14 +845,14 @@ def build_story():
     story.append(p("Command Self-Governed AI Inside Your Physical Perimeter", "card_title"))
     story.append(
         p(
-            "Vyuha In a BOX provides infrastructure control, air-gapped security, and hardware-accelerated performance—enabling autonomous AI without data leaving your facility.",
+            "Vyuha In a BOX provides infrastructure control, air-gapped security, and hardware-accelerated performance, enabling autonomous AI without data leaving your facility.",
             "body",
         )
     )
     story.extend(
         ctas(
             [
-                {"label": "Request On-Premise Demo", "href": "/book-a-demo"},
+                {"label": "Request On-Premise Demo", "href": "/contact"},
                 {"label": "Contact Infrastructure Team", "href": "/contact"},
             ]
         )
@@ -868,7 +867,7 @@ def build_story():
             "/platform/integrations",
             "ONE PLATFORM. EVERY SYSTEM.",
             eyebrow="Integrations",
-            headline="With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly—no re-architecture, no rip-and-replace.",
+            headline="With 200+ cyber, IT, and enterprise integrations available on day one, Vyuha plugs into your environment instantly, no re-architecture, no rip-and-replace.",
         )
     )
     story.append(
@@ -877,7 +876,7 @@ def build_story():
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request A Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request A Demo", "href": "/contact"}]))
 
     story.append(section_title("Section: Built For The Stack You Already Trust"))
     story.append(
@@ -923,7 +922,7 @@ def build_story():
     story.extend(
         ctas(
             [
-                {"label": "Request A Demo", "href": "/book-a-demo"},
+                {"label": "Request A Demo", "href": "/contact"},
                 {"label": "Explore Solutions", "href": "/solutions"},
             ]
         )
@@ -941,7 +940,7 @@ def build_story():
             headline="Sovereign AI. In Operation.",
         )
     )
-    story.append(p("Build, orchestrate, and deploy — without a byte leaving your perimeter.", "page_headline"))
+    story.append(p("Build, orchestrate, and deploy, without a byte leaving your perimeter.", "page_headline"))
     story.append(
         p(
             "INDIA has built for digital scale. Now, it’s time to build intelligence on our own terms.",
@@ -950,7 +949,7 @@ def build_story():
     )
     story.append(
         p(
-            "Vyuha gives Indian enterprises a clean canvas to create and scale autonomous agents — without code, complexity, or a single byte leaving their perimeter. Transform security, IT, and business operations into connected, self-governed ecosystems that think, learn, and act in real time.",
+            "Vyuha gives Indian enterprises a clean canvas to create and scale autonomous agents, without code, complexity, or a single byte leaving their perimeter. Transform security, IT, and business operations into connected, self-governed ecosystems that think, learn, and act in real time.",
             "body",
         )
     )
@@ -959,7 +958,7 @@ def build_story():
     story.append(section_title("Section: Intelligence built around your operations"))
     story.append(
         p(
-            "Transform how your organization operates — across Security, IT, and Business Operations — with intelligent, autonomous systems that reduce operational load and eliminate tool fragmentation, all under complete data sovereignty.",
+            "Transform how your organization operates, across Security, IT, and Business Operations, with intelligent, autonomous systems that reduce operational load and eliminate tool fragmentation, all under complete data sovereignty.",
             "body",
         )
     )
@@ -967,19 +966,19 @@ def build_story():
         {
             "title": "01 Defend — Security & Compliance",
             "headline": "From conventional security to autonomous, sovereign defense",
-            "body": "Transform every security and compliance function into a continuously learning, autonomous system. Reduce audit fatigue, accelerate DPDP Act and RBI/CERT-In compliance, and automate identity reviews and third-party risk audits — without added headcount or data leaving your boundary.",
+            "body": "Transform every security and compliance function into a continuously learning, autonomous system. Reduce audit fatigue, accelerate DPDP Act and RBI/CERT-In compliance, and automate identity reviews and third-party risk audits, without added headcount or data leaving your boundary.",
             "cta": {"label": "Explore Security & Compliance", "href": "/solutions/security-compliance"},
         },
         {
             "title": "02 Operate — IT Operations",
             "headline": "Autonomous operations, powered by agentic AI",
-            "body": "Reimagine IT operations with agents that think, learn, and act across systems. Apply reasoning agents to predict issues, model congestion, and unify operational signals across large, distributed networks — entirely within your own infrastructure.",
+            "body": "Reimagine IT operations with agents that think, learn, and act across systems. Apply reasoning agents to predict issues, model congestion, and unify operational signals across large, distributed networks, entirely within your own infrastructure.",
             "cta": {"label": "Explore IT Solutions", "href": "/solutions/it-operations"},
         },
         {
             "title": "03 Govern — Business Operations & FinOps",
             "headline": "Turn operational complexity into coordinated execution",
-            "body": "Give Business Operations and FinOps leaders a single reasoning layer across cost, compliance, and operational reporting — replacing manual reconciliation with real-time, policy-governed autonomy.",
+            "body": "Give Business Operations and FinOps leaders a single reasoning layer across cost, compliance, and operational reporting, replacing manual reconciliation with real-time, policy-governed autonomy.",
             "cta": {"label": "Explore Business Operations", "href": "/solutions/business-operations"},
         },
     ]:
@@ -989,7 +988,7 @@ def build_story():
     story.append(section_title("Section: Replacing silos, not sitting beside them"))
     story.append(
         p(
-            "Vyuha doesn’t add another dashboard to an already-fragmented stack — it absorbs the function of the tools it replaces.",
+            "Vyuha doesn’t add another dashboard to an already-fragmented stack, it absorbs the function of the tools it replaces.",
             "body",
         )
     )
@@ -1000,7 +999,7 @@ def build_story():
         },
         {
             "title": "02 — Point-solution agents",
-            "body": "Narrow, single-use agentic tools that can’t reason across security, IT, and operations — and can’t be governed as one system.",
+            "body": "Narrow, single-use agentic tools that can’t reason across security, IT, and operations, and can’t be governed as one system.",
         },
         {
             "title": "03 — Ungoverned AI toolkits",
@@ -1018,7 +1017,7 @@ def build_story():
     story.append(section_title("Section: Agentic intelligence for high-impact industries"))
     story.append(
         p(
-            "Deploy enterprise AI where operational complexity, security, and scale matter most — with the same sovereign mesh, tuned to each sector’s regulatory pressure.",
+            "Deploy enterprise AI where operational complexity, security, and scale matter most, with the same sovereign mesh, tuned to each sector’s regulatory pressure.",
             "body",
         )
     )
@@ -1026,17 +1025,17 @@ def build_story():
         {
             "title": "Financial Services",
             "headline": "Sovereign AI for trusted financial operations",
-            "body": "Fraud, AML, and KYC stay inside the bank. Agents reason across transaction, identity, and GenAI usage — under RBI and DPDP Act 2023 — with zero data egress.",
+            "body": "Fraud, AML, and KYC stay inside the bank. Agents reason across transaction, identity, and GenAI usage, under RBI and DPDP Act 2023, with zero data egress.",
         },
         {
             "title": "Telecom",
             "headline": "Autonomous intelligence for connected networks",
-            "body": "Carrier-scale telemetry, SIM/roaming fraud, and capacity modeling — predicted and acted on in real time, entirely on your infrastructure.",
+            "body": "Carrier-scale telemetry, SIM/roaming fraud, and capacity modeling, predicted and acted on in real time, entirely on your infrastructure.",
         },
         {
             "title": "Retail",
             "headline": "Fraud defense without expanding PCI scope",
-            "body": "POS fraud, shrinkage, account takeover, and vendor compliance — without sending cardholder or customer data to a third-party model.",
+            "body": "POS fraud, shrinkage, account takeover, and vendor compliance, without sending cardholder or customer data to a third-party model.",
         },
         {
             "title": "Insurance",
@@ -1051,14 +1050,14 @@ def build_story():
     story.append(p("From pilots to autonomous operations", "card_title"))
     story.append(
         p(
-            "Start with a high-value use case and build toward a governed enterprise AI formation — designed around your systems, data, and operational priorities, on your own terms.",
+            "Start with a high-value use case and build toward a governed enterprise AI formation, designed around your systems, data, and operational priorities, on your own terms.",
             "body",
         )
     )
     story.extend(
         ctas(
             [
-                {"label": "Request Architecture Demo", "href": "/book-a-demo"},
+                {"label": "Request Architecture Demo", "href": "/contact"},
                 {"label": "Explore the Platform", "href": "/platform"},
             ]
         )
@@ -1078,17 +1077,17 @@ def build_story():
     )
     story.append(
         p(
-            "Security has outgrown reactive defense. From nonstop alerts and audit pressure to identity sprawl, vulnerability overload, cloud misconfigurations, and third-party risk, security and compliance teams are stretched thin by fragmented tools and reactive processes that can't keep up — and layered on top, DPDP Act 2023 and RBI/CERT-In obligations demand continuous, evidence-backed compliance that most enterprises can only reconstruct manually, after the fact.",
+            "Security has outgrown reactive defense. From nonstop alerts and audit pressure to identity sprawl, vulnerability overload, cloud misconfigurations, and third-party risk, security and compliance teams are stretched thin by fragmented tools and reactive processes that can't keep up, and layered on top, DPDP Act 2023 and RBI/CERT-In obligations demand continuous, evidence-backed compliance that most enterprises can only reconstruct manually, after the fact.",
             "body",
         )
     )
     story.append(
         p(
-            "Vyuha transcends traditional SecOps by delivering a unified, sovereign agentic platform that standardizes intelligence across SOC, GRC, and IAM — entirely inside your own perimeter. Whether automating incident response, enforcing continuous compliance, or managing identity governance, domain-specific agents reason and act to eliminate silos and tool sprawl across the enterprise.",
+            "Vyuha transcends traditional SecOps by delivering a unified, sovereign agentic platform that standardizes intelligence across SOC, GRC, and IAM, entirely inside your own perimeter. Whether automating incident response, enforcing continuous compliance, or managing identity governance, domain-specific agents reason and act to eliminate silos and tool sprawl across the enterprise.",
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
 
     story.append(section_title("Section: What changes"))
     story.extend(
@@ -1097,7 +1096,7 @@ def build_story():
                 "Unify workflows across SOC, GRC, and IAM",
                 "Reduce operational overhead and eliminate silos",
                 "Bridge the talent shortage with dynamic, reasoning agents",
-                "Consolidate the entire security and risk stack — without a byte leaving the enterprise boundary",
+                "Consolidate the entire security and risk stack, without a byte leaving the enterprise boundary",
             ]
         )
     )
@@ -1107,7 +1106,7 @@ def build_story():
         {
             "title": "Security Operations & Threat Intel Operationalization",
             "headline": "Autonomous Defense at Machine Speed",
-            "body": "SOC teams drown in high volumes of low-fidelity alerts, and most “AI-SOC” tools are thin wrappers around a generic chat model — they summarize, but they don't reason or act. Vyuha deploys a swarm of reasoning agents that correlate identity, endpoint, network, and cloud signals to investigate alerts end-to-end, using DSLMs fine-tuned on the organization's own telemetry so agents understand internal naming, asset criticality, and past incident history. Agents execute immediate containment actions directly — isolating a compromised endpoint or pushing a firewall rule update — not just recommending them, while connecting natively into existing SIEM, EDR, and case-management tools rather than replacing them outright.",
+            "body": "SOC teams drown in high volumes of low-fidelity alerts, and most “AI-SOC” tools are thin wrappers around a generic chat model, they summarize, but they don't reason or act. Vyuha deploys a swarm of reasoning agents that correlate identity, endpoint, network, and cloud signals to investigate alerts end-to-end, using DSLMs fine-tuned on the organization's own telemetry so agents understand internal naming, asset criticality, and past incident history. Agents execute immediate containment actions directly, isolating a compromised endpoint or pushing a firewall rule update, not just recommending them, while connecting natively into existing SIEM, EDR, and case-management tools rather than replacing them outright.",
             "outcomes": [
                 "Materially faster investigation and response times; fewer alerts requiring manual eyes-on triage; a defensible, inspectable reasoning trail for every closed case."
             ],
@@ -1139,7 +1138,7 @@ def build_story():
         {
             "title": "AI Guardrails & Shadow AI Governance",
             "headline": "Secure GenAI Adoption, Without Slowing It Down",
-            "body": "Employees adopt public LLMs and GenAI tools faster than security teams can inventory or govern them, creating unmanaged data-exposure risk. Vyuha discovers and inventories LLM and GenAI usage across employees, applications, and tools; continuously monitors prompts and interactions for policy violations and sensitive-data exposure; and applies real-time governance controls to prompts, models, and usage patterns — enforced dynamically, not through static policy reviews.",
+            "body": "Employees adopt public LLMs and GenAI tools faster than security teams can inventory or govern them, creating unmanaged data-exposure risk. Vyuha discovers and inventories LLM and GenAI usage across employees, applications, and tools; continuously monitors prompts and interactions for policy violations and sensitive-data exposure; and applies real-time governance controls to prompts, models, and usage patterns, enforced dynamically, not through static policy reviews.",
             "outcomes": [
                 "Full visibility into enterprise GenAI and LLM usage; materially reduced risk from unsafe prompts and shadow AI tools; consistent policy enforcement across teams without slowing adoption."
             ],
@@ -1147,7 +1146,7 @@ def build_story():
         {
             "title": "DPDP Act Compliance & Automated GRC",
             "headline": "Continuous, Evidence-Backed Regulatory Posture",
-            "body": "Regulatory audits under the DPDP Act 2023 and RBI/CERT-In circulars require continuous evidence of how personal data is classified, redacted, and handled — evidence most enterprises can only reconstruct manually, after the fact. Vyuha scans databases, logs, and customer interactions to automatically classify and redact sensitive PII in real time, runs continuous policy audits against current DPDP rules and RBI circulars rather than a point-in-time annual review, and generates audit-ready compliance reports automatically as regulations and internal systems change.",
+            "body": "Regulatory audits under the DPDP Act 2023 and RBI/CERT-In circulars require continuous evidence of how personal data is classified, redacted, and handled, evidence most enterprises can only reconstruct manually, after the fact. Vyuha scans databases, logs, and customer interactions to automatically classify and redact sensitive PII in real time, runs continuous policy audits against current DPDP rules and RBI circulars rather than a point-in-time annual review, and generates audit-ready compliance reports automatically as regulations and internal systems change.",
             "outcomes": [
                 "Real-time PII classification and redaction instead of manual data-mapping exercises; continuous, always-current regulatory audit posture; audit-ready reports available on demand rather than assembled under deadline pressure."
             ],
@@ -1161,14 +1160,14 @@ def build_story():
         )
     )
 
-    story.append(section_title("Section: Vyuha — The Sovereign Standard for Cyber and Compliance Leaders"))
+    story.append(section_title("Section: Vyuha: The Sovereign Standard for Cyber and Compliance Leaders"))
     story.extend(
         bullets(
             [
                 "Deploy Instant-Value Prebuilt Apps: Launch production-ready AI workflows for Security Operations, Identity, Vulnerability Management, AI Guardrails, and Vendor Risk in seconds.",
                 "Activate Domain-Specific Security Agents: Train pre-configured AI agents on your proprietary telemetry to automate threat detection, incident response, compliance, and risk management.",
                 "Build Custom Agents Without Code: Compose, test, and orchestrate tailored multi-agent applications effortlessly with zero engineering overhead.",
-                "Drive Reasoning-Based Automation: Empower agents to evaluate real-time context, correlate multi-source signals, and execute autonomous decisions—moving far beyond static rules.",
+                "Drive Reasoning-Based Automation: Empower agents to evaluate real-time context, correlate multi-source signals, and execute autonomous decisions, moving far beyond static rules.",
                 "Enforce Sovereign Enterprise Governance: Guarantee 100% DPDP Act (2023) compliance with strict Human-in-the-Loop controls, granular RBAC, immutable audit trails, and policy-backed autonomy.",
             ]
         )
@@ -1192,9 +1191,9 @@ def build_story():
         bullets(
             [
                 "Up to 60x improvement in productivity across SOC, IAM, and GRC teams",
-                "80–90% reduction in operational effort",
-                "2 FTE — offset the workload equivalent of two full-time hires within six months",
-                "Lower spend — reduced dependence on managed services and incremental headcount",
+                "80-90% reduction in operational effort",
+                "2 FTE: offset the workload equivalent of two full-time hires within six months",
+                "Lower spend: reduced dependence on managed services and incremental headcount",
             ]
         )
     )
@@ -1202,11 +1201,11 @@ def build_story():
     story.append(section_title("Section: Deep Integration Across all the enterprise Stack"))
     story.append(
         p(
-            "Vyuha agents integrate seamlessly across your existing environment — SIEM, XDR, IAM, cloud, and ticketing platforms including Splunk, CrowdStrike, Palo Alto Networks, Wiz, AWS, GCP, Azure, Snowflake, and ServiceNow — all reasoning and acting entirely inside your Vyuha One or Vyuha In a BOX perimeter.",
+            "Vyuha agents integrate seamlessly across your existing environment, SIEM, XDR, IAM, cloud, and ticketing platforms including Splunk, CrowdStrike, Palo Alto Networks, Wiz, AWS, GCP, Azure, Snowflake, and ServiceNow, all reasoning and acting entirely inside your Vyuha One or Vyuha In a BOX perimeter.",
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
     story.append(PageBreak())
 
     # =====================================================================
@@ -1221,17 +1220,17 @@ def build_story():
     )
     story.append(
         p(
-            "IT exists to operate reliably, transform continuously, and enable the business at scale. Yet the mandate has outgrown the model. As environments become more dynamic and interconnected, IT is expected to deliver always-on reliability, continuous change, and frictionless enablement — without additional headcount. Script-based automation and static workflows were built for a simpler era; they fracture as systems evolve, leaving IT teams reacting instead of leading.",
+            "IT exists to operate reliably, transform continuously, and enable the business at scale. Yet the mandate has outgrown the model. As environments become more dynamic and interconnected, IT is expected to deliver always-on reliability, continuous change, and frictionless enablement, without additional headcount. Script-based automation and static workflows were built for a simpler era; they fracture as systems evolve, leaving IT teams reacting instead of leading.",
             "body",
         )
     )
     story.append(
         p(
-            "Vyuha reimagines IT operations with sovereign agentic intelligence — reasoning agents that think, learn, and act across systems, entirely within your own infrastructure boundary.",
+            "Vyuha reimagines IT operations with sovereign agentic intelligence, reasoning agents that think, learn, and act across systems, entirely within your own infrastructure boundary.",
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
 
     story.append(section_title("Section: Core IT Capabilities Enabled by Vyuha"))
     story.append(
@@ -1244,9 +1243,9 @@ def build_story():
         {
             "title": "Autonomous IT Resolution",
             "headline": "Resolve Issues Faster, Often Without Human Intervention",
-            "body": "Vyuha agents classify, prioritize, and resolve incidents using historical patterns and live telemetry — resolving common L1/L2 tickets end-to-end (VPN failures, access provisioning, server memory spikes) rather than just routing them faster.",
+            "body": "Vyuha agents classify, prioritize, and resolve incidents using historical patterns and live telemetry, resolving common L1/L2 tickets end-to-end (VPN failures, access provisioning, server memory spikes) rather than just routing them faster.",
             "items": [
-                "Achieve 80–90% reduction in operational effort across incident workflows",
+                "Achieve 80-90% reduction in operational effort across incident workflows",
                 "Speed MTTR without extra headcount",
                 "Reduce ticket volume and triage",
             ],
@@ -1274,7 +1273,7 @@ def build_story():
         {
             "title": "Enterprise Automation",
             "headline": "Autonomous Execution Across Systems",
-            "body": "Vyuha agents reason over context, coordinate across platforms, and execute workflows autonomously — without brittle scripts or manual orchestration.",
+            "body": "Vyuha agents reason over context, coordinate across platforms, and execute workflows autonomously, without brittle scripts or manual orchestration.",
             "items": [
                 "Automate complex, multi-step workflows across IT, security, and enterprise systems",
                 "Replace static rules and scripts with adaptive, agent-driven execution",
@@ -1284,7 +1283,7 @@ def build_story():
         {
             "title": "Conversational IT Operations",
             "headline": "Talk to Your Systems Like a Human Expert",
-            "body": "Converse with machine data across Snowflake, Slack, Microsoft Teams, ServiceNow, SharePoint, and more — all without a query ever leaving your perimeter.",
+            "body": "Converse with machine data across Snowflake, Slack, Microsoft Teams, ServiceNow, SharePoint, and more, all without a query ever leaving your perimeter.",
             "items": [
                 "Get quick insight without switching tools",
                 "Natural language access to operational data",
@@ -1294,11 +1293,11 @@ def build_story():
     ]:
         story.extend(add_card(card))
 
-    story.append(section_title("Section: Vyuha — The Autonomous Operating Standard for Enterprise IT"))
+    story.append(section_title("Section: Vyuha: The Autonomous Operating Standard for Enterprise IT"))
     story.extend(
         bullets(
             [
-                "No-code platform designed for practitioners — harness the power of AI without hiring AI talent.",
+                "No-code platform designed for practitioners, harness the power of AI without hiring AI talent.",
                 "Leverage prebuilt agents with immediate ROI or create custom agents and agentic apps with no-code composition and zero engineering effort.",
                 "Replace multiple tools and legacy RPA with a single, unified, sovereign platform.",
                 "Reasoning-driven automation, not static scripts.",
@@ -1312,13 +1311,13 @@ def build_story():
         bullets(
             [
                 "Up to 60x productivity gains across IT",
-                "80–90% reduction in operational effort",
+                "80-90% reduction in operational effort",
                 "Consolidate and replace fragmented IT automation tools",
-                "2 FTE — offset the workload equivalent of two full-time hires within six months",
+                "2 FTE: offset the workload equivalent of two full-time hires within six months",
             ]
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
     story.append(PageBreak())
 
     # =====================================================================
@@ -1333,7 +1332,7 @@ def build_story():
     )
     story.append(
         p(
-            "Cost, compliance, and operational reporting is stitched together manually from multiple systems, arriving too late to influence the decisions it should inform. Business Operations and FinOps leaders need a single reasoning layer across finance, security, and operations — not another dashboard that reports on yesterday's numbers.",
+            "Cost, compliance, and operational reporting is stitched together manually from multiple systems, arriving too late to influence the decisions it should inform. Business Operations and FinOps leaders need a single reasoning layer across finance, security, and operations, not another dashboard that reports on yesterday's numbers.",
             "body",
         )
     )
@@ -1343,14 +1342,14 @@ def build_story():
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
 
     story.append(section_title("Section: Core Business Operations Capabilities Enabled by Vyuha"))
     for card in [
         {
             "title": "Unified Reporting & Reconciliation",
             "headline": "One View Across Finance, Security, and Operations",
-            "body": "Vyuha composes reporting and reconciliation agents that pull structured and unstructured data from finance, security, and operations systems into a single, always-current view — replacing manual, end-of-period stitching with continuous reconciliation.",
+            "body": "Vyuha composes reporting and reconciliation agents that pull structured and unstructured data from finance, security, and operations systems into a single, always-current view, replacing manual, end-of-period stitching with continuous reconciliation.",
         },
         {
             "title": "Governed Autonomous Approvals",
@@ -1360,7 +1359,7 @@ def build_story():
         {
             "title": "Workforce Elevation for Operations Teams",
             "headline": "Every Practitioner Becomes an Orchestrator",
-            "body": "A no-code visual builder elevates existing operators into orchestrators — no dedicated AI or data engineering team required — so Business Operations and FinOps teams can compose and adapt workflows themselves.",
+            "body": "A no-code visual builder elevates existing operators into orchestrators, no dedicated AI or data engineering team required, so Business Operations and FinOps teams can compose and adapt workflows themselves.",
         },
     ]:
         story.extend(add_card(card))
@@ -1400,7 +1399,7 @@ def build_story():
             ]
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
     story.append(PageBreak())
 
     # =====================================================================
@@ -1419,59 +1418,59 @@ def build_story():
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
 
     story.append(section_title("Section: Verticals"))
     for card in [
         {
             "title": "Financial Services",
             "headline": "Autonomous Fraud & Compliance Intelligence, Without Data Ever Leaving the Bank",
-            "body": "Fraud, AML, and KYC teams sit on data that legally cannot leave the institution — yet they're buried in false-positive alerts pulled from siloed transaction, behavioral, and identity systems. Layered on top, generative AI adoption by employees spreads faster than banks can govern it: shadow AI, unsafe prompts, and uncontrolled data exposure create real business, security, and regulatory risk under RBI and DPDP Act 2023 oversight.",
+            "body": "Fraud, AML, and KYC teams sit on data that legally cannot leave the institution, yet they're buried in false-positive alerts pulled from siloed transaction, behavioral, and identity systems. Layered on top, generative AI adoption by employees spreads faster than banks can govern it: shadow AI, unsafe prompts, and uncontrolled data exposure create real business, security, and regulatory risk under RBI and DPDP Act 2023 oversight.",
             "itemsLabel": "How Vyuha Helps",
             "items": [
-                "Fraud-pattern agent — reasons across historical and live transaction behavior",
-                "KYC-verification agent — cross-checks identity data against onboarding and watchlist sources",
-                "Transaction-anomaly agent — flags deviations in real time across accounts",
-                "AI-governance agent — discovers and inventories LLM/GenAI usage across employees and applications, continuously monitors prompts for policy violations and sensitive-data exposure, and applies real-time governance controls dynamically rather than through static reviews",
+                "Fraud-pattern agent: reasons across historical and live transaction behavior",
+                "KYC-verification agent: cross-checks identity data against onboarding and watchlist sources",
+                "Transaction-anomaly agent: flags deviations in real time across accounts",
+                "AI-governance agent: discovers and inventories LLM/GenAI usage across employees and applications, continuously monitors prompts for policy violations and sensitive-data exposure, and applies real-time governance controls dynamically rather than through static reviews",
             ],
             "outcome": "Faster fraud triage, audit-ready decision trails, full visibility into enterprise GenAI usage, and zero data egress.",
         },
         {
             "title": "Telecom",
             "headline": "Real-Time Network & Fraud Defense at Carrier Scale",
-            "body": "Network operations generate telemetry at a volume no human SOC/NOC team can triage — CDRs, signaling traffic, and subscriber metadata never stop, across massive, distributed infrastructure.",
+            "body": "Network operations generate telemetry at a volume no human SOC/NOC team can triage, CDRs, signaling traffic, and subscriber metadata never stop, across massive, distributed infrastructure.",
             "itemsLabel": "How Vyuha Helps",
             "items": [
-                "Network-anomaly agent — detects irregular traffic and infrastructure signals, predicting asset health before failures occur",
-                "SIM/roaming-fraud agent — catches fraudulent SIM and roaming activity",
-                "DDoS-detection agent — identifies and responds to attack patterns in real time",
-                "Capacity-modeling agent — models network congestion and capacity constraints to protect SLAs proactively",
+                "Network-anomaly agent: detects irregular traffic and infrastructure signals, predicting asset health before failures occur",
+                "SIM/roaming-fraud agent: catches fraudulent SIM and roaming activity",
+                "DDoS-detection agent: identifies and responds to attack patterns in real time",
+                "Capacity-modeling agent: models network congestion and capacity constraints to protect SLAs proactively",
             ],
             "outcome": "Autonomous, real-time threat response at carrier scale, predictive network health modeling across distributed assets, and full data sovereignty.",
         },
         {
             "title": "Retail",
             "headline": "Fraud and Compliance Defense Without Expanding PCI Scope",
-            "body": "PCI-DSS-scoped payment data plus high-volume e-commerce fraud, constant workforce churn, and growing vendor exposure make identity, fraud, and compliance a moving target — one that most AI vendors can't touch without expanding compliance scope.",
+            "body": "PCI-DSS-scoped payment data plus high-volume e-commerce fraud, constant workforce churn, and growing vendor exposure make identity, fraud, and compliance a moving target, one that most AI vendors can't touch without expanding compliance scope.",
             "itemsLabel": "How Vyuha Helps",
             "items": [
-                "POS/payment-fraud agent — detects fraudulent transaction patterns",
-                "Inventory-shrinkage agent — flags shrinkage and loss patterns across locations",
-                "Omnichannel account-takeover agent — defends customer accounts across channels",
-                "Identity & vendor-compliance agent — performs instant access and identity reviews as staff change, runs automated third-party risk and compliance audits, and enforces consistent policies across distributed franchise locations",
+                "POS/payment-fraud agent: detects fraudulent transaction patterns",
+                "Inventory-shrinkage agent: flags shrinkage and loss patterns across locations",
+                "Omnichannel account-takeover agent: defends customer accounts across channels",
+                "Identity & vendor-compliance agent: performs instant access and identity reviews as staff change, runs automated third-party risk and compliance audits, and enforces consistent policies across distributed franchise locations",
             ],
             "outcome": "Tighter PCI scope, fraud caught in real time, instant identity reviews for high-turnover workforces, automated vendor audits with no manual effort, and no third-party data exposure.",
         },
         {
             "title": "Insurance",
             "headline": "Coordinated Claims, Underwriting & Firewall Intelligence Under Full Sovereignty",
-            "body": "Claims fraud and underwriting risk hinge on policyholder and medical data that IRDAI-regulated insurers can't freely expose to cloud AI — and the same regulated networks generate constant firewall change requests where manual review is slow and mistakes are costly.",
+            "body": "Claims fraud and underwriting risk hinge on policyholder and medical data that IRDAI-regulated insurers can't freely expose to cloud AI, and the same regulated networks generate constant firewall change requests where manual review is slow and mistakes are costly.",
             "itemsLabel": "How Vyuha Helps",
             "items": [
-                "Claims-fraud agent — identifies fraudulent or suspicious claims patterns",
-                "Underwriting-risk agent — assesses risk factors during policy issuance",
-                "Subrogation agent — surfaces recovery opportunities across claims",
-                "Firewall-intelligence agent — ingests change requests from ServiceNow, analyzes them against assets, applications, data sensitivity, and dependencies, generates precise firewall rules, and applies low- and medium-risk changes autonomously — routing only high-risk rules to security teams for approval",
+                "Claims-fraud agent: identifies fraudulent or suspicious claims patterns",
+                "Underwriting-risk agent: assesses risk factors during policy issuance",
+                "Subrogation agent: surfaces recovery opportunities across claims",
+                "Firewall-intelligence agent: ingests change requests from ServiceNow, analyzes them against assets, applications, data sensitivity, and dependencies, generates precise firewall rules, and applies low- and medium-risk changes autonomously, routing only high-risk rules to security teams for approval",
             ],
             "outcome": "Faster claims processing, fewer fraudulent payouts, faster firewall change turnaround without increasing risk, and compliant by default.",
         },
@@ -1479,7 +1478,7 @@ def build_story():
             "title": "Hi-Tech",
             "comingSoon": True,
             "headline": "An Internal Agentic SOC + DevSecOps Layer",
-            "body": "SaaS and product companies run at cloud scale — shipping code continuously, generating massive alert volumes, and facing nonstop threat activity — where proprietary source code and customer data can't be routed through an external AI vendor. Traditional SOC models depend on human triage and static automation, creating bottlenecks at L1, L2, and L3 just as velocity accelerates. Vyuha runs internally as a truly autonomous SOC and DevSecOps orchestration layer, purpose-built for AI-native, high-growth environments.",
+            "body": "SaaS and product companies run at cloud scale, shipping code continuously, generating massive alert volumes, and facing nonstop threat activity, where proprietary source code and customer data can't be routed through an external AI vendor. Traditional SOC models depend on human triage and static automation, creating bottlenecks at L1, L2, and L3 just as velocity accelerates. Vyuha runs internally as a truly autonomous SOC and DevSecOps orchestration layer, purpose-built for AI-native, high-growth environments.",
             "itemsLabel": "How Vyuha Helps",
             "items": [
                 "Runs SOC operations autonomously, resolving the majority of alerts without human involvement",
@@ -1496,17 +1495,17 @@ def build_story():
     story.append(section_title("Section: Why Vyuha"))
     story.append(
         p(
-            "Every capability above runs on the same sovereign foundation — the Airrived Engine, deployed either on Vyuha One or fully air-gapped on Vyuha In a BOX. That means enterprises get absolute ownership of their data, models, agents, and execution logs, with no vendor lock-in.",
+            "Every capability above runs on the same sovereign foundation: The Airrived Engine, deployed either on Vyuha One or fully air-gapped on Vyuha In a BOX. That means enterprises get absolute ownership of their data, models, agents, and execution logs, with no vendor lock-in.",
             "body",
         )
     )
     story.append(
         p(
-            "Vyuha does not sit alongside an organization's existing tools — it absorbs their function, replacing brittle SOAR and legacy RPA, narrow point solutions, and ungoverned AI toolkits with a single, reasoning-driven orchestration layer that is built, governed, and owned entirely on the enterprise's own terms.",
+            "Vyuha does not sit alongside an organization's existing tools, it absorbs their function, replacing brittle SOAR and legacy RPA, narrow point solutions, and ungoverned AI toolkits with a single, reasoning-driven orchestration layer that is built, governed, and owned entirely on the enterprise's own terms.",
             "body",
         )
     )
-    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/book-a-demo"}]))
+    story.extend(ctas([{"label": "Request Architecture Demo", "href": "/contact"}]))
     story.append(PageBreak())
 
     # =====================================================================
@@ -1521,7 +1520,7 @@ def build_story():
     )
     story.append(
         p(
-            "The name Vyuha comes from the idea of a strategic formation: multiple elements working together toward a common objective. We built Vyuha.ai on that exact principle—bring isolated data, software tools, and human expertise together into a single, synchronized workflow.",
+            "The name Vyuha comes from the idea of a strategic formation: multiple elements working together toward a common objective. We built Vyuha.ai on that exact principle: bring isolated data, software tools, and human expertise together into a single, synchronized workflow.",
             "body",
         )
     )
@@ -1529,7 +1528,7 @@ def build_story():
 
     story.append(section_title("Section: Intelligence Built for the Enterprise"))
     for card in [
-        {"title": "Turn Teams into Builders", "body": "Transform frontline staff into active AI creators—zero specialist hiring needed."},
+        {"title": "Turn Teams into Builders", "body": "Transform frontline staff into active AI creators, zero specialist hiring needed."},
         {"title": "Lock Down Full Sovereignty", "body": "Run natively inside your cloud or air-gapped on-prem; your models, logic, and data never leave your perimeter."},
         {"title": "Orchestrate Multi-Agent Power", "body": "Drive complex autonomous workflows with real-time context, adaptive reasoning, and built-in human governance."},
         {"title": "Multiply Execution Speed", "body": "Wipe out tool sprawl and automate routine operations."},
@@ -1540,8 +1539,8 @@ def build_story():
     for para in [
         "AI belongs in the hands of your workforce, not outside it.",
         "It will be defined by how effectively intelligence can understand context, collaborate across systems, and act within the boundaries of the organization.",
-        "That is why Vyuha is being built as an intelligent operating layer—one that brings together people, data, models, agents, applications, and workflows.",
-        "Success with AI isn't about isolated tools; it is about how seamless intelligence partners with people across everyday systems. Vyuha serves as the intelligent foundation that brings your talent, data, autonomous agents, and critical workflows together—putting trusted AI directly into the hands of your team.",
+        "That is why Vyuha is being built as an intelligent operating layer, one that brings together people, data, models, agents, applications, and workflows.",
+        "Success with AI isn't about isolated tools; it is about how seamless intelligence partners with people across everyday systems. Vyuha serves as the intelligent foundation that brings your talent, data, autonomous agents, and critical workflows together, putting trusted AI directly into the hands of your team.",
     ]:
         story.append(p(para, "body"))
     story.append(
@@ -1560,10 +1559,11 @@ def build_story():
             "quote": "“AI for everyone, not just AI experts.”",
             "paragraphs": [
                 "We built Vyuha with a simple belief: every organization should be able to harness the power of AI.",
-                "The people closest to a business understand its challenges best. They should be able to use intelligence, build it, and put it to work—without waiting for a specialized AI team.",
+                "The people closest to a business understand its challenges best. They should be able to use intelligence, build it, and put it to work, without waiting for a specialized AI team.",
                 "Vyuha is our effort to make that possible: bringing powerful, enterprise-grade intelligence closer to the people to solve problems that matter.",
             ],
-            "signoff": "— Prarthana Gupta, Founder, Vyuha.ai",
+            "signoff": "Prarthana Gupta, Founder, Vyuha.ai",
+            "ctaHref": "https://www.linkedin.com/in/prarthana-gupta-112510a5/",
         },
         {
             "name": "SHRADDHA GUPTA",
@@ -1571,10 +1571,11 @@ def build_story():
             "quote": "“The future of AI is not about working alone. It is about working together.”",
             "paragraphs": [
                 "Enterprise problems rarely belong to one system, one team, or one function. They require context from across the organization and the ability to connect that context into meaningful action.",
-                "That is what we are building with Vyuha—a way for AI, agents, people, data, and enterprise systems to work together.",
+                "That is what we are building with Vyuha, a way for AI, agents, people, data, and enterprise systems to work together.",
                 "Our focus is not simply on creating smarter AI, but on creating intelligence that can work within the complexity of the real enterprise.",
             ],
-            "signoff": "— Shraddha Gupta, Co-Founder, Vyuha.ai",
+            "signoff": "Shraddha Gupta, Co-Founder, Vyuha.ai",
+            "ctaHref": "https://www.linkedin.com/in/shraddha--gupta/",
         },
         {
             "name": "LATA SINGH",
@@ -1582,10 +1583,33 @@ def build_story():
             "quote": "“Enterprise AI must create capability, not dependency.”",
             "paragraphs": [
                 "The opportunity with AI is much bigger than automation. It is about giving organizations the ability to continuously understand, adapt, and improve how they operate.",
-                "At Vyuha.ai we are building with the perspective—bringing intelligence into the enterprise while keeping governance, ownership, and control at its core.",
+                "At Vyuha.ai we are building with the perspective, bringing intelligence into the enterprise while keeping governance, ownership, and control at its core.",
                 "The real measure of success is not how many AI agents an organization deploys, it is how efficiently the organization scales.",
             ],
-            "signoff": "— Lata Singh, Strategic Advisor, Vyuha.ai",
+            "signoff": "Lata Singh, Strategic Advisor, Vyuha.ai",
+            "ctaHref": "https://www.linkedin.com/in/latasingh/",
+        },
+        {
+            "name": "DEEKSHA SHARMA",
+            "role": "SENIOR SOLUTION SPECIALIST",
+            "quote": "“The best AI solutions start with understanding the problem.”",
+            "paragraphs": [
+                "Every enterprise is unique. Different systems, processes, and challenges require niche solutions that are designed around business outcomes rather than technology alone.",
+                "At Vyuha, our focus is on helping organizations identify where intelligence can create the greatest impact and translating that into practical, measurable results. The goal is simple: make AI accessible, relevant, and valuable for every team.",
+            ],
+            "signoff": "Deeksha Sharma, Senior Solution Specialist, Vyuha.ai",
+            "ctaHref": "https://www.linkedin.com/in/deeksha-sharma-450a33105/",
+        },
+        {
+            "name": "NAVIN NAIR",
+            "role": "VP, PRODUCT ENGINEERING",
+            "quote": "“Great AI is only valuable when it works in the real world.”",
+            "paragraphs": [
+                "Building enterprise AI is not just about intelligence, it is about reliability, scalability, and execution. Organizations need systems that can integrate seamlessly with their existing environments while remaining secure, governed, and adaptable.",
+                "At Vyuha, we focus on transforming complex AI capabilities into practical engineering solutions that enterprises can seamlessly deploy, trust, and scale with confidence.",
+            ],
+            "signoff": "Navin Nair, VP, Product Engineering, Vyuha.ai",
+            "ctaHref": "https://www.linkedin.com/in/navin-nair01/",
         },
         {
             "name": "ADHYUTH",
@@ -1594,11 +1618,12 @@ def build_story():
             "paragraphs": [
                 "Enterprises don't need more AI experiments. They need solutions that work with their existing systems, solve real operational problems, and deliver measurable outcomes.",
                 "That is where Vyuha comes in.",
-                "We are focused on helping organizations move from identifying an AI opportunity to put intelligent systems to work—securely, practically, and at enterprise scale.",
+                "We are focused on helping organizations move from identifying an AI opportunity to put intelligent systems to work, securely, practically, and at enterprise scale.",
                 "More importantly, we put the power of AI directly into the hands of your frontline talent. Instead of relying on scarce specialists, Vyuha empowers your domain experts and everyday operators to design, build, and govern production-ready agents tailored to their own workflows.",
                 "Our goal is simple: make AI useful, make it accessible, and make it work.",
             ],
-            "signoff": "— Adhyuth, Chief Business Officer, Vyuha.ai",
+            "signoff": "Adhyuth, Chief Business Officer, Vyuha.ai",
+            "ctaHref": "https://www.linkedin.com/in/adhyuth-ramadyani/",
         },
     ]
     for leader in leaders:
@@ -1607,7 +1632,7 @@ def build_story():
         for para in leader["paragraphs"]:
             story.append(p(para, "body"))
         story.append(p(leader["signoff"], "label"))
-        story.extend(ctas([{"label": "Connect", "href": "/book-a-demo"}]))
+        story.extend(ctas([{"label": "Connect", "href": leader["ctaHref"]}]))
 
     story.extend(ctas([{"label": "Request an Architecture Sprint", "href": "/contact"}]))
     story.append(PageBreak())
@@ -1657,10 +1682,10 @@ def build_story():
         {
             "title": "Airrived",
             "role": "Exclusive Partner for India",
-            "lead": "Driving AI-powered innovation and intelligent enterprise solutions — with an intelligence engine that powers the capabilities of Vyuha.AI agents.",
+            "lead": "Driving AI-powered innovation and intelligent enterprise solutions, with an intelligence engine that powers the capabilities of Vyuha.AI agents.",
             "paragraphs": [
                 "Airrived is Vyuha.AI’s exclusive partner for India, anchoring our regional go-to-market with deep technology collaboration.",
-                "At the center of that collaboration is the Airrived Engine — the intelligence layer that powers how Vyuha.AI agents reason, orchestrate, and execute across enterprise workflows.",
+                "At the center of that collaboration is the Airrived Engine: The intelligence layer that powers how Vyuha.AI agents reason, orchestrate, and execute across enterprise workflows.",
                 "Together we help organizations in India adopt sovereign, production-ready AI: combining human expertise with intelligent systems so teams can innovate faster, decide with more context, and execute at scale.",
             ],
             "focus": [
@@ -1674,7 +1699,7 @@ def build_story():
             "role": "OEM Solutions Partner",
             "lead": "Our Dell Technologies partnership is a key lever for Vyuha Box, bringing enterprise-grade infrastructure and technology to Vyuha.AI deployments.",
             "paragraphs": [
-                "Dell Technologies is an OEM Solutions Partner for Vyuha.AI — a critical enabler of how we deliver sovereign AI where enterprises need it most.",
+                "Dell Technologies is an OEM Solutions Partner for Vyuha.ai | a critical enabler of how we deliver sovereign AI where enterprises need it most.",
                 "This partnership is a key lever for Vyuha Box: pairing Vyuha’s intelligent orchestration with Dell’s enterprise-grade infrastructure so deployments can run with the reliability, performance, and operational standards large organizations expect.",
                 "From on-premise and air-gapped environments to production-scale appliance deployments, Dell helps ensure Vyuha.AI reaches the enterprise on infrastructure built for mission-critical workloads.",
             ],
@@ -1689,7 +1714,7 @@ def build_story():
             "role": "Ecosystem & Innovation Partner",
             "lead": "The data platform powering connected intelligence, bringing together technology, expertise and innovation to accelerate enterprise AI adoption.",
             "paragraphs": [
-                "Slash Curate is Vyuha.AI’s Ecosystem & Innovation Partner — focused on the data foundation that connected intelligence requires.",
+                "Slash Curate is Vyuha.AI’s Ecosystem & Innovation Partner, focused on the data foundation that connected intelligence requires.",
                 "As a data platform, Slash Curate helps bring together technology, expertise, and innovation so enterprises can move beyond isolated AI pilots into systems that connect, reason, and act with shared context.",
                 "Through this partnership we accelerate enterprise AI adoption: linking data readiness with intelligent orchestration so organizations can scale real-world business impact, not just experiments.",
             ],
@@ -1765,47 +1790,7 @@ def build_story():
     story.append(PageBreak())
 
     # =====================================================================
-    # 8. BOOK A DEMO
-    # =====================================================================
-    story.extend(
-        page_header(
-            "/book-a-demo",
-            "Request an Architecture Demo",
-            eyebrow="BOOK A DEMO",
-        )
-    )
-    story.append(
-        p(
-            "Start with a high-value opportunity and explore how Vyuha can help build secure, governed, production-ready agentic intelligence for your enterprise.",
-            "body",
-        )
-    )
-    story.extend(
-        ctas(
-            [
-                {"label": "Request Architecture Demo", "href": "/book-a-demo"},
-                {"label": "Request Architecture Sprint", "href": "/contact"},
-            ]
-        )
-    )
-
-    story.append(section_title("Section: What We Can Discuss"))
-    for card in [
-        {"title": "Enterprise AI Architecture", "body": "Explore how Vyuha fits into your existing enterprise environment."},
-        {"title": "Agentic Workflows", "body": "Discuss autonomous agents, multi-agent collaboration, and orchestration."},
-        {"title": "Deployment & Control", "body": "Explore cloud/private VPC and on-premise Vyuha In a BOX deployment models."},
-    ]:
-        story.extend(add_card(card))
-    story.append(
-        p(
-            "Form fields pending: The source material provides CTA language but does not define the final lead-capture form fields. Add the approved form specification here.",
-            "notice",
-        )
-    )
-    story.append(PageBreak())
-
-    # =====================================================================
-    # 9. SITEMAP
+    # 8. SITEMAP
     # =====================================================================
     story.extend(page_header("/sitemap", "Sitemap — Index of every public page on Vyuha.ai", eyebrow="SITEMAP"))
     story.append(p("Canonical public site map (routes and titles).", "body"))
@@ -1826,14 +1811,13 @@ def build_story():
         ("  News & Events", "/resources/news-events"),
         ("  Blog / Insights", "/resources/blog"),
         ("Contact", "/contact"),
-        ("Book a Demo", "/book-a-demo"),
     ]:
         story.append(p(f"{label} — {path}", "toc_item" if not label.startswith("  ") else "toc_sub"))
 
     story.append(Spacer(1, 10 * mm))
     story.append(
         p(
-            "End of document. All marketing page copy from frontend/src/content/ is included above. Pending-content notices are preserved as they appear on the live site.",
+            "End of document. All marketing page copy from src/content/ is included above. Pending-content notices are preserved as they appear on the live site.",
             "cover_meta",
         )
     )

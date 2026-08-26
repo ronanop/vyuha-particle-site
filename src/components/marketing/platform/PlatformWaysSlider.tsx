@@ -19,12 +19,12 @@ function WayCard({
   index: number;
 }) {
   return (
-    <article className="relative min-w-0 overflow-hidden border border-white/12 bg-white/[0.04] p-6 backdrop-blur-xl md:p-10 md:pl-12">
+    <article className="relative flex h-full min-h-[17.5rem] min-w-0 flex-col overflow-hidden border border-white/12 bg-white/[0.04] p-6 backdrop-blur-xl md:min-h-[20rem] md:p-10 md:pl-12">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.01))]"
       />
-      <div className="relative grid gap-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:items-center md:gap-14">
+      <div className="relative grid flex-1 gap-6 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:items-center md:gap-14">
         <div className="min-w-0">
           <p className="font-display text-[12px] uppercase tracking-[0.2em] text-cyan-300">
             {String(index + 1).padStart(2, "0")} · {WAYS[index]}
@@ -38,11 +38,11 @@ function WayCard({
             </TransitionLink>
           </h3>
         </div>
-        <div className="min-w-0">
-          <p className="font-display text-[16px] font-medium leading-snug tracking-[-0.02em] text-white/88 md:text-[19px]">
+        <div className="flex min-h-0 min-w-0 flex-col">
+          <p className="font-display text-[16px] font-medium leading-snug tracking-[-0.02em] text-white/88 md:min-h-[2.6em] md:text-[19px]">
             {product.headline}
           </p>
-          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/55 md:text-[17px]">
+          <p className="mt-4 max-w-xl flex-1 text-[15px] leading-relaxed text-white/55 md:text-[17px]">
             {product.body}
           </p>
           <div className="mt-8">
@@ -175,13 +175,13 @@ export function PlatformWaysSlider({
         <div className="ml-[calc(50%-50vw)] w-screen overflow-hidden">
           <div
             ref={trackRef}
-            className="flex w-max gap-5 pr-10 will-change-transform"
+            className="flex w-max items-stretch gap-5 pr-10 will-change-transform"
             aria-label="Platform ways"
           >
             {products.map((product, i) => (
               <div
                 key={product.href}
-                className="w-[min(100vw,64rem)] shrink-0 first:[&>article]:border-l-0"
+                className="flex w-[min(100vw,64rem)] shrink-0 items-stretch first:[&>article]:border-l-0"
               >
                 <WayCard product={product} index={i} />
               </div>

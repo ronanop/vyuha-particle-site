@@ -1,12 +1,6 @@
-import type { Metadata } from "next";
-import { MarketingPageView } from "@/components/marketing/MarketingPageView";
-import { resourcesBlog } from "@/content/resources/blog";
+import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Blog / Insights | Vyuha.ai",
-  description: resourcesBlog.body[0],
-};
-
+/** Blog is unpublished until content ships. */
 export default function BlogPage() {
-  return <MarketingPageView content={resourcesBlog} />;
+  notFound();
 }

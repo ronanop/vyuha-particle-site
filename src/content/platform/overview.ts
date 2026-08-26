@@ -15,7 +15,7 @@ export const platformOverview: PlatformOverviewContent = {
   ],
   engineName: "Airrived Engine",
   primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
     { label: "Explore Vyuha.ai", href: "/" },
   ],
   stats: [
@@ -129,7 +129,7 @@ export const platformOverview: PlatformOverviewContent = {
   finalBody:
     "No complexity. No specialized AI research team required. Just unified control, delivered entirely within your own private boundary.",
   finalCtas: [
-    { label: "Schedule Platform Demo", href: "/book-a-demo" },
+    { label: "Schedule Platform Demo", href: "/contact" },
     { label: "Explore Vyuha.ai", href: "/" },
   ],
 };

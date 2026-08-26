@@ -32,7 +32,7 @@ type LeaderProfileCardProps = {
 export function LeaderProfileCard({ person }: LeaderProfileCardProps) {
   const initials = initialsFromName(person.name);
   const label = displayName(person.name);
-  const ctaHref = person.ctaHref ?? "/book-a-demo";
+  const ctaHref = person.ctaHref ?? "/contact";
   const ctaLabel = person.ctaLabel ?? "Connect";
 
   return (

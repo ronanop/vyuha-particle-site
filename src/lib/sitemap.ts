@@ -6,6 +6,10 @@ export type SiteNode = {
   path: string;
   title: string;
   children?: SiteNode[];
+  /** Omit from nav, footer, public sitemap page, and SEO sitemap. */
+  hidden?: boolean;
+  /** Keep in SEO + HTML sitemap, but omit from primary nav / footer. */
+  navHidden?: boolean;
 };
 
 export const SITE_MAP: SiteNode[] = [
@@ -49,9 +53,11 @@ export const SITE_MAP: SiteNode[] = [
   {
     path: "/resources",
     title: "Resources",
+    // No published content yet — keep routes in the map for later, hide everywhere public.
+    hidden: true,
     children: [
-      { path: "/resources/news-events", title: "News & Events" },
-      { path: "/resources/blog", title: "Blog / Insights" },
+      { path: "/resources/news-events", title: "News & Events", hidden: true },
+      { path: "/resources/blog", title: "Blog / Insights", hidden: true },
     ],
   },
   {
@@ -59,13 +65,19 @@ export const SITE_MAP: SiteNode[] = [
     title: "Contact",
   },
   {
-    path: "/book-a-demo",
-    title: "Book a Demo",
+    path: "/sitemap",
+    title: "Sitemap",
+    navHidden: true,
   },
 ];
 
-/** Top-level items for the primary nav (excludes Home). */
-export const PRIMARY_NAV = SITE_MAP.filter((n) => n.path !== "/");
+/** Public top-level hubs for the sitemap page (excludes hidden sections). */
+export const PUBLIC_SITE_MAP = SITE_MAP.filter((n) => !n.hidden);
+
+/** Top-level items for the primary nav (excludes Home, hidden, and navHidden). */
+export const PRIMARY_NAV = PUBLIC_SITE_MAP.filter(
+  (n) => n.path !== "/" && !n.navHidden,
+);
 
 export function findSiteNode(path: string): SiteNode | null {
   const walk = (nodes: SiteNode[]): SiteNode | null => {
@@ -81,11 +93,12 @@ export function findSiteNode(path: string): SiteNode | null {
   return walk(SITE_MAP);
 }
 
-/** Depth-first list of every route in SITE_MAP (parents before children). */
+/** Depth-first list of public routes in SITE_MAP (parents before children). */
 export function flattenSiteMap(nodes: SiteNode[] = SITE_MAP): SiteNode[] {
   const out: SiteNode[] = [];
   const walk = (list: SiteNode[]) => {
     for (const node of list) {
+      if (node.hidden) continue;
       out.push({ path: node.path, title: node.title });
       if (node.children) walk(node.children);
     }

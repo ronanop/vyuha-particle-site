@@ -8,7 +8,7 @@ export const industryUseCases: MarketingPageContent = {
     "Vyuha adapts its agentic mesh to the regulatory pressure, document types, and operational realities of each sector it serves.",
   ],
   primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
   ],
   sections: [
     {
@@ -100,5 +100,5 @@ export const industryUseCases: MarketingPageContent = {
       ],
     },
   ],
-  finalCtas: [{ label: "Request Architecture Demo", href: "/book-a-demo" }],
+  finalCtas: [{ label: "Request Architecture Demo", href: "/contact" }],
 };

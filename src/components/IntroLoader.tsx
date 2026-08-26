@@ -15,6 +15,10 @@ function setIntroAttr(value: "loading" | "ready") {
 }
 
 function freezeScroll() {
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  getLenis()?.scrollTo(0, { immediate: true });
   document.documentElement.dataset.introLock = "";
   document.documentElement.style.overflow = "hidden";
   gsap.ticker.lagSmoothing(500, 33);

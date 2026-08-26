@@ -4,7 +4,7 @@ export const solutionsOverview: SolutionsOverviewContent = {
   path: "/solutions",
   eyebrow: "Solutions Overview",
   title: "Build, Orchestrate, and Deploy Sovereign AI Solutions in Seconds",
-  displayTitle: ["Sovereign AI.", "In Operation."],
+  displayTitle: ["Sovereign AI", "In Operation"],
   leitmotif: "Build, orchestrate, and deploy, without a byte leaving your perimeter.",
   quote:
     "INDIA has built for digital scale. Now, it’s time to build intelligence on our own terms.",
@@ -105,7 +105,7 @@ export const solutionsOverview: SolutionsOverviewContent = {
   finalBody:
     "Start with a high-value use case and build toward a governed enterprise AI formation, designed around your systems, data, and operational priorities, on your own terms.",
   finalCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
     { label: "Explore the Platform", href: "/platform" },
   ],
 };

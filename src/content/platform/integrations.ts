@@ -9,7 +9,7 @@ export const platformIntegrations: PlatformProductContent = {
   body: [
     "This isn't about merely wiring tools together. It's about binding fragmented silos into a context-aware fabric that enables autonomous agents to reason and act across the enterprise stack.",
   ],
-  primaryCtas: [{ label: "Request A Demo", href: "/book-a-demo" }],
+  primaryCtas: [{ label: "Request A Demo", href: "/contact" }],
   sections: [
     {
       title: "Built For The Stack You Already Trust",
@@ -69,7 +69,7 @@ export const platformIntegrations: PlatformProductContent = {
     },
   ],
   finalCtas: [
-    { label: "Request A Demo", href: "/book-a-demo" },
+    { label: "Request A Demo", href: "/contact" },
     { label: "Explore Solutions", href: "/solutions" },
   ],
 };

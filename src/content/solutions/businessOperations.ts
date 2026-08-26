@@ -9,7 +9,7 @@ export const businessOperations: MarketingPageContent = {
     "Vyuha reimagines Business Operations with sovereign agentic intelligence, composing reporting, reconciliation, and approval workflows that run continuously and stay entirely within the enterprise's own perimeter.",
   ],
   primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
   ],
   sections: [
     {
@@ -68,5 +68,5 @@ export const businessOperations: MarketingPageContent = {
       ],
     },
   ],
-  finalCtas: [{ label: "Request Architecture Demo", href: "/book-a-demo" }],
+  finalCtas: [{ label: "Request Architecture Demo", href: "/contact" }],
 };

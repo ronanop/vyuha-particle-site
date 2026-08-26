@@ -1,12 +1,6 @@
-import type { Metadata } from "next";
-import { MarketingPageView } from "@/components/marketing/MarketingPageView";
-import { resourcesNewsEvents } from "@/content/resources/newsEvents";
+import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "News & Events | Vyuha.ai",
-  description: resourcesNewsEvents.body[0],
-};
-
+/** News & Events is unpublished until content ships. */
 export default function NewsEventsPage() {
-  return <MarketingPageView content={resourcesNewsEvents} />;
+  notFound();
 }

@@ -11,7 +11,7 @@ export const securityCompliance: MarketingPageContent = {
     "Vyuha transcends traditional SecOps by delivering a unified, sovereign agentic platform that standardizes intelligence across SOC, GRC, and IAM, entirely inside your own perimeter. Whether automating incident response, enforcing continuous compliance, or managing identity governance, domain-specific agents reason and act to eliminate silos and tool sprawl across the enterprise.",
   ],
   primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
   ],
   sections: [
     {
@@ -116,5 +116,5 @@ export const securityCompliance: MarketingPageContent = {
       ],
     },
   ],
-  finalCtas: [{ label: "Request Architecture Demo", href: "/book-a-demo" }],
+  finalCtas: [{ label: "Request Architecture Demo", href: "/contact" }],
 };

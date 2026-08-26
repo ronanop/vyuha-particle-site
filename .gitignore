@@ -46,3 +46,6 @@ scripts/earth-raw/
 
 # Vyuha logo GLB source (regenerate via npm run bake:vyuha)
 scripts/vyuha-raw/
+
+# Copied from node_modules on install/build (see scripts/copy-elevenlabs-widget.mjs)
+public/vendor/elevenlabs-convai-widget-*.js

@@ -70,7 +70,7 @@ export const homeContent: HomeContent = {
     "Vyuha transforms advanced AI into real-world operational velocity, enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
     "No complexity. No specialized AI research team required. Just unified control, delivered entirely within your own private boundary.",
   ],
-  operatingCta: { label: "Schedule Platform Demo", href: "/book-a-demo" },
+  operatingCta: { label: "Schedule Platform Demo", href: "/contact" },
   standardizeTitle: "Standardize on Controlled Autonomy",
   standardizeIntro:
     "The enterprise-grade control plane purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders.",
@@ -111,5 +111,5 @@ export const homeContent: HomeContent = {
   closingTitle: "The Sovereign AI Blueprint",
   closingBody:
     "Explore the strategies, insights, and engineering breakthroughs empowering Indian enterprises to build secure, autonomous operations.",
-  closingCta: { label: "Request a Demo", href: "/book-a-demo" },
+  closingCta: { label: "Request a Demo", href: "/contact" },
 };

@@ -211,7 +211,7 @@ export function SolutionsOverviewView({
             </h1>
             <p
               data-hero-in
-              className="relative mx-auto mt-6 max-w-2xl text-balance font-display text-[clamp(0.95rem,2.8vw,1.5rem)] font-bold tracking-[-0.02em] text-white/90 [animation-delay:160ms] md:whitespace-nowrap"
+              className="relative mt-6 ml-[calc(50%-50vw)] w-screen px-6 text-center font-display text-[clamp(0.95rem,2.8vw,1.5rem)] font-bold tracking-[-0.02em] text-white/90 [animation-delay:160ms] md:px-10"
             >
               {content.leitmotif}
             </p>

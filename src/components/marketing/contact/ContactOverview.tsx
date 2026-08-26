@@ -65,6 +65,40 @@ export function ContactOverviewView({ content }: { content: ContactContent }) {
             <ContactForm content={content} />
           </div>
         </section>
+
+        <section
+          aria-labelledby="discuss-heading"
+          className="border-t border-white/10 pb-24 pt-16 md:pb-32 md:pt-20"
+        >
+          <div className="mx-auto w-full max-w-[1400px] px-6 md:px-10">
+            <h2
+              id="discuss-heading"
+              className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-[-0.03em] text-white"
+            >
+              {content.discussTitle}
+            </h2>
+
+            <ul className="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-3 md:gap-5">
+              {content.discussTopics.map((topic) => (
+                <li
+                  key={topic.title}
+                  className="relative overflow-hidden border border-white/10 bg-white/[0.035] p-7 backdrop-blur-sm md:min-h-[11.5rem] md:p-8"
+                >
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_48%)]"
+                  />
+                  <h3 className="relative font-display text-[clamp(1.15rem,1.8vw,1.35rem)] font-medium tracking-[-0.02em] text-white">
+                    {topic.title}
+                  </h3>
+                  <p className="relative mt-3 text-[15px] leading-relaxed text-white/55">
+                    {topic.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
       </article>
     </>
   );

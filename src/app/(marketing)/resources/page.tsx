@@ -1,17 +1,6 @@
-import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/marketing/PlaceholderPage";
-import { findSiteNode } from "@/lib/sitemap";
+import { notFound } from "next/navigation";
 
-const node = findSiteNode("/resources")!;
-
-export const metadata: Metadata = { title: `${node.title} | Vyuha.ai` };
-
+/** Resources hub is unpublished until content ships. */
 export default function ResourcesPage() {
-  return (
-    <PlaceholderPage
-      title={node.title}
-      path={node.path}
-      childrenNodes={node.children}
-    />
-  );
+  notFound();
 }

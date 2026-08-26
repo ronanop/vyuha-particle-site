@@ -9,7 +9,7 @@ export const platformCommand: PlatformProductContent = {
     "One command plane. Infinite autonomous execution. Purpose-built for Cybersecurity, IT, FinOps, and Business Operations leaders to orchestrate multi-agent workflows across your cloud infrastructure and enterprise stack.",
   ],
   primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
     { label: "Explore Command Plane", href: "/platform" },
   ],
   sections: [
@@ -19,7 +19,7 @@ export const platformCommand: PlatformProductContent = {
         "Vyuha.ONE transforms advanced AI into real-world operational velocity, enabling your enterprise to fine-tune models on local telemetry, deploy deep-reasoning agents, and intelligently orchestrate workflows across your entire stack.",
         "No complexity. No specialized AI research team required. Just unified control within your private cloud boundary (AWS, Azure, GCP, or hybrid VPCs).",
       ],
-      cta: { label: "Schedule Control Plane Demo", href: "/book-a-demo" },
+      cta: { label: "Schedule Control Plane Demo", href: "/contact" },
     },
     {
       title: "Standardize on Controlled Cloud Autonomy",
@@ -103,7 +103,7 @@ export const platformCommand: PlatformProductContent = {
   finalBody:
     "Vyuha.ONE lets your organization securely build, deploy, and scale autonomous AI agents across private cloud infrastructure without sacrificing data privacy, financial efficiency, or operational control.",
   finalCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
     { label: "Explore Enterprise Connectors", href: "/platform/integrations" },
   ],
 };

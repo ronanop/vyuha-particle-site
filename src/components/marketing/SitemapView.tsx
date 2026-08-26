@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { flattenSiteMap, SITE_MAP, type SiteNode } from "@/lib/sitemap";
+import { flattenSiteMap, PUBLIC_SITE_MAP, type SiteNode } from "@/lib/sitemap";
 
 function padIndex(n: number) {
   return String(n).padStart(2, "0");
@@ -68,7 +68,7 @@ export function SitemapView() {
 
       <nav aria-label="Sitemap" className="py-14 md:py-20">
         <ol className="mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-10 px-6 md:grid-cols-2 md:gap-x-16 md:gap-y-14 md:px-10">
-          {SITE_MAP.map((node, i) => (
+          {PUBLIC_SITE_MAP.map((node, i) => (
             <li key={node.path} className="border-t border-white/10 pt-6">
               <p className="mb-4 font-display text-[11px] font-medium uppercase tracking-[0.28em] text-white/35">
                 {padIndex(i + 1)}

@@ -9,7 +9,7 @@ export const platformInABox: PlatformProductContent = {
     "The complete Vyuha.ONE OS pre-loaded onto enterprise GPU hardware. Complete physical data localization, zero external egress, and hardware-accelerated intelligence engineered for on-premise data centers and air-gapped defense environments.",
   ],
   primaryCtas: [
-    { label: "Schedule On-Premise Demo", href: "/book-a-demo" },
+    { label: "Schedule On-Premise Demo", href: "/contact" },
     { label: "Explore Hardware Specifications", href: "/contact" },
   ],
   sections: [
@@ -89,7 +89,7 @@ export const platformInABox: PlatformProductContent = {
   finalBody:
     "Vyuha In a BOX provides infrastructure control, air-gapped security, and hardware-accelerated performance, enabling autonomous AI without data leaving your facility.",
   finalCtas: [
-    { label: "Request On-Premise Demo", href: "/book-a-demo" },
+    { label: "Request On-Premise Demo", href: "/contact" },
     { label: "Contact Infrastructure Team", href: "/contact" },
   ],
 };

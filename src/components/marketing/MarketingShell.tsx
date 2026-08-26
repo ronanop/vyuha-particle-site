@@ -6,7 +6,7 @@ import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 
 /**
- * Shared chrome for marketing routes (everything except / and /design).
+ * Shared chrome for marketing routes (everything except /).
  * Clears the home intro lock so secondary pages are immediately interactive.
  */
 export function MarketingShell({ children }: { children: ReactNode }) {

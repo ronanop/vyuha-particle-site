@@ -5,11 +5,19 @@ import {
   SOLUTIONS_TUNNEL_IMAGES,
   SOLUTIONS_TUNNEL_POSTER,
 } from "@/lib/marketing/hero-prefetch";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Solutions | Vyuha.ai",
+export const metadata: Metadata = createPageMetadata({
+  title: "Solutions",
   description: solutionsOverview.body[0],
-};
+  path: "/solutions",
+  keywords: [
+    "sovereign AI solutions",
+    "security compliance AI",
+    "IT operations AI",
+    "FinOps AI",
+  ],
+});
 
 export default function SolutionsPage() {
   return (

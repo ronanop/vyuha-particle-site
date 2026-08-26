@@ -3,6 +3,15 @@ import { ViewTransition } from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import { ElevenLabsConvai } from "@/components/ElevenLabsConvai";
+import { ScrollResetOnLoad } from "@/components/ScrollResetOnLoad";
+import { JsonLd } from "@/components/seo/JsonLd";
+import {
+  DEFAULT_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_TAGLINE,
+  getSiteUrl,
+} from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -23,29 +32,62 @@ const purgatory = localFont({
   display: "swap",
 });
 
-function resolveSiteUrl(): URL {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
-  if (explicit) return new URL(explicit);
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
-  }
-  if (process.env.VERCEL_URL) {
-    return new URL(`https://${process.env.VERCEL_URL}`);
-  }
-  return new URL("http://localhost:3000");
-}
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#000000",
 };
 
 export const metadata: Metadata = {
-  metadataBase: resolveSiteUrl(),
-  title: "Vyuha.ai | AI that understands your enterprise",
-  description:
-    "Connect knowledge, systems, workflows and teams through one intelligent layer.",
+  metadataBase: getSiteUrl(),
+  title: {
+    default: `${SITE_NAME} | ${SITE_TAGLINE}`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [...SITE_KEYWORDS],
+  authors: [{ name: SITE_NAME, url: getSiteUrl().toString() }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "technology",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "/",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} | ${SITE_TAGLINE}`,
+    description: DEFAULT_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} | ${SITE_TAGLINE}`,
+    description: DEFAULT_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: [{ url: "/favicon.ico" }],
+    apple: [{ url: "/vyuha-logo-mark.png" }],
+  },
 };
 
 export default function RootLayout({
@@ -55,7 +97,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       data-intro="loading"
       className={`${inter.variable} ${spaceGrotesk.variable} ${purgatory.variable} h-full antialiased`}
     >
@@ -70,11 +112,25 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap"
           rel="stylesheet"
         />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/llms.txt"
+          title="LLM context — Vyuha.ai"
+        />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href="/llms-full.txt"
+          title="Full LLM context — Vyuha.ai"
+        />
       </head>
       <body
         className="min-h-full bg-black text-white"
         suppressHydrationWarning
       >
+        <JsonLd />
+        <ScrollResetOnLoad />
         <ViewTransition>{children}</ViewTransition>
         <ElevenLabsConvai />
       </body>

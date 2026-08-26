@@ -9,7 +9,7 @@ export const itOperations: MarketingPageContent = {
     "Vyuha reimagines IT operations with sovereign agentic intelligence, reasoning agents that think, learn, and act across systems, entirely within your own infrastructure boundary.",
   ],
   primaryCtas: [
-    { label: "Request Architecture Demo", href: "/book-a-demo" },
+    { label: "Request Architecture Demo", href: "/contact" },
   ],
   sections: [
     {
@@ -91,5 +91,5 @@ export const itOperations: MarketingPageContent = {
       ],
     },
   ],
-  finalCtas: [{ label: "Request Architecture Demo", href: "/book-a-demo" }],
+  finalCtas: [{ label: "Request Architecture Demo", href: "/contact" }],
 };
