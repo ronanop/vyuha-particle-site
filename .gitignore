@@ -42,9 +42,7 @@ yarn-error.log*
 next-env.d.ts
 
 # Earth bake source GeoJSON (regenerate via npm run bake:earth)
-frontend/scripts/earth-raw/
 scripts/earth-raw/
 
 # Vyuha logo GLB source (regenerate via npm run bake:vyuha)
-frontend/scripts/vyuha-raw/
 scripts/vyuha-raw/
