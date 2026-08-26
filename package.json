@@ -17,6 +17,7 @@
   "dependencies": {
     "@elevenlabs/convai-widget-embed": "^0.16.4",
     "@elevenlabs/react": "^0.12.0",
+    "@formspree/react": "^3.0.0",
     "@gsap/react": "^2.1.2",
     "framer-motion": "^13.1.0",
     "gsap": "^3.15.0",

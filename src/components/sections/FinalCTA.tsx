@@ -16,7 +16,7 @@ export function FinalCTA() {
       </p>
       <div className="mt-10 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5">
         <FluidButton text="Request Architecture Sprint" href="/contact" className="w-full sm:w-auto" />
-        <p className="text-[15px] text-white/55">Or write to hello@vyuha.ai</p>
+        <p className="text-[15px] text-white/55">Or write to Sales@Vyuha.ai</p>
       </div>
     </SectionFrame>
   );

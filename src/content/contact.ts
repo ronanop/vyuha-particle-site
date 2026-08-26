@@ -19,9 +19,9 @@ export const contactPage: ContactContent = {
   path: "/contact",
   eyebrow: "CONTACT",
   title: "Get in touch",
-  email: "hello@vyuha.ai",
-  phone: "+91 11 4108 2200",
-  phoneHref: "tel:+911141082200",
+  email: "Sales@Vyuha.ai",
+  phone: "1800-309-4333",
+  phoneHref: "tel:18003094333",
   formIntro: "Send a message and we will follow up.",
   discussTitle: "What We Can Discuss",
   discussTopics: [

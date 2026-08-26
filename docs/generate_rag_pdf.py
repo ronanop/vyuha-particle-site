@@ -1783,9 +1783,9 @@ def build_story():
     # 7. CONTACT
     # =====================================================================
     story.extend(page_header("/contact", "Get in touch", eyebrow="CONTACT"))
-    story.append(p("Email: hello@vyuha.ai", "body_left"))
-    story.append(p("Phone: +91 11 4108 2200", "body_left"))
-    story.append(p("Phone link: tel:+911141082200", "cta"))
+    story.append(p("Email: Sales@Vyuha.ai", "body_left"))
+    story.append(p("Phone: 1800-309-4333", "body_left"))
+    story.append(p("Phone link: tel:18003094333", "cta"))
     story.append(p("Form intro: Send a message and we will follow up.", "body"))
     story.append(PageBreak())
 

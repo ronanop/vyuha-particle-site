@@ -121,8 +121,8 @@ export function organizationJsonLd() {
     url: origin,
     logo: `${origin}/vyuha-logo.png`,
     image: `${origin}/vyuha-logo.png`,
-    email: "hello@vyuha.ai",
-    telephone: "+91-11-4108-2200",
+    email: "Sales@Vyuha.ai",
+    telephone: "1800-309-4333",
     description: DEFAULT_DESCRIPTION,
     areaServed: {
       "@type": "Country",
