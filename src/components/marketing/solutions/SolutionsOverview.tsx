@@ -12,7 +12,10 @@ import TextType from "@/components/ui/TextType";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 import { SolutionCtas } from "@/components/marketing/solutions/SolutionChrome";
 import { TransitionLink } from "@/components/ui/TransitionLink";
-import type { SolutionsOverviewContent } from "@/content/solutions/types";
+import type {
+  SolutionsFunction,
+  SolutionsOverviewContent,
+} from "@/content/solutions/types";
 import { SOLUTIONS_TUNNEL_POSTER } from "@/lib/marketing/hero-prefetch";
 
 const InfiniteScrollTunnel = dynamic(
@@ -25,6 +28,49 @@ const HeroParticle = dynamic(
     import("@/components/hero/HeroParticle").then((m) => m.HeroParticle),
   { ssr: false },
 );
+
+function FunctionCard({ item }: { item: SolutionsFunction }) {
+  return (
+    <div className="grid min-w-0 gap-5 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
+      <div className="min-w-0">
+        <p className="font-display text-[12px] uppercase tracking-[0.2em] text-cyan-300">
+          {item.way}
+        </p>
+        <p className="mt-3 font-display text-[clamp(2.5rem,6vw,5rem)] font-medium leading-none tracking-[-0.06em] text-white/18">
+          {item.index}
+        </p>
+        <h3 className="mt-3 font-display text-[clamp(1.65rem,3.4vw,3rem)] font-medium leading-[1.02] tracking-[-0.035em] text-white">
+          <TransitionLink
+            href={item.href}
+            className="transition-colors hover:text-cyan-300"
+          >
+            {item.title}
+          </TransitionLink>
+        </h3>
+      </div>
+      <div className="flex min-w-0 flex-col justify-center">
+        <p className="font-display text-[16px] font-medium leading-snug tracking-[-0.02em] text-white/88 md:text-[19px]">
+          {item.headline}
+        </p>
+        <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/55 md:text-[17px]">
+          {item.body}
+        </p>
+        <div className="mt-8">
+          <FluidButton
+            text={item.cta}
+            href={item.href}
+            size="sm"
+            className="bg-cyan-300"
+            firstTextColor="rgb(0, 0, 0)"
+            secondTextColor="rgb(0, 0, 0)"
+            overlayColor="rgb(250, 250, 250)"
+            borderColor="rgb(34, 211, 238)"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function LazyHeroParticle() {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -128,6 +174,15 @@ export function SolutionsOverviewView({
   const [sovereignWord, ...sovereignRest] = content.displayTitle[0].split(" ");
   const rootRef = useRef<HTMLElement>(null);
   const heroReadyRef = useRef(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const sync = () => setIsDesktop(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const markHeroReady = useCallback(() => {
     if (heroReadyRef.current) return;
@@ -280,60 +335,39 @@ export function SolutionsOverviewView({
             </p>
           </div>
 
-          <ScrollStack
-            className="mt-10 min-w-0"
-            useWindowScroll
-            itemDistance={120}
-            itemStackDistance={28}
-            stackPosition="22%"
-            scaleEndPosition="12%"
-            baseScale={0.88}
-            itemScale={0.04}
-            blurAmount={0.8}
-          >
-            {content.functions.map((item) => (
-              <ScrollStackItem
-                key={item.href}
-                itemClassName="min-w-0 overflow-hidden border border-white/12 bg-[#0a1018]/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.85)] backdrop-blur-xl sm:p-7 md:p-10"
-              >
-                <div className="grid min-w-0 gap-5 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
-                  <div className="min-w-0">
-                    <p className="font-display text-[12px] uppercase tracking-[0.2em] text-cyan-300">
-                      {item.way}
-                    </p>
-                    <p className="mt-3 font-display text-[clamp(2.5rem,6vw,5rem)] font-medium leading-none tracking-[-0.06em] text-white/18">
-                      {item.index}
-                    </p>
-                    <h3 className="mt-3 font-display text-[clamp(1.65rem,3.4vw,3rem)] font-medium leading-[1.02] tracking-[-0.035em] text-white">
-                      <TransitionLink href={item.href} className="transition-colors hover:text-cyan-300">
-                        {item.title}
-                      </TransitionLink>
-                    </h3>
-                  </div>
-                  <div className="flex min-w-0 flex-col justify-center">
-                    <p className="font-display text-[16px] font-medium leading-snug tracking-[-0.02em] text-white/88 md:text-[19px]">
-                      {item.headline}
-                    </p>
-                    <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/55 md:text-[17px]">
-                      {item.body}
-                    </p>
-                    <div className="mt-8">
-                      <FluidButton
-                        text={item.cta}
-                        href={item.href}
-                        size="sm"
-                        className="bg-cyan-300"
-                        firstTextColor="rgb(0, 0, 0)"
-                        secondTextColor="rgb(0, 0, 0)"
-                        overlayColor="rgb(250, 250, 250)"
-                        borderColor="rgb(34, 211, 238)"
-                      />
-                    </div>
-                  </div>
+          {isDesktop ? (
+            <ScrollStack
+              className="mt-10 min-w-0"
+              useWindowScroll
+              itemDistance={120}
+              itemStackDistance={28}
+              stackPosition="22%"
+              scaleEndPosition="12%"
+              baseScale={0.88}
+              itemScale={0.04}
+              blurAmount={0.8}
+            >
+              {content.functions.map((item) => (
+                <ScrollStackItem
+                  key={item.href}
+                  itemClassName="min-w-0 overflow-hidden border border-white/12 bg-[#0a1018]/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.85)] backdrop-blur-xl sm:p-7 md:p-10"
+                >
+                  <FunctionCard item={item} />
+                </ScrollStackItem>
+              ))}
+            </ScrollStack>
+          ) : (
+            <div className="mt-10 flex flex-col gap-5">
+              {content.functions.map((item) => (
+                <div
+                  key={item.href}
+                  className="min-w-0 overflow-hidden rounded-[1.5rem] border border-white/12 bg-[#0a1018]/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.85)] backdrop-blur-xl"
+                >
+                  <FunctionCard item={item} />
                 </div>
-              </ScrollStackItem>
-            ))}
-          </ScrollStack>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

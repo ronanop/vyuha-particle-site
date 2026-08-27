@@ -83,7 +83,7 @@ export const companyAbout: CompanyContent = {
         name: "LATA SINGH",
         role: "STRATEGIC ADVISOR",
         handle: "@lata",
-        image: "/company/leadership/lata-singh.jpg",
+        image: "/company/leadership/lata-singh.png",
         accentFrom: "#a5f3fc",
         accentTo: "#0f766e",
         quote: "“Enterprise AI must create capability, not dependency.”",
