@@ -440,8 +440,8 @@ export default function WarpText({
         dpr: Math.min(window.devicePixelRatio || 1, 2),
       });
       gl = renderer.gl;
-    } catch (error) {
-      console.warn("WarpText: WebGL could not be initialized.", error);
+    } catch {
+      console.warn("WarpText: WebGL could not be initialized.");
       return undefined;
     }
 

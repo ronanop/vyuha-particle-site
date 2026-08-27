@@ -29,6 +29,15 @@ if (!SIGNED_URL_SECRET) {
 
 const app = express();
 
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests, try again later" },
+});
+
+app.use(globalLimiter);
 app.use(
   cors({
     origin(origin, callback) {
@@ -49,7 +58,14 @@ app.use(
 );
 app.use(express.json({ limit: "32kb" }));
 
-app.get("/health", (_req, res) => {
+const healthLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.get("/health", healthLimiter, (_req, res) => {
   res.json({ ok: true, service: "vyuha-backend" });
 });
 
@@ -141,8 +157,8 @@ app.get(
         sessionId: clientSessionId,
         expiresInSeconds: 900,
       });
-    } catch (error) {
-      console.error("[signed-url]", error);
+    } catch {
+      console.error("[signed-url] request failed");
       res.status(500).json({ error: "Failed to get signed URL" });
     }
   },

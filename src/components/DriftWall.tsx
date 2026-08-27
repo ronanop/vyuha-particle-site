@@ -35,6 +35,19 @@ const columnFactor = (index: number, variance: number) => {
   return 1 + variance * pseudo;
 };
 
+/** Allow only http(s) links; reject javascript: and other schemes. */
+function safeExternalHref(href: string): string | undefined {
+  try {
+    const url = new URL(href);
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      return url.href;
+    }
+  } catch {
+    // Invalid URL — fall back to non-link tile.
+  }
+  return undefined;
+}
+
 type DriftWallProps = {
   items?: DriftWallItem[];
   columns?: number;
@@ -304,9 +317,10 @@ export default function DriftWall({
       onFocus: () => activate(id, colIndex),
       onBlur: release,
     };
-    if (item.href) {
+    const href = item.href ? safeExternalHref(item.href) : undefined;
+    if (href) {
       return (
-        <a key={id} href={item.href} target="_blank" rel="noreferrer noopener" {...commonProps}>
+        <a key={id} href={href} target="_blank" rel="noreferrer noopener" {...commonProps}>
           {inner}
         </a>
       );
