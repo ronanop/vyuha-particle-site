@@ -36,6 +36,8 @@ type StaggeredMenuProps = {
   displayItemNumbering?: boolean;
   className?: string;
   logoUrl?: string;
+  /** Logo shown while the menu panel is open (e.g. black mark on white panel). */
+  openLogoUrl?: string;
   menuButtonColor?: string;
   openMenuButtonColor?: string;
   accentColor?: string;
@@ -55,6 +57,7 @@ export function StaggeredMenu({
   displayItemNumbering = true,
   className,
   logoUrl = "/vyuha-logo.png",
+  openLogoUrl = "/vyuha-logo-black.png",
   menuButtonColor = "#fff",
   openMenuButtonColor = "#fff",
   accentColor = "#5227FF",
@@ -504,15 +507,26 @@ export function StaggeredMenu({
           aria-label="Vyuha.ai"
           transitionTypes={getNavTransitionTypes(pathname || "/", "/")}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={logoUrl}
-            alt="Vyuha.ai"
-            className="sm-logo-img"
-            draggable={false}
-            width={121}
-            height={26}
-          />
+          <span className="sm-logo-stack">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoUrl}
+              alt=""
+              className="sm-logo-img sm-logo-img--closed"
+              draggable={false}
+              width={121}
+              height={26}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={openLogoUrl}
+              alt=""
+              className="sm-logo-img sm-logo-img--open"
+              draggable={false}
+              width={121}
+              height={26}
+            />
+          </span>
         </Link>
         <button
           ref={toggleBtnRef}

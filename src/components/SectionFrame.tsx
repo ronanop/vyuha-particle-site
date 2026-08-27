@@ -7,6 +7,8 @@ interface SectionFrameProps {
   side?: SectionSide;
   children: ReactNode;
   className?: string;
+  /** Extra classes for the inner flex row (viewport align container). */
+  innerClassName?: string;
   /** Vertical placement of copy within the section */
   align?: "center" | "end" | "start";
   /** Drop full-viewport height — flows with natural padding */
@@ -23,6 +25,7 @@ export function SectionFrame({
   side = "left",
   children,
   className = "",
+  innerClassName = "",
   align = "center",
   compact = false,
   contentClassName,
@@ -67,7 +70,7 @@ export function SectionFrame({
       className={`relative z-10 ${gutter} ${heightClass} ${compactPad} ${className}`}
     >
       <div
-        className={`relative mx-auto flex w-full max-w-[1400px] ${justify} ${heightClass} ${alignClass}`}
+        className={`relative mx-auto flex w-full max-w-[1400px] ${justify} ${heightClass} ${alignClass} ${innerClassName}`}
       >
         <div className={contentClassName ?? defaultContent}>{children}</div>
       </div>

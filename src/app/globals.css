@@ -92,6 +92,17 @@ html[data-intro="ready"] [data-hero-in] {
   opacity: 1;
 }
 
+/* Body copy over the particle earth — full white; soft shadow on mobile only */
+.home-body-copy {
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .home-body-copy {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75), 0 2px 16px rgba(0, 0, 0, 0.55);
+  }
+}
+
 /* India tricolor — smooth saffron → white → green across the word */
 .hero-tricolor {
   display: inline-block;

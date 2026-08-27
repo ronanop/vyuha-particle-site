@@ -2,6 +2,7 @@ import { Children, type ReactNode } from "react";
 import { SectionFrame } from "@/components/SectionFrame";
 import { FluidButton } from "@/components/FluidButton";
 import { StandardizeWheel } from "@/components/sections/StandardizeWheel";
+import { FoundationFoldHeading } from "@/components/sections/FoundationFoldHeading";
 import ScrollReveal from "@/components/marketing/ScrollReveal";
 import WarpText from "@/components/marketing/platform/WarpText";
 import { homeContent } from "@/content/home";
@@ -118,14 +119,18 @@ export function HomeView() {
         data-section-side="left"
         className="relative z-10 min-h-svh pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] md:px-10"
       >
-        <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] items-end pb-[max(4rem,env(safe-area-inset-bottom))] pt-28 md:pb-24 md:pt-20">
-          <div className="hero-copy w-full min-w-0 max-w-xl md:max-w-2xl">
-              <h1 className="font-display text-[clamp(2rem,9vw,5.8rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
+        <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] flex-col items-center pt-[max(5.25rem,12vh)] pb-[max(0.75rem,env(safe-area-inset-bottom))] md:flex-row md:items-end md:justify-start md:pb-24 md:pt-20">
+          <div className="hero-copy flex w-full min-w-0 max-w-xl flex-1 flex-col text-center md:block md:max-w-2xl md:flex-none md:text-left">
+              <h1 className="font-display text-[clamp(2.42rem,10.9vw,7rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white md:text-[clamp(2rem,9vw,5.8rem)]">
                 {content.displayTitle.map((line, i) => (
                   <span
                     key={line}
                     data-hero-in
-                    className={i === 0 ? "hero-tricolor block" : "block"}
+                    className={
+                      i === 0
+                        ? "hero-tricolor mx-auto block md:mx-0"
+                        : "block"
+                    }
                   >
                     {line}
                   </span>
@@ -133,13 +138,13 @@ export function HomeView() {
               </h1>
               <p
                 data-hero-in
-                className="mt-8 max-w-xl text-[17px] leading-relaxed text-white/60 md:text-[18px]"
+                className="mx-auto mt-auto max-w-xl pt-8 text-[17px] leading-relaxed text-white/78 md:mx-0 md:mt-8 md:pt-0 md:text-[18px] md:text-white/60"
               >
                 {content.lead}
               </p>
               <div
                 data-hero-in
-                className="mt-10 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
+                className="mt-6 flex w-full flex-col items-stretch gap-3 pb-[calc(4.5rem+env(safe-area-inset-bottom))] sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4 md:mt-10 md:justify-start md:pb-0"
               >
                 <FluidButton
                   text={content.primaryCtas[0].label}
@@ -160,14 +165,12 @@ export function HomeView() {
 
       {content.foundations.map((block, i) => (
         <HomeCopyBlock key={block.title}>
-          <h2
-            data-earth-dock={i === 0 ? "" : undefined}
-            data-earth-morph={i === 1 ? "1" : i === 2 ? "2" : undefined}
-            className="font-display max-w-[16ch] text-[clamp(1.85rem,4vw,3.25rem)] font-medium leading-[0.98] tracking-[-0.035em] text-white md:ml-auto"
-          >
-            {block.title}
-          </h2>
-          <p className="mt-6 max-w-lg text-[16px] leading-relaxed text-white/60 md:ml-auto md:text-justify md:text-[17px]">
+          <FoundationFoldHeading
+            text={block.title}
+            earthDock={i === 0}
+            earthMorph={i === 1 ? "1" : i === 2 ? "2" : undefined}
+          />
+          <p className="home-body-copy mt-6 max-w-lg text-[16px] leading-relaxed text-white md:ml-auto md:text-justify md:text-[17px]">
             {block.body}
           </p>
           <div className="mt-8 flex justify-start md:justify-end">
@@ -205,7 +208,7 @@ export function HomeView() {
             style={{ height: "clamp(112px, 28vw, 264px)" }}
           />
         </div>
-        <p className="mx-auto mt-3 max-w-2xl text-balance text-[17px] leading-relaxed text-white/60 md:text-[18px]">
+        <p className="home-body-copy mx-auto mt-3 max-w-2xl text-balance text-[17px] leading-relaxed text-white md:text-[18px]">
           {content.command.body}
         </p>
         <div className="mt-8 flex justify-center">
@@ -266,17 +269,17 @@ export function HomeView() {
 
       <section
         id="box-delivery"
-        className="relative z-10 overflow-hidden pt-0 pb-12 md:pt-0 md:pb-16 lg:pt-0 lg:pb-20"
+        className="relative z-10 overflow-hidden pt-16 pb-6 md:pt-0 md:pb-16 lg:pt-0 lg:pb-20"
       >
         <div className="relative mx-auto w-full max-w-[1400px] px-6 md:px-10">
           {/* Title block */}
-          <div className="mb-16 max-w-3xl md:mb-20">
+          <div className="mx-auto mb-16 max-w-3xl text-center md:mx-0 md:mb-20 md:text-left">
             <h2 className="font-display text-[clamp(2.25rem,5.5vw,4.5rem)] font-medium leading-[0.95] tracking-[-0.04em] text-white">
               {content.controlTitle}
             </h2>
             <div
               aria-hidden
-              className="mt-8 h-px w-24 bg-gradient-to-r from-cyan-400 to-transparent"
+              className="mx-auto mt-8 h-px w-24 bg-gradient-to-r from-cyan-400 to-transparent md:mx-0"
             />
           </div>
 
@@ -354,24 +357,29 @@ export function HomeView() {
         </div>
       </section>
 
-      <SectionFrame id="demo" side="left">
-        <p className="mb-5 text-[13px] uppercase tracking-[0.18em] text-white/50">
-          {content.closingEyebrow}
-        </p>
-        <h2
-          data-earth-morph="4"
-          className="font-display max-w-[14ch] text-[clamp(2.4rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white"
-        >
-          {content.closingTitle}
-        </h2>
-        <p className="mt-8 max-w-md text-[17px] leading-relaxed text-white/60 md:text-[18px]">
-          {content.closingBody}
-        </p>
-        <div className="mt-10">
-          <FluidButton
-            text={content.closingCta.label}
-            href={content.closingCta.href}
-          />
+      <SectionFrame
+        id="demo"
+        side="left"
+        className="!min-h-0 md:!min-h-svh"
+        contentClassName="flex w-full max-w-xl flex-col self-stretch text-center md:block md:max-w-2xl md:self-auto md:text-left"
+        innerClassName="!min-h-0 !items-stretch pt-8 pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:!min-h-svh md:!items-center md:pt-0 md:pb-0"
+      >
+        <div className="flex flex-col items-center md:block">
+          <h2
+            data-earth-morph="4"
+            className="font-display mx-auto max-w-[14ch] text-[clamp(2.4rem,5vw,5.5rem)] font-medium leading-[0.95] tracking-[-0.035em] text-white md:mx-0"
+          >
+            {content.closingTitle}
+          </h2>
+          <p className="mx-auto mt-8 max-w-md text-[17px] leading-relaxed text-white/60 md:mx-0 md:text-[18px]">
+            {content.closingBody}
+          </p>
+          <div className="mt-[min(42vh,22rem)] flex justify-center md:mt-10 md:justify-start">
+            <FluidButton
+              text={content.closingCta.label}
+              href={content.closingCta.href}
+            />
+          </div>
         </div>
       </SectionFrame>
     </>

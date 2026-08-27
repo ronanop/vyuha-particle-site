@@ -73,11 +73,45 @@
   user-select: none;
 }
 
-.sm-logo-img {
+.sm-logo-stack {
+  position: relative;
   display: block;
   height: 35.2px;
   width: auto;
+  transition: height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.staggered-menu-wrapper[data-open] .sm-logo-stack {
+  height: 70.4px;
+}
+
+.sm-logo-img {
+  display: block;
+  height: 100%;
+  width: auto;
   object-fit: contain;
+  transition: opacity 0.4s ease;
+}
+
+.sm-logo-img--closed {
+  position: relative;
+  opacity: 1;
+}
+
+.sm-logo-img--open {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.staggered-menu-wrapper[data-open] .sm-logo-img--closed {
+  opacity: 0;
+}
+
+.staggered-menu-wrapper[data-open] .sm-logo-img--open {
+  opacity: 1;
 }
 
 .sm-toggle {
@@ -386,10 +420,6 @@
     right: 0;
   }
 
-  .staggered-menu-wrapper[data-open] .sm-logo-img {
-    filter: invert(100%);
-  }
-
   .sm-prelayers {
     width: 100%;
     left: 0;
@@ -408,17 +438,31 @@
       max(1.25rem, env(safe-area-inset-left));
   }
 
-  .staggered-menu-wrapper[data-open] .sm-logo-img {
-    filter: invert(100%);
-  }
-
-  .sm-logo-img {
+  .sm-logo-stack {
     height: 28px;
   }
 
+  .staggered-menu-wrapper[data-open] .sm-logo-stack {
+    height: 56px;
+  }
+
+  .sm-logo-img {
+    height: 100%;
+  }
+
   .sm-panel-item {
-    font-size: 1.25rem;
+    font-size: clamp(1.55rem, 6.5vw, 1.95rem);
     letter-spacing: -0.03em;
-    padding-block: 0.2rem;
+    line-height: 1.1;
+    padding-block: 0.25rem;
+  }
+
+  .sm-panel-list {
+    gap: 0.4rem;
+  }
+
+  .sm-panel-list[data-numbering] .sm-panel-item::after {
+    font-size: 0.75rem;
+    top: 0.25em;
   }
 }

@@ -42,7 +42,7 @@ export const homeContent: HomeContent = {
   ],
   foundations: [
     {
-      title: "The Foundation for Agentic Intelligence",
+      title: "The Foundation for\nAgentic\u00A0Intelligence",
       body: "Unlock capabilities that were once restricted to hyperscalers. Vyuha empowers your existing teams to provide context to AI, fine-tuning models on proprietary data, building deep-reasoning agents, and intelligently orchestrating workflows at scale.",
       cta: { label: "Explore AI In a BOX", href: "/platform/in-a-box" },
     },

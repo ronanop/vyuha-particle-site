@@ -869,12 +869,21 @@ export default function IsometricParticleCluster({
 
     if (shape === "earth") setupMorph();
 
+    const MOBILE_EARTH_SCALE = 0.56;
+
     const applyEarthPosition = () => {
-      const rightX = earthNarrow ? earthHalfW * 0.1 : earthHalfW * 0.36;
-      const leftX = earthNarrow ? -earthHalfW * 0.34 : -earthHalfW * 0.44;
-      const y = earthNarrow ? earthHalfH * 0.06 : 0;
+      // Mobile: keep a smaller globe locked to center (no scroll glide).
+      // Desktop: hero starts on the right, then glides left with scroll.
+      if (earthNarrow) {
+        clusterGroup.position.set(0, earthHalfH * 0.04, 0);
+        clusterGroup.scale.setScalar(MOBILE_EARTH_SCALE);
+        return;
+      }
+      const rightX = earthHalfW * 0.36;
+      const leftX = -earthHalfW * 0.44;
       const eP = lockHero ? 0 : 1 - Math.pow(1 - scrollEased, 3);
-      clusterGroup.position.set(rightX + (leftX - rightX) * eP, y, 0);
+      clusterGroup.position.set(rightX + (leftX - rightX) * eP, 0, 0);
+      clusterGroup.scale.setScalar(1);
     };
 
     const placeEarth = () => {
@@ -1012,9 +1021,7 @@ export default function IsometricParticleCluster({
           rawP = Math.min(1, Math.max(0, rawP));
           scrollEased += (rawP - scrollEased) * 0.12;
           const eP = lockHero ? 0 : 1 - Math.pow(1 - scrollEased, 3);
-          const rightX = earthNarrow ? earthHalfW * 0.1 : earthHalfW * 0.36;
-          const leftX = earthNarrow ? -earthHalfW * 0.34 : -earthHalfW * 0.44;
-          clusterGroup.position.x = rightX + (leftX - rightX) * eP;
+          applyEarthPosition();
           clusterGroup.rotation.x =
             0.16 + Math.sin(mouse.time * 0.35) * 0.08;
           clusterGroup.rotation.y =
@@ -1049,9 +1056,13 @@ export default function IsometricParticleCluster({
 
             if (active) {
               // Viewport extents for procedural "spread" stages.
-              const hw = earthHalfW * 1.15;
-              const hh = earthHalfH * 1.15;
-              const dz = earthHalfH * 0.5;
+              // On mobile the earth group is scaled down — inflate spread extents
+              // so particles still fill the full screen (earth size/pose unchanged).
+              const spreadPad = earthNarrow ? 1.45 : 1.15;
+              const scaleComp = earthNarrow ? 1 / MOBILE_EARTH_SCALE : 1;
+              const hw = earthHalfW * spreadPad * scaleComp;
+              const hh = earthHalfH * spreadPad * scaleComp;
+              const dz = earthHalfH * (earthNarrow ? 0.85 : 0.5) * scaleComp;
               let spreadE = 0;
               let logoE = 0;
               let sig = 0;
@@ -1078,6 +1089,9 @@ export default function IsometricParticleCluster({
                         const comp = k % 3;
                         const factor = comp === 0 ? hw : comp === 1 ? hh : dz;
                         target = shapes[i][k] * factor;
+                      } else if (stageLogo[i] && earthNarrow) {
+                        // Smaller mark on mobile so title + copy + logo + CTA fit one screen.
+                        target = shapes[i][k] * 0.42;
                       } else {
                         target = shapes[i][k];
                       }
@@ -1094,7 +1108,8 @@ export default function IsometricParticleCluster({
                   if (logoE > 0) {
                     // Thicken so the logo reads as solid strokes, not dots.
                     (mp.mesh.material as THREE.PointsMaterial).size =
-                      mp.baseSize * (1 + logoE * 1.1);
+                      mp.baseSize *
+                      (1 + logoE * (earthNarrow ? 0.55 : 1.1));
                     // If a stage supplied per-particle colors, fade toward them.
                     if (mp.logoColors.length) {
                       const c = mp.colorAttr.array as Float32Array;
@@ -1120,9 +1135,11 @@ export default function IsometricParticleCluster({
               let gx = clusterGroup.position.x * (1 - spreadE);
               let gy = clusterGroup.position.y * (1 - spreadE);
               if (logoE > 0) {
-                const logoX = earthNarrow ? earthHalfW * 0.02 : earthHalfW * 0.42;
+                const logoX = earthNarrow ? 0 : earthHalfW * 0.42;
+                // Mobile: sit in the gap between closing copy and the CTA.
+                const logoY = earthNarrow ? -earthHalfH * 0.18 : 0;
                 gx += (logoX - gx) * logoE;
-                gy += (0 - gy) * logoE;
+                gy += (logoY - gy) * logoE;
                 // Hold the logo perfectly straight (no drift/rotation).
                 clusterGroup.rotation.y *= 1 - logoE;
                 clusterGroup.rotation.x *= 1 - logoE;
