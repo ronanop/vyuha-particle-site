@@ -190,7 +190,7 @@ export function PlatformOverviewView({
                   creaseShading={0.35}
                   fontSize="clamp(1rem, 1.4vw, 1.0625rem)"
                   fontWeight={400}
-                  color="rgba(255,255,255,0.65)"
+                  color="#ffffff"
                   style={{ letterSpacing: "0", lineHeight: 1.65 }}
                 />
               ) : (
@@ -215,7 +215,7 @@ export function PlatformOverviewView({
                   creaseShading={0.3}
                   fontSize="clamp(1rem, 1.4vw, 1.0625rem)"
                   fontWeight={400}
-                  color="rgba(255,255,255,0.55)"
+                  color="#ffffff"
                   style={{ letterSpacing: "0", lineHeight: 1.65 }}
                 />
               ) : (
