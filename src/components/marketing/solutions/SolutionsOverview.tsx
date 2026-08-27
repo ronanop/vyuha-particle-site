@@ -79,9 +79,9 @@ function EarthQuoteHeading({ quote }: { quote: string }) {
     <h2
       ref={headingRef}
       aria-label={quote}
-      className="flex max-w-[13ch] flex-col gap-[0.42em] text-left font-display text-[clamp(2.1528rem,5.796vw,4.968rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-white [text-shadow:0_4px_32px_rgba(0,0,0,0.8)]"
+      className="flex min-h-[calc(100svh-7.5rem)] w-full max-w-none flex-col justify-between gap-0 text-center font-display text-[clamp(2.1528rem,5.796vw,4.968rem)] font-semibold leading-[0.92] tracking-[-0.05em] text-white [text-shadow:0_4px_32px_rgba(0,0,0,0.8)] md:min-h-0 md:max-w-[13ch] md:justify-start md:gap-[0.42em] md:text-left"
     >
-      <span className="block">
+      <span className="mx-auto block max-w-[13ch] md:mx-0">
         <span className="hero-tricolor align-baseline">INDIA</span>
         {inView ? (
           <TextType
@@ -98,7 +98,7 @@ function EarthQuoteHeading({ quote }: { quote: string }) {
           />
         ) : null}
       </span>
-      <span className="block">
+      <span className="mx-auto block max-w-[13ch] md:mx-0">
         {secondLine ? (
           <TextType
             as="span"
@@ -190,7 +190,7 @@ export function SolutionsOverviewView({
             style={{ backgroundImage: `url(${SOLUTIONS_TUNNEL_POSTER})` }}
           />
           <InfiniteScrollTunnel
-            className="absolute inset-0 h-full w-full"
+            className="absolute inset-0 h-full w-full max-md:brightness-[1.1]"
             onReady={markHeroReady}
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0.32)_50%,rgba(0,0,0,0.78)_100%)]" />
@@ -249,7 +249,7 @@ export function SolutionsOverviewView({
           }}
         />
         <LazyHeroParticle />
-        <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] items-center justify-start px-6 md:px-10">
+        <div className="relative z-10 mx-auto flex min-h-svh w-full max-w-[1400px] items-stretch justify-center px-6 pt-[max(5.5rem,env(safe-area-inset-top))] pb-[max(1.75rem,env(safe-area-inset-bottom))] md:items-center md:justify-start md:px-10 md:pt-0 md:pb-0">
           <EarthQuoteHeading quote={content.quote} />
         </div>
       </section>

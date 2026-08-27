@@ -1,5 +1,6 @@
 "use client";
 
+import { Mail, Phone } from "lucide-react";
 import { ContactForm } from "@/components/marketing/contact/ContactForm";
 import type { ContactContent } from "@/content/contact";
 
@@ -22,9 +23,6 @@ export function ContactOverviewView({ content }: { content: ContactContent }) {
         >
           <div className="mx-auto grid w-full max-w-[1400px] items-start gap-10 px-6 md:px-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
             <div className="min-w-0">
-              <p className="mb-5 font-display text-[11px] font-medium uppercase tracking-[0.28em] text-cyan-400/80">
-                {content.eyebrow}
-              </p>
               <h1 className="font-display text-[clamp(2.25rem,5vw,4.5rem)] font-medium leading-[0.98] tracking-[-0.045em] text-white">
                 {content.title}
               </h1>
@@ -32,28 +30,38 @@ export function ContactOverviewView({ content }: { content: ContactContent }) {
                 {content.formIntro}
               </p>
 
-              <dl className="mt-12 space-y-8">
-                <div>
-                  <dt className="font-display text-[11px] uppercase tracking-[0.22em] text-white/40">
+              <dl className="mt-12 grid grid-cols-2 gap-5 sm:gap-8">
+                <div className="min-w-0">
+                  <dt className="flex items-center gap-2 font-display text-[12px] font-semibold uppercase tracking-[0.22em] text-white/75">
+                    <Mail
+                      className="h-4 w-4 shrink-0 text-cyan-300"
+                      aria-hidden
+                      strokeWidth={2.25}
+                    />
                     Email
                   </dt>
                   <dd className="mt-2">
                     <a
                       href={`mailto:${content.email}`}
-                      className="break-all font-display text-[clamp(1.05rem,2vw,1.5rem)] font-medium tracking-[-0.02em] text-white transition-colors hover:text-cyan-300"
+                      className="break-all font-display text-[clamp(0.95rem,2vw,1.5rem)] font-semibold tracking-[-0.02em] text-white transition-colors hover:text-cyan-300"
                     >
                       {content.email}
                     </a>
                   </dd>
                 </div>
-                <div>
-                  <dt className="font-display text-[11px] uppercase tracking-[0.22em] text-white/40">
+                <div className="min-w-0">
+                  <dt className="flex items-center gap-2 font-display text-[12px] font-semibold uppercase tracking-[0.22em] text-white/75">
+                    <Phone
+                      className="h-4 w-4 shrink-0 text-cyan-300"
+                      aria-hidden
+                      strokeWidth={2.25}
+                    />
                     Phone
                   </dt>
                   <dd className="mt-2">
                     <a
                       href={content.phoneHref}
-                      className="font-display text-[clamp(1.1rem,2vw,1.5rem)] font-medium tracking-[-0.02em] text-white transition-colors hover:text-cyan-300"
+                      className="font-display text-[clamp(0.95rem,2vw,1.5rem)] font-semibold tracking-[-0.02em] text-white transition-colors hover:text-cyan-300"
                     >
                       {content.phone}
                     </a>

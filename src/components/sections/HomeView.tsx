@@ -362,7 +362,7 @@ export function HomeView() {
         side="left"
         className="!min-h-0 md:!min-h-svh"
         contentClassName="flex w-full max-w-xl flex-col self-stretch text-center md:block md:max-w-2xl md:self-auto md:text-left"
-        innerClassName="!min-h-0 !items-stretch pt-8 pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:!min-h-svh md:!items-center md:pt-0 md:pb-0"
+        innerClassName="!min-h-0 !items-stretch pt-8 pb-6 md:!min-h-svh md:!items-center md:pt-0 md:pb-0"
       >
         <div className="flex flex-col items-center md:block">
           <h2
