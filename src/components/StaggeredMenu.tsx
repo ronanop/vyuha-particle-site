@@ -56,7 +56,7 @@ export function StaggeredMenu({
   displaySocials = true,
   displayItemNumbering = true,
   className,
-  logoUrl = "/vyuha-logo.png",
+  logoUrl = "/vyuha-logo-text.png",
   openLogoUrl = "/vyuha-logo-menu-open.png",
   menuButtonColor = "#fff",
   openMenuButtonColor = "#fff",

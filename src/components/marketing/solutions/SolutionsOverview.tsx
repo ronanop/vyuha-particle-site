@@ -7,8 +7,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FluidButton } from "@/components/FluidButton";
 import TiltedCard from "@/components/TiltedCard";
-import SplitText from "@/components/ui/SplitText";
+import { SOLUTIONS_TUNNEL_POSTER } from "@/lib/marketing/hero-prefetch";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 import TextType from "@/components/ui/TextType";
+import SplitText from "@/components/ui/SplitText";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 import { SolutionCtas } from "@/components/marketing/solutions/SolutionChrome";
 import { TransitionLink } from "@/components/ui/TransitionLink";
@@ -16,8 +18,6 @@ import type {
   SolutionsFunction,
   SolutionsOverviewContent,
 } from "@/content/solutions/types";
-import { SOLUTIONS_TUNNEL_POSTER } from "@/lib/marketing/hero-prefetch";
-import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 const InfiniteScrollTunnel = dynamic(
   () => import("@/components/marketing/solutions/InfiniteScrollTunnel"),
@@ -104,12 +104,21 @@ function EarthQuoteHeading({ quote }: { quote: string }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [inView, setInView] = useState(false);
   const [secondLine, setSecondLine] = useState(false);
+  const [staticCopy, setStaticCopy] = useState(false);
   const lines = quote.split(/(?<=\.)\s+/);
   const first = lines[0] ?? "";
   const rest = lines.slice(1).join(" ");
   const afterIndia = first.replace(/^INDIA\b/, "");
 
   useEffect(() => {
+    // Show full quote immediately on mobile / reduced-motion — never hide lines.
+    if (shouldSkipMotionEffects()) {
+      setStaticCopy(true);
+      setInView(true);
+      setSecondLine(true);
+      return;
+    }
+
     const el = headingRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
@@ -130,7 +139,9 @@ function EarthQuoteHeading({ quote }: { quote: string }) {
     >
       <span className="mx-auto block max-w-[13ch] md:mx-0">
         <span className="hero-tricolor align-baseline">INDIA</span>
-        {inView ? (
+        {staticCopy ? (
+          <span>{afterIndia}</span>
+        ) : inView ? (
           <TextType
             as="span"
             text={afterIndia}
@@ -146,17 +157,21 @@ function EarthQuoteHeading({ quote }: { quote: string }) {
         ) : null}
       </span>
       <span className="mx-auto block max-w-[13ch] md:mx-0">
-        {secondLine ? (
-          <TextType
-            as="span"
-            text={rest}
-            loop={false}
-            typingSpeed={38}
-            variableSpeed={{ min: 28, max: 52 }}
-            showCursor
-            cursorCharacter="|"
-            cursorClassName="align-baseline text-white"
-          />
+        {staticCopy || secondLine ? (
+          staticCopy ? (
+            <span>{rest}</span>
+          ) : (
+            <TextType
+              as="span"
+              text={rest}
+              loop={false}
+              typingSpeed={38}
+              variableSpeed={{ min: 28, max: 52 }}
+              showCursor
+              cursorCharacter="|"
+              cursorClassName="align-baseline text-white"
+            />
+          )
         ) : (
           <span className="invisible" aria-hidden>
             {rest}

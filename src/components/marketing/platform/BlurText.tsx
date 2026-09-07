@@ -26,6 +26,12 @@ type BlurTextProps = {
   stepDuration?: number;
 };
 
+const FINAL_SNAPSHOT: BlurSnapshot = {
+  filter: "blur(0px)",
+  opacity: 1,
+  y: 0,
+};
+
 function buildKeyframes(
   from: BlurSnapshot,
   steps: BlurSnapshot[],
@@ -61,12 +67,14 @@ export default function BlurText({
   stepDuration = 0.35,
 }: BlurTextProps) {
   const elements = animateBy === "words" ? text.split(" ") : text.split("");
-  const skipMotion = typeof window !== "undefined" && shouldSkipMotionEffects();
-  const [inView, setInView] = useState(skipMotion);
+  // Keep SSR + first client paint identical — decide skip only after mount.
+  const [skipMotion, setSkipMotion] = useState(false);
+  const [inView, setInView] = useState(false);
   const ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     if (shouldSkipMotionEffects()) {
+      setSkipMotion(true);
       setInView(true);
       onAnimationComplete?.();
       return;
@@ -100,7 +108,7 @@ export default function BlurText({
         opacity: 0.5,
         y: direction === "top" ? 5 : -5,
       },
-      { filter: "blur(0px)", opacity: 1, y: 0 },
+      FINAL_SNAPSHOT,
     ],
     [direction],
   );
@@ -114,14 +122,6 @@ export default function BlurText({
     (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)),
   );
 
-  if (skipMotion) {
-    return (
-      <p ref={ref} className={`blur-text ${className}`.trim()}>
-        {text}
-      </p>
-    );
-  }
-
   return (
     <p ref={ref} className={`blur-text ${className}`.trim()}>
       {elements.map((segment, index) => {
@@ -131,14 +131,24 @@ export default function BlurText({
           <motion.span
             className="blur-text-segment"
             key={`${segment}-${index}`}
-            initial={fromSnapshot}
-            animate={inView ? (animateKeyframes as never) : fromSnapshot}
-            transition={{
-              duration: totalDuration,
-              times,
-              delay: (index * delay) / 1000,
-              ease: easing,
-            }}
+            initial={skipMotion ? FINAL_SNAPSHOT : fromSnapshot}
+            animate={
+              skipMotion || inView
+                ? skipMotion
+                  ? FINAL_SNAPSHOT
+                  : (animateKeyframes as never)
+                : fromSnapshot
+            }
+            transition={
+              skipMotion
+                ? { duration: 0 }
+                : {
+                    duration: totalDuration,
+                    times,
+                    delay: (index * delay) / 1000,
+                    ease: easing,
+                  }
+            }
             onAnimationComplete={
               index === elements.length - 1 ? onAnimationComplete : undefined
             }

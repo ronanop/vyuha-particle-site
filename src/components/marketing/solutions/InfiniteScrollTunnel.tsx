@@ -11,7 +11,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import * as THREE from "three";
-import { shouldSkipMotionEffects } from "@/lib/utils/motion";
+import { prefersReducedMotion } from "@/lib/utils/motion";
 import { SOLUTIONS_TUNNEL_IMAGES } from "@/lib/marketing/hero-prefetch";
 
 const DEFAULT_IMAGES = [...SOLUTIONS_TUNNEL_IMAGES];
@@ -254,7 +254,7 @@ export default function InfiniteScrollTunnel({
   const [canvasReady, setCanvasReady] = useState(false);
 
   useEffect(() => {
-    if (shouldSkipMotionEffects()) {
+    if (prefersReducedMotion()) {
       onReadyRef.current?.();
       return;
     }

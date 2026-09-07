@@ -58,14 +58,13 @@ export default function TextType({
   ...props
 }: TextTypeProps) {
   const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
-  const skipMotion = typeof window !== "undefined" && shouldSkipMotionEffects();
-  const [displayedText, setDisplayedText] = useState(
-    skipMotion ? (Array.isArray(text) ? text[0] ?? "" : text) : "",
-  );
+  // Keep SSR + first client paint identical — decide skip only after mount.
+  const [skipMotion, setSkipMotion] = useState(false);
+  const [displayedText, setDisplayedText] = useState("");
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(!startOnVisible || skipMotion);
+  const [isVisible, setIsVisible] = useState(!startOnVisible);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const onCompleteRef = useRef(onSentenceComplete);
@@ -88,8 +87,13 @@ export default function TextType({
 
   useEffect(() => {
     if (shouldSkipMotionEffects()) {
+      setSkipMotion(true);
       setDisplayedText(textArray[0] ?? "");
       setIsVisible(true);
+      if (completedIndexRef.current !== 0) {
+        completedIndexRef.current = 0;
+        onCompleteRef.current?.(textArray[0] ?? "", 0);
+      }
       return;
     }
     if (!startOnVisible || !containerRef.current) return;
@@ -105,7 +109,7 @@ export default function TextType({
 
     observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, [startOnVisible]);
+  }, [startOnVisible, textArray]);
 
   useEffect(() => {
     if (shouldSkipMotionEffects()) return;
