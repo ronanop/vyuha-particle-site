@@ -25,7 +25,7 @@ export function Navigation() {
       changeMenuColorOnOpen
       colors={["#B497CF", "#5227FF"]}
       logoUrl="/vyuha-logo.png"
-      openLogoUrl="/vyuha-logo-black.png"
+      openLogoUrl="/vyuha-logo-menu-open.png"
       accentColor="#22d3ee"
     />
   );
