@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { prefersReducedMotion } from "@/lib/utils/motion";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 const LightTunnel = dynamic(() => import("./LightTunnel"), { ssr: false });
 
@@ -17,7 +17,7 @@ export function PlatformHeroTunnel({ onReady }: PlatformHeroTunnelProps) {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    if (shouldSkipMotionEffects()) {
       onReady?.();
       return;
     }

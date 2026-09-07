@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { prefersReducedMotion } from "@/lib/utils/motion";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 import { getLenis } from "@/lib/utils/lenis";
 
 const MIN_LOADER_MS = 1400;
@@ -67,7 +67,7 @@ export function IntroLoader() {
   const startedAtRef = useRef(0);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
+    if (shouldSkipMotionEffects()) {
       setVisible(false);
       setIntroAttr("ready");
       releaseScroll();

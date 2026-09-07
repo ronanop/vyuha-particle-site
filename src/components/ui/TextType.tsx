@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from "react";
 import { gsap } from "gsap";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 import "./TextType.css";
 
 export type TextTypeProps = {
@@ -56,11 +57,15 @@ export default function TextType({
   reverseMode = false,
   ...props
 }: TextTypeProps) {
-  const [displayedText, setDisplayedText] = useState("");
+  const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
+  const skipMotion = typeof window !== "undefined" && shouldSkipMotionEffects();
+  const [displayedText, setDisplayedText] = useState(
+    skipMotion ? (Array.isArray(text) ? text[0] ?? "" : text) : "",
+  );
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(!startOnVisible);
+  const [isVisible, setIsVisible] = useState(!startOnVisible || skipMotion);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const onCompleteRef = useRef(onSentenceComplete);
@@ -69,8 +74,6 @@ export default function TextType({
   useEffect(() => {
     onCompleteRef.current = onSentenceComplete;
   }, [onSentenceComplete]);
-
-  const textArray = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
 
   const getRandomSpeed = useCallback(() => {
     if (!variableSpeed) return typingSpeed;
@@ -84,6 +87,11 @@ export default function TextType({
   };
 
   useEffect(() => {
+    if (shouldSkipMotionEffects()) {
+      setDisplayedText(textArray[0] ?? "");
+      setIsVisible(true);
+      return;
+    }
     if (!startOnVisible || !containerRef.current) return;
 
     const observer = new IntersectionObserver(
@@ -100,6 +108,7 @@ export default function TextType({
   }, [startOnVisible]);
 
   useEffect(() => {
+    if (shouldSkipMotionEffects()) return;
     if (!showCursor || !cursorRef.current) return;
     const cursor = cursorRef.current;
     gsap.set(cursor, { opacity: 1 });
@@ -116,6 +125,7 @@ export default function TextType({
   }, [showCursor, cursorBlinkDuration]);
 
   useEffect(() => {
+    if (shouldSkipMotionEffects()) return;
     if (!isVisible) return;
 
     let timeout: ReturnType<typeof setTimeout>;
@@ -200,7 +210,7 @@ export default function TextType({
     <span className="text-type__content" style={{ color: getCurrentTextColor() }}>
       {displayedText}
     </span>,
-    showCursor && (
+    showCursor && !skipMotion && (
       <span
         ref={cursorRef}
         className={`text-type__cursor ${cursorClassName} ${shouldHideCursor ? "text-type__cursor--hidden" : ""}`}

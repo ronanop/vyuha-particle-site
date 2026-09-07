@@ -12,7 +12,7 @@ import type {
   PlatformProductContent,
   PlatformProductSection,
 } from "@/content/platform/types";
-import { prefersReducedMotion } from "@/lib/utils/motion";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 export { PlatformOverviewView } from "@/components/marketing/platform/PlatformOverview";
 
@@ -217,7 +217,7 @@ export function PlatformProductView({
     const root = rootRef.current;
     if (!root || typeof window === "undefined") return;
 
-    if (prefersReducedMotion()) {
+    if (shouldSkipMotionEffects()) {
       root.classList.add("hero-ready");
       return;
     }

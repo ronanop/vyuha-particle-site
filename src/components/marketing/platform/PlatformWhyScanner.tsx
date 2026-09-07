@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { prefersReducedMotion } from "@/lib/utils/motion";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 const Scanner = dynamic(() => import("./Scanner"), { ssr: false });
 
@@ -10,7 +10,7 @@ export function PlatformWhyScanner() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (shouldSkipMotionEffects()) return;
     const probe = document.createElement("canvas");
     setEnabled(Boolean(probe.getContext("webgl2")));
   }, []);

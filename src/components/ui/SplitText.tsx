@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText, useGSAP);
 
@@ -62,6 +63,11 @@ export default function SplitText({
     () => {
       if (!ref.current || !text || !fontsLoaded) return;
       if (animationCompletedRef.current) return;
+      if (shouldSkipMotionEffects()) {
+        animationCompletedRef.current = true;
+        onCompleteRef.current?.();
+        return;
+      }
       const el = ref.current as HTMLElement & { _rbsplitInstance?: GSAPSplitText };
 
       if (el._rbsplitInstance) {

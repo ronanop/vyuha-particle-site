@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 type TypewriterTextProps = {
   text: string;
@@ -27,7 +28,7 @@ export function TypewriterText({
     const root = rootRef.current;
     if (!root || typeof window === "undefined") return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (shouldSkipMotionEffects()) {
       setCount(chars.length);
       setDone(true);
       setStarted(true);

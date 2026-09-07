@@ -5,8 +5,8 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { setLenisInstance } from "@/lib/utils/lenis";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 import { getScrollFeel, luxuryEase } from "@/lib/utils/scrollFeel";
-import { prefersReducedMotion } from "@/lib/utils/motion";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -18,7 +18,7 @@ interface SmoothScrollProps {
 
 /**
  * Lenis smooth scroll synced with GSAP ScrollTrigger.
- * Disabled when prefers-reduced-motion is set.
+ * Disabled on mobile and when prefers-reduced-motion is set.
  */
 export function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
@@ -38,7 +38,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       setLenisInstance(null);
     };
 
-    if (!prefersReducedMotion()) {
+    if (!shouldSkipMotionEffects()) {
       const feel = getScrollFeel();
       // lerp only — passing duration/easing would override and kill the lag
       lenis = new Lenis({
@@ -134,22 +134,23 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     };
     document.addEventListener("click", onClick);
 
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mqMobile = window.matchMedia("(max-width: 767px)");
     const onMotionChange = () => {
-      if (mq.matches) {
-        lenis?.stop();
-      } else {
-        lenis?.start();
+      if (shouldSkipMotionEffects()) {
+        destroyLenis();
       }
     };
-    mq.addEventListener("change", onMotionChange);
+    mqReduce.addEventListener("change", onMotionChange);
+    mqMobile.addEventListener("change", onMotionChange);
 
     requestAnimationFrame(() => {
       ScrollTrigger.refresh();
     });
 
     return () => {
-      mq.removeEventListener("change", onMotionChange);
+      mqReduce.removeEventListener("change", onMotionChange);
+      mqMobile.removeEventListener("change", onMotionChange);
       document.removeEventListener("click", onClick);
       window.removeEventListener("resize", onResize);
       window.clearTimeout(resizeTimer);

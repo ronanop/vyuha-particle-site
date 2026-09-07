@@ -12,7 +12,7 @@ import type {
   MarketingPageContent,
   MarketingSection,
 } from "@/content/solutions/types";
-import { prefersReducedMotion } from "@/lib/utils/motion";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 function sectionId(section: MarketingSection, index: number): string {
   if (section.id) return section.id;
@@ -171,7 +171,7 @@ export function MarketingPageView({
     const root = rootRef.current;
     if (!root || typeof window === "undefined") return;
 
-    if (prefersReducedMotion()) {
+    if (shouldSkipMotionEffects()) {
       root.classList.add("hero-ready");
       return;
     }

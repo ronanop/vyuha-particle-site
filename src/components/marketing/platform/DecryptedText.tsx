@@ -9,6 +9,7 @@ import {
   type CSSProperties,
   type HTMLAttributes,
 } from "react";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 type RevealDirection = "start" | "end" | "center";
 type AnimateOn = "view" | "hover" | "inViewHover" | "click";
@@ -322,9 +323,12 @@ export default function DecryptedText({
 
   useEffect(() => {
     if (animateOn !== "view" && animateOn !== "inViewHover") return;
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (shouldSkipMotionEffects()) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      setIsAnimating(false);
       setDisplayText(text);
       setIsDecrypted(true);
+      setHasAnimated(true);
       return;
     }
 
@@ -349,9 +353,13 @@ export default function DecryptedText({
   }, [animateOn, hasAnimated, triggerDecrypt, delay, text]);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (shouldSkipMotionEffects()) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      setIsAnimating(false);
       setDisplayText(text);
       setIsDecrypted(true);
+      setRevealedIndices(new Set());
+      setDirection("forward");
       return;
     }
     if (animateOn === "click" || animateOn === "view") {

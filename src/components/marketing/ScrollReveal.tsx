@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, type ReactNode, type RefObject } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { prefersReducedMotion } from "@/lib/utils/motion";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 import "./ScrollReveal.css";
 
 if (typeof window !== "undefined") {
@@ -56,7 +56,7 @@ export default function ScrollReveal({
     const el = containerRef.current;
     if (!el) return;
 
-    if (prefersReducedMotion()) {
+    if (shouldSkipMotionEffects()) {
       gsap.set(el, { rotate: 0 });
       gsap.set(el.querySelectorAll(".word"), { opacity: 1, filter: "blur(0px)" });
       return;

@@ -9,6 +9,7 @@ import {
   type CSSProperties,
 } from "react";
 import { getLenis } from "@/lib/utils/lenis";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 type SplitMode = "Characters" | "Words" | "Lines";
 type RevealDirection = "Left to Right" | "Right to Left";
@@ -229,7 +230,7 @@ export default function ScrollRevealText({
       });
     };
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce = shouldSkipMotionEffects();
     if (reduce) {
       applyProgress(1);
       return;

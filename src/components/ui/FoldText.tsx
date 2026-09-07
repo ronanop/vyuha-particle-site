@@ -9,6 +9,7 @@ import {
 } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 import "./FoldText.css";
 
@@ -147,16 +148,23 @@ export default function FoldText({
     );
     if (!pieces.length) return undefined;
 
-    const reduceMotion = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const activeDuration = reduceMotion ? Math.min(duration, 0.22) : duration;
-    const activeStagger = reduceMotion ? Math.min(stagger, 0.02) : stagger;
+    if (shouldSkipMotionEffects()) {
+      gsap.set(pieces, {
+        opacity: 1,
+        rotateX: 0,
+        rotateY: 0,
+        "--fold-crease": 0,
+        transformOrigin: hingeConfig.origin,
+        clearProps: "willChange",
+      });
+      return undefined;
+    }
+
     const fromVars = {
       opacity: 0,
-      rotateX: reduceMotion ? 0 : hingeConfig.rotateX,
-      rotateY: reduceMotion ? 0 : hingeConfig.rotateY,
-      "--fold-crease": reduceMotion ? 0 : safeCrease,
+      rotateX: hingeConfig.rotateX,
+      rotateY: hingeConfig.rotateY,
+      "--fold-crease": safeCrease,
       transformOrigin: hingeConfig.origin,
       force3D: true,
     };
@@ -165,9 +173,9 @@ export default function FoldText({
       rotateX: 0,
       rotateY: 0,
       "--fold-crease": 0,
-      duration: activeDuration,
-      ease: reduceMotion ? "power1.out" : ease,
-      stagger: activeStagger,
+      duration,
+      ease,
+      stagger,
       clearProps: "willChange",
     };
 

@@ -114,6 +114,21 @@
   opacity: 1;
 }
 
+/* Desktop: keep the closed logo — no swap or size change when menu opens */
+@media (min-width: 641px) {
+  .staggered-menu-wrapper[data-open] .sm-logo-stack {
+    height: 35.2px;
+  }
+
+  .staggered-menu-wrapper[data-open] .sm-logo-img--closed {
+    opacity: 1;
+  }
+
+  .staggered-menu-wrapper[data-open] .sm-logo-img--open {
+    opacity: 0;
+  }
+}
+
 .sm-toggle {
   position: relative;
   display: inline-flex;

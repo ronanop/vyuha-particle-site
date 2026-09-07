@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
 import { Mesh, Program, Renderer, Texture, Triangle } from "ogl";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 import "./WarpText.css";
 
 const vertex = `#version 300 es
@@ -344,6 +345,7 @@ export default function WarpText({
   gradientColors = ["#FF9933", "#FFFFFF", "#138808"],
 }: WarpTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [staticMode, setStaticMode] = useState(false);
   const propsRef = useRef<RasterProps>({
     text,
     color,
@@ -410,6 +412,11 @@ export default function WarpText({
   useEffect(() => {
     const container = containerRef.current;
     if (!container || typeof window === "undefined") return undefined;
+
+    if (shouldSkipMotionEffects()) {
+      setStaticMode(true);
+      return undefined;
+    }
 
     let renderer: Renderer | undefined;
     let gl: Renderer["gl"] | undefined;
@@ -653,6 +660,24 @@ export default function WarpText({
       style={style}
       role="img"
       aria-label={text}
-    />
+    >
+      {staticMode ? (
+        <span
+          className="warp-text-static"
+          style={{
+            color,
+            fontSize,
+            fontWeight,
+            fontFamily,
+            letterSpacing,
+            lineHeight,
+            whiteSpace: "pre-line",
+            display: "block",
+          }}
+        >
+          {text}
+        </span>
+      ) : null}
+    </div>
   );
 }

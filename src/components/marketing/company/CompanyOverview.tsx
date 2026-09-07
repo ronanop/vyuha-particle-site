@@ -13,6 +13,7 @@ import BlurText from "@/components/marketing/platform/BlurText";
 import { SolutionCtas } from "@/components/marketing/solutions/SolutionChrome";
 import FoldText from "@/components/ui/FoldText";
 import type { CompanyContent } from "@/content/company/types";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 export function CompanyOverviewView({ content }: { content: CompanyContent }) {
   const rootRef = useRef<HTMLElement>(null);
@@ -21,8 +22,7 @@ export function CompanyOverviewView({ content }: { content: CompanyContent }) {
     const root = rootRef.current;
     if (!root || typeof window === "undefined") return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
+    if (shouldSkipMotionEffects()) {
       root.classList.add("hero-ready");
       return;
     }

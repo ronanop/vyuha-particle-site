@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 const DIGITS = "0123456789";
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -46,8 +47,7 @@ export function ScrambleText({
     const node = ref.current;
     if (!node || typeof window === "undefined") return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
+    if (shouldSkipMotionEffects()) {
       setOutput(text);
       return;
     }

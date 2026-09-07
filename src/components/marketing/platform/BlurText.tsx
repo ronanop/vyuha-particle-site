@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 import "./BlurText.css";
 
 type BlurSnapshot = {
@@ -60,10 +61,16 @@ export default function BlurText({
   stepDuration = 0.35,
 }: BlurTextProps) {
   const elements = animateBy === "words" ? text.split(" ") : text.split("");
-  const [inView, setInView] = useState(false);
+  const skipMotion = typeof window !== "undefined" && shouldSkipMotionEffects();
+  const [inView, setInView] = useState(skipMotion);
   const ref = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
+    if (shouldSkipMotionEffects()) {
+      setInView(true);
+      onAnimationComplete?.();
+      return;
+    }
     if (!ref.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -76,7 +83,7 @@ export default function BlurText({
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [threshold, rootMargin]);
+  }, [threshold, rootMargin, onAnimationComplete]);
 
   const defaultFrom = useMemo<BlurSnapshot>(
     () =>
@@ -106,6 +113,14 @@ export default function BlurText({
     { length: stepCount },
     (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)),
   );
+
+  if (skipMotion) {
+    return (
+      <p ref={ref} className={`blur-text ${className}`.trim()}>
+        {text}
+      </p>
+    );
+  }
 
   return (
     <p ref={ref} className={`blur-text ${className}`.trim()}>

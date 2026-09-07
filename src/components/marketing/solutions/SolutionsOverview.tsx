@@ -17,6 +17,7 @@ import type {
   SolutionsOverviewContent,
 } from "@/content/solutions/types";
 import { SOLUTIONS_TUNNEL_POSTER } from "@/lib/marketing/hero-prefetch";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 const InfiniteScrollTunnel = dynamic(
   () => import("@/components/marketing/solutions/InfiniteScrollTunnel"),
@@ -194,8 +195,7 @@ export function SolutionsOverviewView({
     const root = rootRef.current;
     if (!root || typeof window === "undefined") return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
+    if (shouldSkipMotionEffects()) {
       markHeroReady();
       return;
     }

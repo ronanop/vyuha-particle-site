@@ -18,6 +18,7 @@ import { ScrambleText } from "@/components/marketing/platform/ScrambleText";
 import { PlatformWaysSlider } from "@/components/marketing/platform/PlatformWaysSlider";
 import { TransitionLink } from "@/components/ui/TransitionLink";
 import type { PlatformOverviewContent } from "@/content/platform/types";
+import { shouldSkipMotionEffects } from "@/lib/utils/motion";
 
 const PlatformWhyScanner = dynamic(
   () =>
@@ -47,8 +48,7 @@ export function PlatformOverviewView({
     const root = rootRef.current;
     if (!root || typeof window === "undefined") return;
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
+    if (shouldSkipMotionEffects()) {
       markHeroReady();
       return;
     }
