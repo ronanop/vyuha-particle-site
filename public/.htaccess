@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# Apex only. Do not match www.vyuha.ai — that is what caused the redirect loop.
+RewriteCond %{HTTP_HOST} ^vyuha\.ai$ [NC]
+RewriteRule ^ https://www.vyuha.ai%{REQUEST_URI} [L,R=301]
