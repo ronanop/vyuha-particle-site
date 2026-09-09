@@ -3,6 +3,7 @@ import { ViewTransition } from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import { ElevenLabsConvai } from "@/components/ElevenLabsConvai";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { ScrollResetOnLoad } from "@/components/ScrollResetOnLoad";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -129,6 +130,7 @@ export default function RootLayout({
         className="min-h-full bg-black text-white"
         suppressHydrationWarning
       >
+        <GoogleAnalytics />
         <JsonLd />
         <ScrollResetOnLoad />
         <ViewTransition>{children}</ViewTransition>

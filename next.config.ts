@@ -4,7 +4,7 @@ const isDev = process.env.NODE_ENV !== "production";
 
 /**
  * Defense-in-depth headers. CSP allows self-hosted scripts, Google Fonts,
- * and ElevenLabs Convai network endpoints the widget needs at runtime.
+ * Google Analytics (gtag), and ElevenLabs Convai network endpoints.
  * `unsafe-eval` is limited to development (Next HMR / Turbopack).
  */
 const securityHeaders = [
@@ -16,13 +16,13 @@ const securityHeaders = [
       "object-src 'none'",
       "frame-ancestors 'none'",
       "form-action 'self' https://formspree.io",
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+      `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${isDev ? " 'unsafe-eval'" : ""}`,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: blob: https:",
       "media-src 'self' blob: https://*.elevenlabs.io",
       "worker-src 'self' blob:",
-      "connect-src 'self' https://formspree.io https://*.elevenlabs.io wss://*.elevenlabs.io https://api.elevenlabs.io",
+      "connect-src 'self' https://formspree.io https://*.elevenlabs.io wss://*.elevenlabs.io https://api.elevenlabs.io https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
       "upgrade-insecure-requests",
     ].join("; "),
   },
